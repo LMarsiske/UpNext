@@ -44,6 +44,7 @@
     "postcss": "^8.4.23",
     "prisma": "^4.13.0",
     "storybook": "^7.0.10",
+    "storybook-addon-themes": "^6.1.0",
     "storybook-tailwind-dark-mode": "^1.0.22",
     "supabase": "^1.55.1"
   }
