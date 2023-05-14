@@ -4,6 +4,7 @@ import Logo from "./logo"
 import { useTheme } from "next-themes"
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid"
 import { useState, useEffect } from "react"
+import Container from "./container"
 
 const Header = () => {
   const { systemTheme, theme, setTheme } = useTheme()
@@ -39,12 +40,14 @@ const Header = () => {
 
   return (
     <header className="h-15 shadow-sm dark:border-gray-700">
-      <div className="container  px-4 sm:px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Logo />
+      <Container>
+        <div className="px-4 sm:px-6 py-4 flex justify-between items-center">
+          {/* Logo */}
+          <Logo />
 
-        {renderThemeChanger()}
-      </div>
+          {renderThemeChanger()}
+        </div>
+      </Container>
     </header>
   )
 }

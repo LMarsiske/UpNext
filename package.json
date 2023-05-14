@@ -3,22 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "BROWSER=chrome && next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db-stop": "npx supabase stop",
     "db-start": "npx supabase start && npx prisma migrate deploy && npx prisma db seed",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "cross-env BROWSER=chrome && storybook dev -p 6006 -s public",
     "build-storybook": "storybook build"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/lodash": "^4.14.194",
     "@types/node": "20.1.0",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
+    "html-react-parser": "^3.0.16",
     "lodash": "^4.17.21",
     "next": "13.4.1",
     "next-themes": "^0.2.1",
@@ -29,6 +32,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@storybook/addon-backgrounds": "^7.0.10",
     "@storybook/addon-essentials": "^7.0.10",
     "@storybook/addon-interactions": "^7.0.10",
     "@storybook/addon-links": "^7.0.10",
@@ -40,6 +44,7 @@
     "@storybook/react": "^7.0.10",
     "@storybook/testing-library": "^0.1.0",
     "autoprefixer": "^10.4.14",
+    "cross-env": "^7.0.3",
     "eslint-plugin-storybook": "^0.6.12",
     "postcss": "^8.4.23",
     "prisma": "^4.13.0",

@@ -3,6 +3,7 @@ import Header from "./components/header"
 import "../styles/globals.css"
 import { ReactNode } from "react"
 import { Providers } from "./providers"
+import Container from "./components/container"
 
 const poppins = Poppins({
   weight: ["400", "700"],
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className={poppins.className}>
         <Providers>
           <Header />
-          {children}
+          <Container>{children}</Container>
         </Providers>
       </body>
     </html>

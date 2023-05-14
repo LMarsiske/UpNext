@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "../app/components/Button"
+import { Button } from "@/app/components/Button"
+
+import "@/styles/globals.css"
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Button> = {
@@ -10,12 +12,6 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     label: {
       description: "Overwritten button label",
-      table: {
-        type: {
-          summary: "something short",
-          detail: "something really really long",
-        },
-      },
       control: "text",
     },
   },
@@ -37,6 +33,27 @@ export const LargeOutlined: Story = {
     size: "large",
     label: "Button",
     outline: true,
+  },
+}
+
+export const LargeDark: Story = {
+  args: {
+    size: "large",
+    label: "Button",
+  },
+  parameters: {
+    backgrounds: { default: "Dark" },
+  },
+}
+
+export const LargeOutlinedDark: Story = {
+  args: {
+    size: "large",
+    label: "Button",
+    outline: true,
+  },
+  parameters: {
+    backgrounds: { default: "Dark" },
   },
 }
 

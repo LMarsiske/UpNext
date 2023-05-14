@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-import "./button.css"
 
 interface ButtonProps {
   /**
@@ -14,6 +13,10 @@ interface ButtonProps {
    * Does the button have an outline or a background color?
    */
   outline?: boolean
+  /**
+   * Extra way to control whether or not to render in dark mode. Should only be used to make storybooking easier
+   */
+  isDark?: string
   /**
    * Required click handler
    */
@@ -38,10 +41,16 @@ const getSizeClasses = (size: string) => {
   }
 }
 
-const getModeClasses = (isOutlined: boolean) =>
+const getTypeClasses = (isOutlined: boolean, isDark: string) => {
+  if (isDark) {
+    return isOutlined
+      ? "text-slate-700 bg-transparent border-teal-700 dark:text-white dark:border-white"
+      : "text-white bg-pink-600 border-pink-600 dark:bg-teal-700 dark:border-teal-700"
+  }
   isOutlined
     ? "text-slate-700 bg-transparent border-teal-700 dark:text-white dark:border-white"
     : "text-white bg-pink-600 border-pink-600 dark:bg-teal-700 dark:border-teal-700"
+}
 
 const BASE_BUTTON_CLASSES =
   "cursor-pointer rounded-full border-2 font-bold leading-none inline-block"
@@ -51,12 +60,13 @@ const BASE_BUTTON_CLASSES =
  */
 export const Button = ({
   size = "medium",
-  label = "submit",
+  label = "Submit",
   outline = false,
+  isDark = "",
   onClick,
 }: ButtonProps) => {
   const computedClasses = useMemo(() => {
-    const modeClass = getModeClasses(outline)
+    const modeClass = getTypeClasses(outline, isDark)
     const sizeClass = getSizeClasses(size)
 
     return [modeClass, sizeClass].join(" ")

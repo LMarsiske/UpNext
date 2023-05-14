@@ -1,39 +1,34 @@
-import { DEFAULT_THEME, withTailwindTheme } from "./withTailwindTheme.decorator"
-import "../styles/globals.css"
+import type { Preview } from "@storybook/react"
+import "@/styles/globals.css"
 
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+const preview: Preview = {
+  parameters: {
+    actions: { argTypesRegex: "^on[A-Z].*" },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
+    backgrounds: {
+      default: "Light",
+      values: [
+        {
+          name: "Light",
+          value: "#F1F5F9",
+        },
+        {
+          name: "Dark",
+          value: "#082F49",
+        },
+      ],
     },
   },
-  themes: {
-    clearable: false,
-    list: [
-      {
-        name: "Light",
-        class: [],
-        color: "#ffffff",
-        default: true,
-      },
-      {
-        name: "Dark",
-        // The class dark will be added to the body tag
-        class: ["dark"],
-        color: "#000000",
-      },
-    ],
+  globalTypes: {
+    darkMode: {
+      defaultValue: false, // Enable dark mode by default on all stories
+    },
   },
 }
 
-export const globalTypes = {
-  theme: {
-    name: "Theme",
-    description: "Global theme for components",
-    defaultValue: DEFAULT_THEME,
-  },
-}
-
-export const decorators = [withTailwindTheme]
+export default preview
