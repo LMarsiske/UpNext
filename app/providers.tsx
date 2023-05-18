@@ -1,6 +1,7 @@
 "use client"
 
 import { ThemeProvider } from "next-themes"
+import { ApolloContextProvider } from "@/context/ApolloContext"
 import { ReactNode } from "react"
 
 interface ProviderProps {
@@ -10,7 +11,7 @@ interface ProviderProps {
 export function Providers({ children }: ProviderProps) {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-      {children}
+      <ApolloContextProvider>{children}</ApolloContextProvider>
     </ThemeProvider>
   )
 }
