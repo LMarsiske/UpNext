@@ -1,4 +1,5 @@
-export const typeDef = `#graphql
+import gql from "graphql-tag";
+export const typeDef = gql`
   type Schedule {
     time: String
     days: [String]
@@ -83,6 +84,7 @@ export const typeDef = `#graphql
   extend type Query {
     hello: String
     search(q: String): [ShowResult]
+    getGirls: [ShowResult]
   }
 `;
 
@@ -90,6 +92,9 @@ export const resolvers = {
   Query: {
     search: async (_: any, { q }: any, { dataSources }: any) => {
       return await dataSources.tvAPI.search(q);
+    },
+    getGirls: async (_: any, __: any, { dataSources }: any) => {
+      return await dataSources.tvAPI.getGirls();
     },
     hello: () => "world",
   },
