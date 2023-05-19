@@ -9,6 +9,17 @@ const Query = gql`
   type Query {
     _empty: String
   }
+
+  type SearchResult {
+    id: ID!
+    type: String!
+    title: String!
+    poster: String
+    summary: String
+    network: String
+    platforms: [String]
+    genres: [String]
+  }
 `;
 
 const resolvers = {};

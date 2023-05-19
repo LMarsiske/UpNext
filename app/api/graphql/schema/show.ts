@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { stripHtml } from "string-strip-html";
 export const typeDef = gql`
   type Schedule {
     time: String
@@ -82,20 +83,28 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    hello: String
-    searchTV(q: String!): [ShowResult]
-    getGirls: [ShowResult]
+    searchTV(q: String!): [SearchResult]
   }
 `;
 
 export const resolvers = {
   Query: {
     searchTV: async (_: any, { q }: any, { dataSources }: any) => {
-      return await dataSources.tvAPI.search(q);
+      let res = await dataSources.tvAPI.search(q);
+      return res.map((show: any) => {
+        let summary = show.show.summary;
+        if (summary) {
+          summary = stripHtml(summary).result;
+        }
+        return {
+          id: show.show.id,
+          type: "tv",
+          title: show.show.name,
+          poster: show.show.image?.original,
+          summary: summary,
+          network: show.show.network?.name,
+        };
+      });
     },
-    getGirls: async (_: any, __: any, { dataSources }: any) => {
-      return await dataSources.tvAPI.getGirls();
-    },
-    hello: () => "world",
   },
 };

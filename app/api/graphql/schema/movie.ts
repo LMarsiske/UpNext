@@ -19,9 +19,7 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    hello: String
-    getJackReacher: Movie
-    searchMovies(q: String!): [Movie]
+    searchMovies(q: String!): [SearchResult]
   }
 `;
 
@@ -29,11 +27,13 @@ export const resolvers = {
   Query: {
     searchMovies: async (_: any, { q }: any, { dataSources }: any) => {
       const res = await dataSources.movieAPI.search(q);
-      return res.results.slice(0, 10);
+      return res.results.slice(0, 10).map((movie: any) => ({
+        id: movie.id,
+        type: "movie",
+        title: movie.title,
+        poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        summary: movie.overview,
+      }));
     },
-    getJackReacher: async (_: any, __: any, { dataSources }: any) => {
-      await dataSources.movieAPI.getJackReacher();
-    },
-    hello: () => "world",
   },
 };

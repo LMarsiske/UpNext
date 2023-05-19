@@ -14,7 +14,7 @@ class GameAPI extends RESTDataSource {
 
   async search(q: string) {
     return this.post(`games`, {
-      body: `fields *, cover.*;
+      body: `fields *, cover.*, platforms.*, genres.*;
             where name ~ "${q}"* & themes != (42);
             limit 10;`,
     });

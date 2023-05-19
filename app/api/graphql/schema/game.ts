@@ -73,7 +73,7 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    searchGames(q: String!): [Game]
+    searchGames(q: String!): [SearchResult]
   }
 `;
 
@@ -90,7 +90,15 @@ export const resolvers = {
       //     })
       //   );
       //   return gamesWithCovers;
-      return games;
+      return games.map((game: any) => ({
+        id: game.cover?.game || "missing",
+        type: "game",
+        title: game.name,
+        poster: game.cover?.url,
+        summary: game.summary,
+        platforms: game.platforms.map((platform: any) => platform.name),
+        genres: game.genres.map((genre: any) => genre.name),
+      }));
     },
   },
 };
