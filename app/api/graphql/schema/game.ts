@@ -90,14 +90,15 @@ export const resolvers = {
       //     })
       //   );
       //   return gamesWithCovers;
+      if (!games) return [];
       return games.map((game: any) => ({
-        id: game.cover?.game || "missing",
+        id: game.cover?.game,
         type: "game",
         title: game.name,
-        poster: game.cover?.url,
+        poster: game.cover?.url ? `https:${game.cover.url}` : undefined,
         summary: game.summary,
-        platforms: game.platforms.map((platform: any) => platform.name),
-        genres: game.genres.map((genre: any) => genre.name),
+        platforms: game.platforms?.map((platform: any) => platform.name),
+        genres: game.genres?.map((genre: any) => genre.name),
       }));
     },
   },

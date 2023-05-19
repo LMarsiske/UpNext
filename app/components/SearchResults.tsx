@@ -1,54 +1,60 @@
-import "@/styles/globals.css"
-import Image from "next/image"
-import placeholder from "../../assets/placeholder.png"
+import "@/styles/globals.css";
+import Image from "next/image";
+import placeholder from "../../assets/images/placeholder.png";
+import { TypeTag } from "./TypeTag";
 
 interface SearchResultProps {
-  score: number
-  show: {
-    id: number
-    url: string
-    name: string
-    type: string
-    language: string
-    genres: string[]
-    status: string
-    image: {
-      medium: string
-    }
-    summary: string
-  }
+  id: number;
+  type: string;
+  title: string;
+  poster: string;
+  summary: string;
+  network: string;
+  platforms: string[];
+  genres: string[];
 }
 
 const strip = (html: string) => {
-  var tmp = document.createElement("DIV")
-  tmp.innerHTML = html
-  return tmp.textContent || tmp.innerText
-}
+  var tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText;
+};
 
 const truncate = (str: string) =>
-  str.length > 250 ? `${str.substring(0, 247)}...` : str
+  str.length > 250 ? `${str.substring(0, 247)}...` : str;
 
 export const SearchResult = ({
-  score,
-  show: { id, url, name, type, language, genres, status, image, summary },
+  id,
+  type,
+  title,
+  poster,
+  summary,
+  network,
+  platforms,
+  genres,
 }: SearchResultProps) => {
   return (
-    <div className="flex w-full my-2 rounded-xl border-2 border-orange-600">
-      <Image
-        src={image?.medium || placeholder}
-        alt={
-          image?.medium
-            ? `A poster for the TV show ${name}`
-            : "A placeholder poster for a TV show"
-        }
-        width={142}
-        height={200}
-        className="rounded-l-xl"
-      />
-      <div className="flex flex-col ml-4 h-full justify-between prose dark:prose-invert">
-        <h2 className="text-2xl">{name}</h2>
-        <p>{truncate(strip(summary))}</p>
+    <div className="relative">
+      <div className="flex w-full my-2 rounded-xl border-2 border-orange-600 z-20">
+        <Image
+          src={poster || placeholder}
+          alt={
+            poster
+              ? `A poster for the TV show ${title}`
+              : "A placeholder poster for a TV show"
+          }
+          width={142}
+          height={200}
+          className="rounded-l-xl"
+        />
+        <TypeTag type={type} />
+        <div className="flex flex-col ml-4 h-full justify-between prose dark:prose-invert">
+          <h2 className="text-2xl">
+            {title}({type})
+          </h2>
+          <p>{summary ? truncate(summary) : "No summary available"}</p>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -11,7 +11,7 @@ const Query = gql`
   }
 
   type SearchResult {
-    id: ID!
+    id: ID
     type: String!
     title: String!
     poster: String

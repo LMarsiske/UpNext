@@ -27,6 +27,8 @@ export const resolvers = {
   Query: {
     searchMovies: async (_: any, { q }: any, { dataSources }: any) => {
       const res = await dataSources.movieAPI.search(q);
+      console.log("Number of movies: ", res.results.length);
+      if (!res) return [];
       return res.results.slice(0, 10).map((movie: any) => ({
         id: movie.id,
         type: "movie",

@@ -6,7 +6,7 @@ interface ApolloProviderProps {
 }
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  uri: "http://localhost:3000/api/graphql",
   cache: new InMemoryCache(),
 });
 
