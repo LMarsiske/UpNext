@@ -1,6 +1,8 @@
 import { merge } from "lodash";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDef as Show, resolvers as showResolvers } from "./show";
+import { typeDef as Movie, resolvers as movieResolvers } from "./movie";
+import { typeDef as Game, resolvers as gameResolvers } from "./game";
 import gql from "graphql-tag";
 
 const Query = gql`
@@ -12,8 +14,8 @@ const Query = gql`
 const resolvers = {};
 
 const schema = makeExecutableSchema({
-  typeDefs: [Query, Show],
-  resolvers: merge(resolvers, showResolvers),
+  typeDefs: [Query, Show, Movie, Game],
+  resolvers: merge(resolvers, showResolvers, movieResolvers, gameResolvers),
 });
 
 export default schema;

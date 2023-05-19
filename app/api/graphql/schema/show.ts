@@ -83,14 +83,14 @@ export const typeDef = gql`
 
   extend type Query {
     hello: String
-    search(q: String): [ShowResult]
+    searchTV(q: String!): [ShowResult]
     getGirls: [ShowResult]
   }
 `;
 
 export const resolvers = {
   Query: {
-    search: async (_: any, { q }: any, { dataSources }: any) => {
+    searchTV: async (_: any, { q }: any, { dataSources }: any) => {
       return await dataSources.tvAPI.search(q);
     },
     getGirls: async (_: any, __: any, { dataSources }: any) => {
