@@ -1,24 +1,23 @@
-import { Poppins } from "next/font/google"
-import Header from "./components/header"
-import "../styles/globals.css"
-import { ReactNode } from "react"
-import { Providers } from "./providers"
-import Container from "./components/container"
+import { Poppins } from "next/font/google";
+import Header from "./components/header";
+import "../styles/globals.css";
+import { ReactNode } from "react";
+import { Providers } from "./providers";
+import Container from "./components/container";
 
 const poppins = Poppins({
   weight: ["400", "700"],
   subsets: ["latin"],
-})
+});
 
 export const metadata = {
-  title: "Traversy Media",
-  description: "Web development tutorials and courses",
-  keywords:
-    "web development, web design, javascript, react, node, angular, vue, html, css",
-}
+  title: "UpNext",
+  description:
+    "Keep track of what you're watching and what you're watching next",
+};
 
 interface LayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function RootLayout({ children }: LayoutProps) {
@@ -31,5 +30,5 @@ export default function RootLayout({ children }: LayoutProps) {
         </Providers>
       </body>
     </html>
-  )
+  );
 }
