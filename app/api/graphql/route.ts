@@ -1,6 +1,5 @@
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServer } from "@apollo/server";
-import { gql } from "graphql-tag";
 import { NextRequest } from "next/server";
 import TvAPI from "@/app/api/graphql/apis/tv-api";
 import MovieAPI from "./apis/movie-api";
