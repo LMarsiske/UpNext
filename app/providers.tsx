@@ -1,17 +1,22 @@
-"use client"
+"use client";
 
-import { ThemeProvider } from "next-themes"
-import { ApolloContextProvider } from "@/context/ApolloContext"
-import { ReactNode } from "react"
+import { ThemeProvider } from "next-themes";
+import { ApolloContextProvider } from "@/context/ApolloContext";
+import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
 
 interface ProviderProps {
-  children: ReactNode
+  children: ReactNode;
+  session: AppProps["pageProps"]["session"];
 }
 
-export function Providers({ children }: ProviderProps) {
+export function Providers({ children, session }: ProviderProps) {
   return (
-    <ThemeProvider enableSystem={true} attribute="class">
-      <ApolloContextProvider>{children}</ApolloContextProvider>
-    </ThemeProvider>
-  )
+    <SessionProvider session={session}>
+      <ThemeProvider enableSystem={true} attribute="class">
+        <ApolloContextProvider>{children}</ApolloContextProvider>
+      </ThemeProvider>
+    </SessionProvider>
+  );
 }

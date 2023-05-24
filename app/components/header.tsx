@@ -1,23 +1,28 @@
-"use client"
+"use client";
 
-import Logo from "./logo"
-import { useTheme } from "next-themes"
-import { SunIcon, MoonIcon } from "@heroicons/react/24/solid"
-import { useState, useEffect } from "react"
-import Container from "./container"
+import Logo from "./logo";
+import { useTheme } from "next-themes";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
+import React, { useState, useEffect } from "react";
+import Container from "./container";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const Header = () => {
-  const { systemTheme, theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+const Header: React.FC = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   const renderThemeChanger = () => {
-    if (!mounted) return null
+    if (!mounted) return null;
 
-    const currentTheme = theme === "system" ? systemTheme : theme
+    const currentTheme = theme === "system" ? systemTheme : theme;
 
     if (currentTheme === "dark") {
       return (
@@ -26,7 +31,7 @@ const Header = () => {
           role="button"
           onClick={() => setTheme("light")}
         />
-      )
+      );
     } else {
       return (
         <MoonIcon
@@ -34,9 +39,9 @@ const Header = () => {
           role="button"
           onClick={() => setTheme("dark")}
         />
-      )
+      );
     }
-  }
+  };
 
   return (
     <header className="h-15 shadow-sm dark:border-gray-700">
@@ -45,11 +50,28 @@ const Header = () => {
           {/* Logo */}
           <Logo />
 
-          {renderThemeChanger()}
+          <div className="flex items-center space-x-4">
+            {session ? (
+              <button
+                className="text-gray-900 dark:text-gray-100"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <button
+                className="text-gray-900 dark:text-gray-100"
+                onClick={() => router.push("/api/auth/signin")}
+              >
+                Sign In
+              </button>
+            )}
+            {renderThemeChanger()}
+          </div>
         </div>
       </Container>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

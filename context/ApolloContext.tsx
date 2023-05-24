@@ -10,8 +10,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-//localhost:3000/api
-
 export const ApolloContextProvider = ({ children }: ApolloProviderProps) => (
   <ApolloProvider client={client}>{children}</ApolloProvider>
 );
