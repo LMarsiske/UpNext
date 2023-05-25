@@ -5,7 +5,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/lib/prisma";
 
-const authHandler = NextAuth({
+export const AuthOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -19,22 +19,8 @@ const authHandler = NextAuth({
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
-});
+};
+
+const authHandler = NextAuth(AuthOptions);
 
 export { authHandler as GET, authHandler as POST };
-
-// const options: NextAuthOptions = {
-//   adapter: PrismaAdapter(prisma),
-//   providers: [
-//     GithubProvider({
-//       clientId: process.env.GITHUB_CLIENT_ID!,
-//       clientSecret: process.env.GITHUB_SECRET!,
-//     }),
-//   ],
-//   secret: process.env.SECRET,
-//   callbacks: {
-//     async redirect({ url, baseUrl }) {
-//       return url.startsWith(baseUrl) ? url : baseUrl;
-//     },
-//   },
-// };

@@ -49,7 +49,8 @@ const Header: React.FC = () => {
         <div className="px-4 sm:px-6 py-4 flex justify-between items-center">
           {/* Logo */}
           <Logo />
-
+          {/* Auth */}
+          {session && (session.user as any).email}
           <div className="flex items-center space-x-4">
             {session ? (
               <button
