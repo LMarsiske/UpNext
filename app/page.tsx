@@ -5,7 +5,7 @@ import { debounce } from "lodash";
 import { SearchResult } from "./components/SearchResults";
 import { useLazyQuery, gql } from "@apollo/client";
 import "@/styles/globals.css";
-import LoadingPage from "./loading";
+import SearchResultSkeletons from "./components/SearchResultSkeletons";
 
 import { flatten, sortBy } from "lodash";
 
@@ -125,6 +125,7 @@ const HomePage = () => {
   const [input, setInput] = useState("");
   const [results, setResults] = useState<GraphSearchResult[]>([]);
   const [search, { loading, data, error }] = useLazyQuery(SEARCH);
+  const [loadingPage, setLoadingPage] = useState(true);
 
   useEffect(() => {
     console.log(loading, data, error);
@@ -161,21 +162,15 @@ const HomePage = () => {
           value={input}
           onChange={handleChange}
         />
-        <button
-          className="text-xl"
-          onClick={() => {
-            console.log("searching");
-            search({ variables: { q: input } });
-          }}
-        >
-          Search
-        </button>
       </div>
-      <div className="w-50">
-        {loading && <LoadingPage />}
-        {results.map((result, index) => (
-          <SearchResult key={result.id || index} {...result} />
-        ))}
+      <div className="w-8/12">
+        {loading ? (
+          <SearchResultSkeletons />
+        ) : (
+          results.map((result, index) => (
+            <SearchResult key={result.id || index} {...result} />
+          ))
+        )}
       </div>
     </main>
   );

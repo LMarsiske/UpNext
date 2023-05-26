@@ -49,9 +49,7 @@ export const SearchResult = ({
         />
         <TypeTag type={type} />
         <div className="flex flex-col ml-4 h-full justify-between prose dark:prose-invert">
-          <h2 className="text-2xl">
-            {title}({type})
-          </h2>
+          <h2 className="text-2xl">{title}</h2>
           <p>{summary ? truncate(summary) : "No summary available"}</p>
         </div>
       </div>
