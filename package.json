@@ -12,8 +12,9 @@
     "db-start": "npx supabase start && npx prisma migrate deploy && npx prisma db seed",
     "storybook": "cross-env BROWSER=chrome && storybook dev -p 6006 -s public",
     "build-storybook": "storybook build",
-    "compile": "graphql-codegen",
-    "watch": "graphql-codegen -w"
+    "postgres-start": "set DOCKERIZED=true && docker run --rm -d -p 5432:5432 --name dockerpostgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=postgres postgres:13.3-alpine",
+    "postgres-stop": "export DOCKERIZED=false && docker container stop dockerpostgres",
+    "postgres-restart": "npm run postgres-stop; npm run postgres-start"
   },
   "dependencies": {
     "@apollo/datasource-rest": "^6.0.0",

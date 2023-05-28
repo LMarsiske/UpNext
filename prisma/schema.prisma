@@ -7,10 +7,10 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL")
-  directUrl         = env("POSTGRES_URL_NON_POOLING")
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "postgresql"
+  url      = ""
+  // directUrl         = env("POSTGRES_URL_NON_POOLING")
+  // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model user {
