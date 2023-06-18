@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: upnext-local
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@test.com
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - "5050:5050"
+    restart: always

@@ -91,7 +91,6 @@ export const resolvers = {
   Query: {
     searchTV: async (_: any, { q }: any, { dataSources }: any) => {
       let res = await dataSources.tvAPI.search(q);
-      console.log("Number of shows: ", res.length);
       if (!res) return [];
       return res.map((show: any) => {
         let summary = show.show.summary;

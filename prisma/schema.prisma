@@ -8,9 +8,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = ""
-  // directUrl         = env("POSTGRES_URL_NON_POOLING")
-  // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING")
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 model user {
@@ -21,27 +19,31 @@ model user {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  language      String?
+  colorMode     String?   @map(name: "color_mode")
   lists         list[]
   accounts      Account[]
   sessions      Session[]
 }
 
 model list {
-  id               String   @id @default(cuid())
-  name             String
-  owner            user     @relation(fields: [ownerId], references: [id])
-  ownerId          String   @map(name: "owner_id")
-  createdAt        DateTime @default(now()) @map(name: "created_at")
-  updatedAt        DateTime @updatedAt @map(name: "updated_at")
-  sharedWith       String[] @map(name: "shared_with")
-  editableByOthers Boolean  @default(false) @map(name: "editable_by_others")
-  shared           Boolean  @default(false)
-  items            item[]
+  id           String   @id @default(cuid())
+  name         String
+  owner        user     @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ownerId      String   @map(name: "owner_id")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map(name: "updated_at")
+  sharedWith   String[] @map(name: "shared_with")
+  editors      String[]
+  lastEditedBy String?  @map(name: "last_edited_by")
+  shareable    Boolean  @default(false)
+  deleteable   Boolean  @default(false)
+  items        item[]
 }
 
 model item {
   id        String   @id @default(cuid())
-  list      list     @relation(fields: [listId], references: [id])
+  list      list     @relation(fields: [listId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   listId    String   @map(name: "list_id")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")

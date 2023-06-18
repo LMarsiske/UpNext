@@ -128,7 +128,6 @@ const HomePage = () => {
   const [loadingPage, setLoadingPage] = useState(true);
 
   useEffect(() => {
-    console.log(loading, data, error);
     if (data) {
       const { searchGames, searchMovies, searchTV } = data;
       const results = sortBy(

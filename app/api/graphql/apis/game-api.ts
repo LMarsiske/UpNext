@@ -21,7 +21,6 @@ class GameAPI extends RESTDataSource {
   }
 
   async getCover(id: number) {
-    console.log("ID IN GETCOVER: ", id);
     return this.post(`covers`, {
       body: `fields alpha_channel, animated, checksum, game,  game_localization, height, image_id, url, width;
             where game=${id};`,
