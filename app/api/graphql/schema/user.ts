@@ -45,6 +45,8 @@ export const typeDef = gql`
 export const resolvers = {
   Query: {
     getUser: async (_: any, { id }: any, { prisma }: any) => {
+      if (!id) throw new Error("No user id provided");
+
       const user = await prisma.user.findUnique({
         where: {
           id: id,

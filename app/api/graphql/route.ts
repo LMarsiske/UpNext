@@ -13,12 +13,12 @@ const server = new ApolloServer({ schema });
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {
   context: async (req: NextRequest) => {
     const token = req.headers.get("authorization") || "";
-    console.log(token);
     const session = await prisma.session.findUnique({
       where: {
         sessionToken: token,
       },
     });
+    console.log("GRAPHQL SESSION: ", session);
     if (!session) {
       throw new GraphQLError("Not authorized");
     }

@@ -3,77 +3,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import { SearchResult } from "./components/SearchResults";
-import { useLazyQuery, gql } from "@apollo/client";
+import { useQuery, useLazyQuery, gql } from "@apollo/client";
+import { useSession } from "next-auth/react";
 import "@/styles/globals.css";
 import SearchResultSkeletons from "./components/SearchResultSkeletons";
 
 import { flatten, sortBy } from "lodash";
-
-// interface ShowResult {
-//   score: number;
-//   show: {
-//     id: number;
-//     url: string;
-//     name: string;
-//     type: string;
-//     language: string;
-//     genres: string[];
-//     status: string;
-//     runtime: number;
-//     averageRuntime: number;
-//     premiered: string;
-//     ended: string;
-//     officialSite: string;
-//     schedule: {
-//       time: string;
-//       days: string[];
-//     };
-//     rating: {
-//       average: number;
-//     };
-//     weight: number;
-//     network: {
-//       id: number;
-//       name: string;
-//       country: {
-//         name: string;
-//         code: string;
-//         timezone: string;
-//       };
-//       officialSite: string;
-//     };
-//     webChannel: {
-//       id: number;
-//       name: string;
-//       country: {
-//         name: string;
-//         code: string;
-//         timezone: string;
-//       };
-//       officialSite: string;
-//     };
-//     dvdCountry: string;
-//     externals: {
-//       tvrage: number;
-//       thetvdb: number;
-//       imdb: string;
-//     };
-//     image: {
-//       medium: string;
-//       original: string;
-//     };
-//     summary: string;
-//     updated: number;
-//     _links: {
-//       self: {
-//         href: string;
-//       };
-//       previousepisode: {
-//         href: string;
-//       };
-//     };
-//   };
-// }
 
 interface GraphSearchResult {
   id: number;
@@ -121,11 +56,37 @@ const SEARCH = gql`
   }
 `;
 
+const USER = gql`
+  query User($id: String) {
+    getUser(id: $id) {
+      id
+      email
+      name
+      createdAt
+      updatedAt
+      lists {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const HomePage = () => {
+  const { data: session } = useSession();
+  console.log(session);
   const [input, setInput] = useState("");
+  const [loadingPage, setLoadingPage] = useState(true);
   const [results, setResults] = useState<GraphSearchResult[]>([]);
   const [search, { loading, data, error }] = useLazyQuery(SEARCH);
-  const [loadingPage, setLoadingPage] = useState(true);
+  const {
+    data: userData,
+    loading: userLoading,
+    error: userError,
+  } = useQuery(USER, {
+    variables: { id: session?.user?.id },
+    skip: !session?.user?.id,
+  });
 
   useEffect(() => {
     if (data) {
@@ -137,6 +98,12 @@ const HomePage = () => {
       setResults(results);
     }
   }, [loading, data, error]);
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+    }
+  }, [userData]);
 
   const query = useCallback(
     debounce((q: string) => {

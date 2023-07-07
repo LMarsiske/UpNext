@@ -4,8 +4,25 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/lib/prisma";
 
+const prismaAdapter = PrismaAdapter(prisma);
+
+// @ts-ignore
+prismaAdapter.createUser = (data) => {
+  console.log("PRISMA ADAPTER DATA: ", data);
+  return prisma.user.create({
+    data: {
+      ...data,
+      lists: {
+        create: {
+          name: "Personal Watch List",
+        },
+      },
+    },
+  });
+};
+
 export const AuthOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: prismaAdapter,
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
@@ -16,6 +33,40 @@ export const AuthOptions: NextAuthOptions = {
   callbacks: {
     async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl) ? url : baseUrl;
+    },
+    async session({ session, token, user }) {
+      let modifiedSession = { ...session };
+      if (session && user) {
+        session.user!.id = user.id;
+        const sessionRecords = await prisma.session.findMany({
+          where: {
+            userId: user.id,
+          },
+        });
+
+        let activeSession;
+        if (sessionRecords.length > 1) {
+          activeSession = sessionRecords.find((sessionRecord) => {
+            return sessionRecord.expires.toISOString() === session.expires;
+          });
+        } else {
+          activeSession = sessionRecords[0];
+        }
+
+        if (activeSession) {
+          modifiedSession = {
+            ...modifiedSession,
+            expires: activeSession.expires.toISOString(),
+            token: activeSession.sessionToken,
+            id: activeSession.id,
+            user: {
+              ...modifiedSession.user,
+              id: activeSession.userId,
+            },
+          };
+        }
+      }
+      return modifiedSession;
     },
   },
 };
