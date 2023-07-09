@@ -2,23 +2,8 @@ import "@/styles/globals.css";
 import Image from "next/image";
 import placeholder from "../../assets/images/placeholder.png";
 import { TypeTag } from "./TypeTag";
-
-interface SearchResultProps {
-  id: number;
-  type: string;
-  title: string;
-  poster: string;
-  summary: string;
-  network: string;
-  platforms: string[];
-  genres: string[];
-}
-
-const strip = (html: string) => {
-  var tmp = document.createElement("DIV");
-  tmp.innerHTML = html;
-  return tmp.textContent || tmp.innerText;
-};
+import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
+import { SearchResultProps } from "@/types/search";
 
 const truncate = (str: string) =>
   str.length > 250 ? `${str.substring(0, 247)}...` : str;
@@ -32,7 +17,13 @@ export const SearchResult = ({
   network,
   platforms,
   genres,
-}: SearchResultProps) => {
+  inList,
+  listId,
+  itemId,
+  addToList,
+  deleteFromList,
+}: // removeItem,
+SearchResultProps) => {
   return (
     <div className="relative">
       <div className="flex w-full my-2 rounded-xl border-2 border-orange-600 z-20">
@@ -52,6 +43,31 @@ export const SearchResult = ({
           <h2 className="text-2xl">{title}</h2>
           <p>{summary ? truncate(summary) : "No summary available"}</p>
         </div>
+        {inList ? (
+          <MinusCircleIcon
+            onClick={() => deleteFromList(itemId!)}
+            className="text-red-600 z-30"
+          />
+        ) : (
+          <PlusCircleIcon
+            onClick={() =>
+              addToList(
+                "cljsw1l5t000pvqelkheqrugd",
+                JSON.stringify({
+                  apiId: id,
+                  type,
+                  title,
+                  poster,
+                  summary,
+                  network,
+                  platforms,
+                  genres,
+                })
+              )
+            }
+            className=" text-green-600 z-30"
+          />
+        )}
       </div>
     </div>
   );

@@ -130,25 +130,30 @@ export const resolvers = {
       { listId, contents }: any,
       { prisma }: any
     ) => {
-      const newItemContents = JSON.parse(contents);
-      const item = await prisma.item.create({
-        data: {
-          list: {
-            connect: {
-              id: listId,
+      console.log("adding item to list in prisma resolver");
+      try {
+        const newItemContents = JSON.parse(contents);
+        const item = await prisma.item.create({
+          data: {
+            list: {
+              connect: {
+                id: listId,
+              },
             },
+            apiId: newItemContents.apiId || "",
+            type: newItemContents.type || "",
+            title: newItemContents.title || "",
+            poster: newItemContents.poster || "",
+            summary: newItemContents.summary || "",
+            network: newItemContents.network || "",
+            platforms: newItemContents.platforms || [],
+            genres: newItemContents.genres || [],
           },
-          apiId: newItemContents.apiId,
-          type: newItemContents.type,
-          title: newItemContents.title,
-          poster: newItemContents.poster,
-          summary: newItemContents.summary,
-          network: newItemContents.network,
-          platforms: newItemContents.platforms,
-          genres: newItemContents.genres,
-        },
-      });
-      return item;
+        });
+        return item;
+      } catch (e: any) {
+        console.log(e.message);
+      }
     },
     deleteItemFromList: async (_: any, { itemId }: any, { prisma }: any) => {
       const item = await prisma.item.delete({

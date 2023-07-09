@@ -81,15 +81,6 @@ export const resolvers = {
   Query: {
     searchGames: async (_: any, { q }: any, { dataSources }: any) => {
       let games = await dataSources.gameAPI.search(q);
-      //   let gamesWithCovers = await Promise.all(
-      //     games.map(async (game: any) => {
-      //       if (!game.cover) return game;
-
-      //       let cover = await dataSources.gameAPI.getCover(game.cover);
-      //       return { ...game, cover };
-      //     })
-      //   );
-      //   return gamesWithCovers;
       if (!games) return [];
       return games.map((game: any) => ({
         id: game.cover?.game,

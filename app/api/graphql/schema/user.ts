@@ -39,12 +39,24 @@ export const typeDef = gql`
 
   extend type Query {
     getUser(id: String!): user
+    getUserWithLists(id: String!): user
+    getUserWithListsWithItems(id: String!): user
   }
 `;
 
 export const resolvers = {
   Query: {
-    getUser: async (_: any, { id }: any, { prisma }: any) => {
+    getUser: async (_: any, { id }: any, { prisma, uid }: any) => {
+      if (!id) throw new Error("No user id provided");
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: id,
+        },
+      });
+      return user;
+    },
+    getUserWithLists: async (_: any, { id }: any, { prisma }: any) => {
       if (!id) throw new Error("No user id provided");
 
       const user = await prisma.user.findUnique({
@@ -53,6 +65,27 @@ export const resolvers = {
         },
         include: {
           lists: true,
+        },
+      });
+      return user;
+    },
+    getUserWithListsWithItems: async (
+      _: any,
+      { id }: any,
+      { prisma, uid }: any
+    ) => {
+      if (!id) throw new Error("No user id provided");
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: uid,
+        },
+        include: {
+          lists: {
+            include: {
+              items: true,
+            },
+          },
         },
       });
       return user;

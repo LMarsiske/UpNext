@@ -1,4 +1,5 @@
 import type { DefaultUser } from "next-auth";
+import type { list, Item } from "@prisma/client";
 
 declare module "next-auth" {
   interface User extends DefaultUser {
@@ -9,5 +10,11 @@ declare module "next-auth" {
     token: string | undefined;
     id: string | undefined;
     user?: User & { id: string | undefined };
+  }
+}
+
+declare module "lists" {
+  export interface ListWithItems extends list {
+    items: Item[];
   }
 }

@@ -6,7 +6,6 @@ import MovieAPI from "./apis/movie-api";
 import GameAPI from "./apis/game-api";
 import schema from "./schema/schema";
 import prisma from "@/lib/prisma";
-import { GraphQLError } from "graphql";
 
 const server = new ApolloServer({ schema });
 
@@ -18,18 +17,15 @@ const handler = startServerAndCreateNextHandler<NextRequest>(server, {
         sessionToken: token,
       },
     });
-    console.log("GRAPHQL SESSION: ", session);
-    if (!session) {
-      throw new GraphQLError("Not authorized");
-    }
-    const user = await prisma.user.findUnique({
+
+    let userExists = !!(await prisma.user.findFirst({
       where: {
-        id: session.userId,
+        id: session?.userId,
       },
-    });
-    if (!user) {
-      throw new GraphQLError("User does not exist");
-    }
+    }));
+
+    let uid = userExists ? session?.userId : null;
+
     return {
       req,
       dataSources: {
@@ -38,7 +34,7 @@ const handler = startServerAndCreateNextHandler<NextRequest>(server, {
         gameAPI: new GameAPI({ cache: server.cache }),
       },
       prisma,
-      user,
+      uid,
     };
   },
 });
