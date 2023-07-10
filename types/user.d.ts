@@ -18,7 +18,3 @@ export interface UserWithLists extends User {
 export interface UserWithListsWithItems extends User {
   lists: ListWithItems[];
 }
-
-interface ListWithItems extends list {
-  items: Item[];
-}

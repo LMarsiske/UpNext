@@ -71,6 +71,7 @@
     "@svgr/webpack": "^8.0.1",
     "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
+    "daisyui": "^3.2.1",
     "encoding": "^0.1.13",
     "eslint-plugin-storybook": "^0.6.12",
     "graphql": "^16.6.0",
@@ -81,6 +82,7 @@
     "storybook-addon-themes": "^6.1.0",
     "storybook-tailwind-dark-mode": "^1.0.22",
     "supabase": "^1.55.1",
+    "tailwind-scrollbar": "^3.0.4",
     "typescript": "^5.0.4"
   }
 }

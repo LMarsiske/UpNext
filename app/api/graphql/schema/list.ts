@@ -43,6 +43,7 @@ export const typeDef = gql`
   extend type Query {
     getList(id: String!): List
     getAllLists(id: String!): [List]
+    getAllListsWithItems(id: String!): [List]
   }
 
   extend type Mutation {
@@ -90,6 +91,31 @@ export const resolvers = {
               },
             },
           ],
+        },
+      });
+      return lists;
+    },
+    getAllListsWithItems: async (_: any, { id }: any, { prisma }: any) => {
+      const lists = await prisma.list.findMany({
+        where: {
+          OR: [
+            {
+              ownerId: id,
+            },
+            {
+              sharedWith: {
+                has: id,
+              },
+            },
+            {
+              editors: {
+                has: id,
+              },
+            },
+          ],
+        },
+        include: {
+          items: true,
         },
       });
       return lists;

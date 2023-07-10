@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: LayoutProps) {
   const session = await getServerSession(AuthOptions);
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={poppins.className}>
+      <body>
         <Providers session={session}>
           <Header />
           <Container>{children}</Container>

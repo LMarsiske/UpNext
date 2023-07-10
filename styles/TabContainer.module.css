@@ -1,0 +1,26 @@
+.tabContainer {
+  @apply mt-4 w-full flex justify-between;
+  height: calc(100vh - 39px - 8.25rem);
+}
+
+.itemContainer {
+  width: calc(75% - 1rem);
+  height: 100%;
+  border: 1px solid theme("colors.fog");
+  overflow-y: auto;
+  /* scrollbar-width: thin;
+  scrollbar-color: theme("colors.fog") transparent; */
+}
+
+.itemContainer::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.itemContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.itemContainer::-webkit-scrollbar-thumb {
+  background: theme("colors.fog");
+  border-radius: 0.25rem;
+}

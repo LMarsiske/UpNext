@@ -6,6 +6,7 @@ module.exports = {
       "static.tvmaze.com",
       "image.tmdb.org",
       "images.igdb.com",
+      "avatars.githubusercontent.com",
     ],
   },
 };
