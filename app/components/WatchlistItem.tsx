@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Image from "next/image";
 import placeholder from "../../assets/images/placeholder.png";
 import { TypeTag } from "./TypeTag";
-import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
+// import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
 import { SearchResultProps } from "@/types/search";
 
 const truncate = (str: string) =>

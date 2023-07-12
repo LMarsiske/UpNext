@@ -3,10 +3,10 @@ import React from "react";
 import Avatar from "./Avatar";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
-import {
-  UserIcon,
-  ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
+// import {
+//   UserIcon,
+//   ArrowLeftOnRectangleIcon,
+// } from "@heroicons/react/24/outline";
 
 const AuthHeader = ({ user }: { user: User }) => {
   return (
@@ -26,7 +26,7 @@ const AuthHeader = ({ user }: { user: User }) => {
               href={`/profile/${user.id}`}
               className="text-xl text-gunmetal"
             >
-              <UserIcon className="color-gunmetal w-5 h-5" />
+              {/* <UserIcon className="color-gunmetal w-5 h-5" /> */}
               Profile
             </Link>
           </li>
@@ -36,7 +36,7 @@ const AuthHeader = ({ user }: { user: User }) => {
               className="text-xl text-gunmetal"
               onClick={() => signOut()}
             >
-              <ArrowLeftOnRectangleIcon className="color-gunmetal w-5 h-5" />
+              {/* <ArrowLeftOnRectangleIcon className="color-gunmetal w-5 h-5" /> */}
               Logout
             </Link>
           </li>

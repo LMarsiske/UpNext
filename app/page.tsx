@@ -10,7 +10,11 @@ import SearchResultSkeletons from "./components/SearchResultSkeletons";
 import { flatten, sortBy } from "lodash";
 import { useSession } from "next-auth/react";
 import type { item } from "@prisma/client";
-import type { UserWithListsWithItems } from "@/types/user";
+import type {
+  // UserWithListsWithItems,
+  // UserWithFlattenedItems,
+  User,
+} from "@/types/user";
 import type { GraphSearchResult } from "@/types/search";
 import {
   ADDITEMTOLIST,
@@ -18,14 +22,10 @@ import {
   GETUSER,
   SEARCH,
 } from "@/lib/queries";
-
-interface UserWithFlattenedItems extends UserWithListsWithItems {
-  allItems: item[];
-}
+import { useUserSelectors } from "@/stores/user";
 
 const HomePage = () => {
   const { data: session } = useSession();
-  const [user, setUser] = useState<UserWithFlattenedItems | null>(null);
   const [input, setInput] = useState("");
   const [results, setResults] = useState<GraphSearchResult[]>([]);
 
@@ -36,6 +36,8 @@ const HomePage = () => {
   const [getUser] = useLazyQuery(GETUSER);
   const [addItemToList] = useMutation(ADDITEMTOLIST);
   const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
+  const user = useUserSelectors.use.user();
+  const setUser = useUserSelectors.use.setUser();
 
   useEffect(() => {
     if (searchData) {
@@ -44,10 +46,9 @@ const HomePage = () => {
         flatten([...searchGames, ...searchMovies, ...searchTV]),
         "title"
       );
-      if (user) {
-        console.log("trying to mark items already in list");
+      if (user && user.allItems) {
         results = results.map((result) => {
-          const item = user.allItems.find((item) => item.apiId === result.id);
+          const item = user.allItems!.find((item) => item.apiId === result.id);
           return {
             ...result,
             inList: !!item,
@@ -73,7 +74,7 @@ const HomePage = () => {
       const res = await getUser({ variables: { id: uid } });
       console.log(res);
       if (res.data) {
-        let data: UserWithListsWithItems = res.data.getUserWithListsWithItems;
+        let data: User = res.data.getUserWithListsWithItems;
         parseUserData(data);
       }
     };
@@ -81,10 +82,10 @@ const HomePage = () => {
   }, [session]);
 
   const markSavedItems = (results: GraphSearchResult[]) => {
-    if (!user) return results;
+    if (!user || !user?.allItems) return results;
 
     return results.map((result) => {
-      const item = user.allItems.find(
+      const item = user.allItems!.find(
         (item) => item.apiId === result.id?.toString()
       );
       return {
@@ -96,7 +97,11 @@ const HomePage = () => {
     });
   };
 
-  const parseUserData = (data: UserWithListsWithItems) => {
+  const parseUserData = (data: User) => {
+    if (!data.lists) {
+      setUser({ ...data });
+      return;
+    }
     let allItems = flatten(data.lists.map((list) => list.items));
     setUser({ ...data, allItems });
   };
@@ -118,7 +123,7 @@ const HomePage = () => {
   const getUserData = async () => {
     const res = await getUser({ variables: { id: session?.user?.id } });
     if (res.data) {
-      let data: UserWithListsWithItems = res.data.getUserWithListsWithItems;
+      let data: User = res.data.getUserWithListsWithItems;
       return data;
     }
   };
@@ -132,7 +137,7 @@ const HomePage = () => {
       if (user) {
         setUser({
           ...user,
-          allItems: [...user.allItems, newItem.data.addItemToList],
+          allItems: [...user.allItems!, newItem.data.addItemToList],
         });
       }
       let addedItem = newItem.data.addItemToList;
@@ -159,7 +164,7 @@ const HomePage = () => {
       if (user) {
         setUser({
           ...user,
-          allItems: user.allItems.filter((item) => item.id !== itemId),
+          allItems: user.allItems!.filter((item) => item.id !== itemId),
         });
       }
       let newResults = results.map((result) => {

@@ -9,56 +9,71 @@ import Tab from "../components/Tab";
 import TabsContainer from "../components/TabsContainer";
 import TabContainer from "../components/TabContainer";
 import { useRouter } from "next/navigation";
+import AddIcon from "@mui/icons-material/Add";
+import { useModalStoreSelectors } from "@/stores/modal";
+import { useUserSelectors } from "@/stores/user";
 
 const ListsPage = async () => {
+  const user = useUserSelectors.use.user();
+  const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
+  const setModalContent = useModalStoreSelectors.use.setModalContent();
   const { data: session } = useSession();
   const router = useRouter();
 
-  if (!session) {
+  if (!session || !user) {
     router.replace("/api/auth/signin");
   }
 
   const [lists, setLists] = useState<ListWithItems[]>([]);
   const [tabIndex, setTabIndex] = useState(0);
 
-  const { data, loading, error } = useQuery(GETLISTSWITHITEMS, {
-    variables: { id: session?.user?.id },
-    skip: !session || !session.user,
-  });
+  // const { data, loading, error } = useQuery(GETLISTSWITHITEMS, {
+  //   variables: { id: session?.user?.id },
+  //   skip: !session || !session.user,
+  // });
 
-  useEffect(() => {
-    console.log(data);
-    if (data) {
-      console.log(data.getAllListsWithItems);
-      setLists(data.getAllListsWithItems);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data);
+  //   if (data) {
+  //     setLists(data.getAllListsWithItems);
+  //   }
+  // }, [data]);
 
-  if (loading && session) return <div>Loading...</div>;
-  if (error && session) return <div>{error.message}</div>;
+  // if (loading && session) return <div>Loading...</div>;
+  // if (error && session) return <div>{error.message}</div>;
 
-  console.log(data);
+  const openCreateModal = () => {
+    setIsModalOpen(true);
+    setModalContent("CREATE_LIST");
+  };
 
   return (
     <div>
-      <TabsContainer>
-        {lists &&
-          lists.map((list: ListWithItems, index: number) => {
-            return (
-              <Tab
-                key={list.id}
-                handleClick={() => setTabIndex(index)}
-                active={index === tabIndex}
-                isFirstTab={index === 0}
-              >
-                {list.name}
-              </Tab>
-            );
-          })}
-      </TabsContainer>
+      <div className="flex items-center border-b border-fog border-opacity-50">
+        <div className="flex-1 ">
+          <TabsContainer>
+            {user?.lists &&
+              user.lists.map((list: ListWithItems, index: number) => {
+                return (
+                  <Tab
+                    key={list.id}
+                    handleClick={() => setTabIndex(index)}
+                    active={index === tabIndex}
+                    isFirstTab={index === 0}
+                  >
+                    {list.name}
+                  </Tab>
+                );
+              })}
+          </TabsContainer>
+        </div>
+        <button onClick={openCreateModal}>
+          <AddIcon fontSize="large" className="text-gunmetal dark:text-snow" />
+        </button>
+      </div>
 
-      {lists &&
-        lists.map((list: ListWithItems, index: number) => {
+      {user?.lists &&
+        user.lists.map((list: ListWithItems, index: number) => {
           return <TabContainer key={list.id} index={index} list={list} />;
         })}
     </div>

@@ -5,11 +5,7 @@ interface TabsContainerProps {
 }
 
 const TabsContainer = ({ children }: TabsContainerProps) => {
-  return (
-    <div className="flex cursor-pointer border-b border-fog border-opacity-50">
-      {children}
-    </div>
-  );
+  return <div className="flex cursor-pointer">{children}</div>;
 };
 
 export default TabsContainer;

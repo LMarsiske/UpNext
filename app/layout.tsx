@@ -6,11 +6,7 @@ import { Providers } from "./providers";
 import Container from "./components/container";
 import { getServerSession } from "next-auth";
 import { AuthOptions } from "./api/auth/[...nextauth]/route";
-
-const poppins = Poppins({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-});
+import Modal from "./components/Modal/modal";
 
 export const metadata = {
   title: "UpNext",
@@ -30,6 +26,7 @@ export default async function RootLayout({ children }: LayoutProps) {
         <Providers session={session}>
           <Header />
           <Container>{children}</Container>
+          <Modal />
         </Providers>
       </body>
     </html>

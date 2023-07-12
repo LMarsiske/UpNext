@@ -9,7 +9,11 @@ declare module "next-auth" {
     expires: string | undefined;
     token: string | undefined;
     id: string | undefined;
-    user?: User & { id: string | undefined };
+    user?: SessionUser;
+  }
+
+  export interface SessionUser extends User {
+    id: string | undefined;
   }
 }
 

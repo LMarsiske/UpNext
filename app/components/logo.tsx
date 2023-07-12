@@ -1,12 +1,15 @@
-import { BoltIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import LogoImg from "../../assets/images/Logo.svg";
+import LogoDark from "../../assets/images/Logo_Dark.svg";
+import LogoLight from "../../assets/images/Logo_Light.svg";
+import { useTheme } from "next-themes";
 
 const Logo = () => {
+  const { theme } = useTheme();
+  console.log(theme);
   return (
     <Link legacyBehavior href="/">
-      <Image src={LogoImg} alt="Logo" />
+      <Image src={theme === "dark" ? LogoLight : LogoDark} alt="Logo" />
     </Link>
   );
 };

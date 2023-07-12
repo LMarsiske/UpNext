@@ -3,12 +3,14 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/lib/prisma";
+import { useUserSelectors } from "@/stores/user";
+import { set } from "lodash";
 
 const prismaAdapter = PrismaAdapter(prisma);
 
 // @ts-ignore
 prismaAdapter.createUser = (data) => {
-  return prisma.user.create({
+  const userData = prisma.user.create({
     data: {
       ...data,
       lists: {
@@ -18,6 +20,8 @@ prismaAdapter.createUser = (data) => {
       },
     },
   });
+
+  return userData;
 };
 
 export const AuthOptions: NextAuthOptions = {
@@ -34,6 +38,8 @@ export const AuthOptions: NextAuthOptions = {
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
     async session({ session, token, user }) {
+      if (session?.user?.id) return session;
+
       let modifiedSession = { ...session };
       if (session && user) {
         session.user!.id = user.id;

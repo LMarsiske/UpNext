@@ -1,15 +1,12 @@
 .tabContainer {
-  @apply mt-4 w-full flex justify-between;
+  @apply mt-4 w-full flex justify-between items-center;
   height: calc(100vh - 39px - 8.25rem);
 }
 
 .itemContainer {
   width: calc(75% - 1rem);
   height: 100%;
-  border: 1px solid theme("colors.fog");
   overflow-y: auto;
-  /* scrollbar-width: thin;
-  scrollbar-color: theme("colors.fog") transparent; */
 }
 
 .itemContainer::-webkit-scrollbar {

@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Image from "next/image";
 import placeholder from "../../assets/images/placeholder.png";
 import { TypeTag } from "./TypeTag";
-import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
+
 import { SearchResultProps } from "@/types/search";
 
 const truncate = (str: string) =>
@@ -43,7 +43,7 @@ SearchResultProps) => {
           <h2 className="text-2xl">{title}</h2>
           <p>{summary ? truncate(summary) : "No summary available"}</p>
         </div>
-        {inList ? (
+        {/* {inList ? (
           <MinusCircleIcon
             onClick={() => deleteFromList(itemId!)}
             className="text-red-600 z-30"
@@ -67,7 +67,7 @@ SearchResultProps) => {
             }
             className=" text-green-600 z-30"
           />
-        )}
+        )} */}
       </div>
     </div>
   );
