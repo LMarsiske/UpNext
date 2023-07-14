@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
 import { useUserSelectors } from "@/stores/user";
-import SettingsIcon from "@mui/icons-material/Settings";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const AuthHeader = ({ user }: { user: User }) => {
@@ -26,7 +26,7 @@ const AuthHeader = ({ user }: { user: User }) => {
               href={`/profile/${user.id}`}
               className="text-xl text-gunmetal"
             >
-              <SettingsIcon />
+              <ManageAccountsIcon />
               Profile
             </Link>
           </li>

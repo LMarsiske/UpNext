@@ -7,7 +7,6 @@ import { useTheme } from "next-themes";
 
 const Logo = () => {
   const { theme } = useTheme();
-  console.log(theme);
 
   return (
     <Link href="/">

@@ -132,7 +132,6 @@ export const resolvers = {
       { name, uid, shareable, deleteable }: any,
       { prisma }: any
     ) => {
-      console.log(shareable, deleteable);
       const list = await prisma.list.create({
         data: {
           name,
@@ -168,7 +167,6 @@ export const resolvers = {
       { listId, contents }: any,
       { prisma }: any
     ) => {
-      console.log("adding item to list in prisma resolver");
       try {
         const newItemContents = JSON.parse(contents);
         const item = await prisma.item.create({

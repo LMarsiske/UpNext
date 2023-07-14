@@ -84,6 +84,7 @@ export const typeDef = gql`
 
   extend type Query {
     searchTV(q: String!): [SearchResult]
+    getTV(id: String!): Show
   }
 `;
 
@@ -106,6 +107,40 @@ export const resolvers = {
           network: show.show.network?.name,
         };
       });
+    },
+    getTV: async (_: any, { id }: any, { dataSources }: any) => {
+      let res = await dataSources.tvAPI.getShow(id);
+      if (!res) return null;
+      console.log(res);
+      let summary = res.summary;
+      if (summary) {
+        summary = stripHtml(summary).result;
+      }
+      return {
+        id: res.id,
+        url: res.url,
+        name: res.name,
+        type: res.type,
+        language: res.language,
+        genres: res.genres,
+        status: res.status,
+        runtime: res.runtime,
+        averageRuntime: res.averageRuntime,
+        premiered: res.premiered,
+        ended: res.ended,
+        officialSite: res.officialSite,
+        schedule: res.schedule,
+        rating: res.rating,
+        weight: res.weight,
+        network: res.network,
+        webChannel: res.webChannel,
+        dvdCountry: res.dvdCountry,
+        externals: res.externals,
+        image: res.image,
+        summary: summary,
+        updated: res.updated,
+        _links: res._links,
+      };
     },
   },
 };

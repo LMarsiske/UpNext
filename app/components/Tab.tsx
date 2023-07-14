@@ -10,7 +10,7 @@ interface TabProps {
 const Tab = ({ children, handleClick, active, isFirstTab }: TabProps) => {
   return (
     <div
-      className={`px-4 pb-2 text-gunmetal dark:text-snow  text-2xl border-b-2 border-transparent hover:border-fog hover: border-opacity-50 ${
+      className={`flex items-center px-4 pb-2 text-gunmetal dark:text-snow  text-2xl border-b-2 border-transparent hover:border-fog hover: border-opacity-50 ${
         active && "border-gunmetal dark:border-snow border-opacity-100"
       }`}
       onClick={handleClick}

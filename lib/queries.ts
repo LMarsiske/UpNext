@@ -136,3 +136,33 @@ export const GETLISTSWITHITEMS = gql`
     }
   }
 `;
+
+export const GETMOVIE = gql`
+  query GetMovie($id: String!) {
+    getMovie(id: $id) {
+      id
+      adult
+      backdrop_path
+      genre_ids
+      original_language
+      original_title
+      summary
+      popularity
+      poster
+      release_date
+      release_year
+      title
+      video
+      vote_average
+      vote_count
+      cast {
+        name
+        character
+      }
+      providers {
+        name
+        logo
+      }
+    }
+  }
+`;

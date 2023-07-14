@@ -21,17 +21,12 @@ import { useUserSelectors } from "@/stores/user";
 
 const HomePage = () => {
   const { data: session } = useSession();
-  // const session = {
-  //   user: {
-  //     id: "",
-  //   },
-  // };
   const [input, setInput] = useState("");
   const [results, setResults] = useState<GraphSearchResult[]>([]);
 
   const [
     search,
-    { loading: searchLoading, data: searchData, error: searchError },
+    { loading: searchLoading, data: searchData, error: searchError, client },
   ] = useLazyQuery(SEARCH);
   const [getUser] = useLazyQuery(GETUSER);
   const [addItemToList] = useMutation(ADDITEMTOLIST);
@@ -39,14 +34,9 @@ const HomePage = () => {
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
 
-  // useEffect(() => {
-  //   console.log(user);
-  //   if (user) {
-  //     setUser({ ...user, lists: user.lists.filter((list) => list) });
-  //   }
-  // }, []);
-
   useEffect(() => {
+    console.log(searchData);
+    console.log(searchError);
     if (searchData) {
       const { searchGames, searchMovies, searchTV } = searchData;
       let results = sortBy(
@@ -66,26 +56,23 @@ const HomePage = () => {
       }
       setResults(results);
     }
-  }, [searchData, user]);
+  }, [searchData, searchError, user]);
+
+  useEffect(() => {
+    console.log(client);
+  }, [client]);
 
   useEffect(() => {
     const getUserData = async () => {
-      console.log(session, user);
       if (!session || !session.user || !session.user.id) {
         setUser(null);
         return;
       }
 
-      console.log(user, !!user);
-      if (user) return;
-
       const uid = session.user.id;
-      console.log(uid);
       const res = await getUser({ variables: { id: uid } });
-      console.log(res);
       if (res.data) {
         let data: User = res.data.getUserWithListsWithItems;
-        console.log(data);
         parseUserData(data);
       }
     };
@@ -136,7 +123,6 @@ const HomePage = () => {
       const newItem = await addItemToList({
         variables: { id: listId, contents: contents },
       });
-      console.log(newItem);
       if (user) {
         setUser({
           ...user,

@@ -5,8 +5,8 @@ class TvAPI extends RESTDataSource {
   async search(q: string) {
     return this.get(`search/shows?q=${q}`);
   }
-  async getGirls() {
-    return this.get(`search/shows?q=girls`);
+  async getShow(id: string) {
+    return this.get(`/shows/${id}?embed=cast`);
   }
 }
 

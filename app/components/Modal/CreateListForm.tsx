@@ -21,7 +21,6 @@ const CreateListForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(listName);
       const newList = await createList({
         variables: {
           name: listName,
@@ -30,7 +29,6 @@ const CreateListForm = () => {
           deleteable: true,
         },
       });
-      console.log(newList);
       setListName("");
       if (newList.data.createList) {
         const updatedUser = {

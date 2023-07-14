@@ -20,7 +20,6 @@ interface LayoutProps {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const session = await getServerSession(AuthOptions);
-  // console.log(session);
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

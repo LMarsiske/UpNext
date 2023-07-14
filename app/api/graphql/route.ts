@@ -25,6 +25,7 @@ const handler = startServerAndCreateNextHandler<NextRequest>(server, {
     }));
 
     let uid = userExists ? session?.userId : null;
+    console.log(!!session, userExists, uid);
 
     return {
       req,

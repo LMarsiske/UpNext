@@ -8,7 +8,6 @@ const prismaAdapter = PrismaAdapter(prisma);
 
 // @ts-ignore
 prismaAdapter.createUser = (data) => {
-  console.log("CREATE USER: ", data);
   const userData = prisma.user.create({
     data: {
       ...data,
@@ -21,8 +20,6 @@ prismaAdapter.createUser = (data) => {
       },
     },
   });
-
-  console.log(userData);
 
   return userData;
 };
