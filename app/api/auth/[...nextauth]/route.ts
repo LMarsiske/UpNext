@@ -3,23 +3,26 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/lib/prisma";
-import { useUserSelectors } from "@/stores/user";
-import { set } from "lodash";
 
 const prismaAdapter = PrismaAdapter(prisma);
 
 // @ts-ignore
 prismaAdapter.createUser = (data) => {
+  console.log("CREATE USER: ", data);
   const userData = prisma.user.create({
     data: {
       ...data,
       lists: {
         create: {
           name: "Personal Watch List",
+          shareable: false,
+          deleteable: false,
         },
       },
     },
   });
+
+  console.log(userData);
 
   return userData;
 };
@@ -30,6 +33,10 @@ export const AuthOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
   secret: process.env.SECRET,

@@ -30,7 +30,7 @@ export const typeDef = gql`
     id: String!
     name: String!
     email: String!
-    emailVerified: Boolean!
+    emailVerified: Boolean
     image: String!
     createdAt: String!
     updatedAt: String!

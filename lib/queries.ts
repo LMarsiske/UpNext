@@ -41,14 +41,33 @@ export const GETUSER = gql`
       id
       name
       email
+      image
+      createdAt
+      updatedAt
       lists {
         id
         name
+        createdAt
+        updatedAt
+        sharedWith
+        editors
+        lastEditedBy
+        ownerId
+        shareable
+        deleteable
         items {
           id
-          title
+          listId
+          createdAt
+          updatedAt
           apiId
           type
+          title
+          poster
+          summary
+          network
+          platforms
+          genres
         }
       }
     }

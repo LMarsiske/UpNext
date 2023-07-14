@@ -47,7 +47,12 @@ export const typeDef = gql`
   }
 
   extend type Mutation {
-    createList(name: String!, uid: String!): List
+    createList(
+      name: String!
+      uid: String!
+      shareable: Boolean
+      deleteable: Boolean
+    ): List
     editList(listId: String!, contents: String!): List
     addItemToList(listId: String!, contents: String!): Item
     deleteItemFromList(itemId: String!): Item
@@ -122,10 +127,17 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createList: async (_: any, { name, uid }: any, { prisma }: any) => {
+    createList: async (
+      _: any,
+      { name, uid, shareable, deleteable }: any,
+      { prisma }: any
+    ) => {
+      console.log(shareable, deleteable);
       const list = await prisma.list.create({
         data: {
           name,
+          shareable: shareable,
+          deleteable: deleteable,
           owner: {
             connect: {
               id: uid,

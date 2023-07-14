@@ -3,12 +3,12 @@ import React from "react";
 import Avatar from "./Avatar";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
-// import {
-//   UserIcon,
-//   ArrowLeftOnRectangleIcon,
-// } from "@heroicons/react/24/outline";
+import { useUserSelectors } from "@/stores/user";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const AuthHeader = ({ user }: { user: User }) => {
+  const setUser = useUserSelectors.use.setUser();
   return (
     <div className="flex items-center space-x-4 text-2xl">
       <Link href="/">Discover</Link>
@@ -26,7 +26,7 @@ const AuthHeader = ({ user }: { user: User }) => {
               href={`/profile/${user.id}`}
               className="text-xl text-gunmetal"
             >
-              {/* <UserIcon className="color-gunmetal w-5 h-5" /> */}
+              <SettingsIcon />
               Profile
             </Link>
           </li>
@@ -34,9 +34,12 @@ const AuthHeader = ({ user }: { user: User }) => {
             <Link
               href="#"
               className="text-xl text-gunmetal"
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut({ callbackUrl: "/" });
+                setUser(null);
+              }}
             >
-              {/* <ArrowLeftOnRectangleIcon className="color-gunmetal w-5 h-5" /> */}
+              <LogoutIcon />
               Logout
             </Link>
           </li>

@@ -1,46 +1,35 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useQuery } from "@apollo/client";
-import { GETLISTSWITHITEMS } from "@/lib/queries";
 import type { ListWithItems } from "@/types/list";
 import Tab from "../components/Tab";
 import TabsContainer from "../components/TabsContainer";
 import TabContainer from "../components/TabContainer";
+import Drawer from "../components/Drawer";
 import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { useUserSelectors } from "@/stores/user";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
 
 const ListsPage = async () => {
   const user = useUserSelectors.use.user();
   const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
   const setModalContent = useModalStoreSelectors.use.setModalContent();
+  const setIsDrawerOpen = useDrawerStoreSelectors.use.setIsDrawerOpen();
   const { data: session } = useSession();
+
   const router = useRouter();
 
+  console.log(session, user);
   if (!session || !user) {
-    router.replace("/api/auth/signin");
+    router.push("/");
+    return null;
   }
 
-  const [lists, setLists] = useState<ListWithItems[]>([]);
   const [tabIndex, setTabIndex] = useState(0);
-
-  // const { data, loading, error } = useQuery(GETLISTSWITHITEMS, {
-  //   variables: { id: session?.user?.id },
-  //   skip: !session || !session.user,
-  // });
-
-  // useEffect(() => {
-  //   console.log(data);
-  //   if (data) {
-  //     setLists(data.getAllListsWithItems);
-  //   }
-  // }, [data]);
-
-  // if (loading && session) return <div>Loading...</div>;
-  // if (error && session) return <div>{error.message}</div>;
+  const [list, setList] = useState<ListWithItems | undefined>(user?.lists![0]);
 
   const openCreateModal = () => {
     setIsModalOpen(true);
@@ -57,7 +46,10 @@ const ListsPage = async () => {
                 return (
                   <Tab
                     key={list.id}
-                    handleClick={() => setTabIndex(index)}
+                    handleClick={() => {
+                      setTabIndex(index);
+                      setList(user?.lists![index]);
+                    }}
                     active={index === tabIndex}
                     isFirstTab={index === 0}
                   >
@@ -72,10 +64,13 @@ const ListsPage = async () => {
         </button>
       </div>
 
-      {user?.lists &&
-        user.lists.map((list: ListWithItems, index: number) => {
-          return <TabContainer key={list.id} index={index} list={list} />;
-        })}
+      {list && <TabContainer key={list.id} list={list} />}
+      <Drawer>
+        <div className="flex flex-col items-center justify-center h-full">
+          <h2 className="text-5xl mb-4">No items in this list</h2>
+          <p className="text-2xl">Add some items to get started</p>
+        </div>
+      </Drawer>
     </div>
   );
 };

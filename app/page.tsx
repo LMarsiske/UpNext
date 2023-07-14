@@ -1,20 +1,15 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
-import { debounce, set } from "lodash";
+import React, { useState, useCallback, useEffect, use } from "react";
+import { debounce } from "lodash";
 import { SearchResult } from "./components/SearchResults";
-import { useQuery, useLazyQuery, gql, useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import "@/styles/globals.css";
 import SearchResultSkeletons from "./components/SearchResultSkeletons";
 
 import { flatten, sortBy } from "lodash";
 import { useSession } from "next-auth/react";
-import type { item } from "@prisma/client";
-import type {
-  // UserWithListsWithItems,
-  // UserWithFlattenedItems,
-  User,
-} from "@/types/user";
+import type { User } from "@/types/user";
 import type { GraphSearchResult } from "@/types/search";
 import {
   ADDITEMTOLIST,
@@ -26,6 +21,11 @@ import { useUserSelectors } from "@/stores/user";
 
 const HomePage = () => {
   const { data: session } = useSession();
+  // const session = {
+  //   user: {
+  //     id: "",
+  //   },
+  // };
   const [input, setInput] = useState("");
   const [results, setResults] = useState<GraphSearchResult[]>([]);
 
@@ -38,6 +38,13 @@ const HomePage = () => {
   const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
+
+  // useEffect(() => {
+  //   console.log(user);
+  //   if (user) {
+  //     setUser({ ...user, lists: user.lists.filter((list) => list) });
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (searchData) {
@@ -63,42 +70,46 @@ const HomePage = () => {
 
   useEffect(() => {
     const getUserData = async () => {
+      console.log(session, user);
       if (!session || !session.user || !session.user.id) {
         setUser(null);
         return;
       }
 
+      console.log(user, !!user);
       if (user) return;
 
       const uid = session.user.id;
+      console.log(uid);
       const res = await getUser({ variables: { id: uid } });
       console.log(res);
       if (res.data) {
         let data: User = res.data.getUserWithListsWithItems;
+        console.log(data);
         parseUserData(data);
       }
     };
     getUserData();
   }, [session]);
 
-  const markSavedItems = (results: GraphSearchResult[]) => {
-    if (!user || !user?.allItems) return results;
+  // const markSavedItems = (results: GraphSearchResult[]) => {
+  //   if (!user || !user?.allItems) return results;
 
-    return results.map((result) => {
-      const item = user.allItems!.find(
-        (item) => item.apiId === result.id?.toString()
-      );
-      return {
-        ...result,
-        inList: !!item,
-        listId: item?.listId,
-        itemId: item?.id,
-      };
-    });
-  };
+  //   return results.map((result) => {
+  //     const item = user.allItems!.find(
+  //       (item) => item.apiId === result.id?.toString()
+  //     );
+  //     return {
+  //       ...result,
+  //       inList: !!item,
+  //       listId: item?.listId,
+  //       itemId: item?.id,
+  //     };
+  //   });
+  // };
 
   const parseUserData = (data: User) => {
-    if (!data.lists) {
+    if (!data?.lists) {
       setUser({ ...data });
       return;
     }
@@ -118,14 +129,6 @@ const HomePage = () => {
   }: React.ChangeEvent<HTMLInputElement>) => {
     setInput(value);
     if (value) query(value);
-  };
-
-  const getUserData = async () => {
-    const res = await getUser({ variables: { id: session?.user?.id } });
-    if (res.data) {
-      let data: User = res.data.getUserWithListsWithItems;
-      return data;
-    }
   };
 
   const addItem = async (listId: string, contents: string) => {

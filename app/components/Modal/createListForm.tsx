@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATELIST } from "@/lib/mutations";
 import { useUserSelectors } from "@/stores/user";
+import { useModalStoreSelectors } from "@/stores/modal";
 import { ListWithItems } from "@/types/list";
 import type { User } from "@/types/user";
 
 const CreateListForm = () => {
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
+  const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
+  const setModalContent = useModalStoreSelectors.use.setModalContent();
   const [listName, setListName] = useState("");
   const [createList] = useMutation(CREATELIST);
 
@@ -20,15 +23,24 @@ const CreateListForm = () => {
     try {
       console.log(listName);
       const newList = await createList({
-        variables: { name: listName, uid: user?.id },
+        variables: {
+          name: listName,
+          uid: user?.id,
+          shareable: true,
+          deleteable: true,
+        },
       });
       console.log(newList);
       setListName("");
-      const updatedUser = {
-        ...user,
-        lists: [...user?.lists!, newList.data.createList] as ListWithItems[],
-      } as User;
-      setUser(updatedUser);
+      if (newList.data.createList) {
+        const updatedUser = {
+          ...user,
+          lists: [...user?.lists!, newList.data.createList] as ListWithItems[],
+        } as User;
+        setUser(updatedUser);
+      }
+      setIsModalOpen(false);
+      setModalContent("");
     } catch (error: any) {
       console.log(error.message);
     }

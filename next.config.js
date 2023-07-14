@@ -7,6 +7,7 @@ module.exports = {
       "image.tmdb.org",
       "images.igdb.com",
       "avatars.githubusercontent.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

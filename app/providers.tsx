@@ -4,19 +4,23 @@ import { ThemeProvider } from "next-themes";
 import { ApolloContextProvider } from "@/context/ApolloContext";
 import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
-import type { Session } from "next-auth";
+import { getServerSession } from "next-auth";
+import { AuthOptions } from "./api/auth/[...nextauth]/route";
+import ZustandHydrator from "@/context/ZustandHydrator";
 
 interface ProviderProps {
   children: ReactNode;
-  session: Session | null;
+  session: any;
 }
 
-export function Providers({ children, session }: ProviderProps) {
+export default function Providers({ children, session }: ProviderProps) {
   return (
-    <SessionProvider session={session}>
-      <ThemeProvider enableSystem={true} attribute="class">
-        <ApolloContextProvider>{children}</ApolloContextProvider>
-      </ThemeProvider>
-    </SessionProvider>
+    <ZustandHydrator>
+      <SessionProvider session={session}>
+        <ThemeProvider enableSystem={true} attribute="class">
+          <ApolloContextProvider>{children}</ApolloContextProvider>
+        </ThemeProvider>
+      </SessionProvider>
+    </ZustandHydrator>
   );
 }

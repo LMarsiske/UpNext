@@ -1,12 +1,12 @@
-import { Poppins } from "next/font/google";
-import Header from "./components/header";
-import "../styles/globals.css";
+import dynamic from "next/dynamic";
 import { ReactNode } from "react";
-import { Providers } from "./providers";
-import Container from "./components/container";
 import { getServerSession } from "next-auth";
 import { AuthOptions } from "./api/auth/[...nextauth]/route";
+const Header = dynamic(() => import("./components/header"));
 import Modal from "./components/Modal/modal";
+import Container from "./components/container";
+import Providers from "./providers";
+import "../styles/globals.css";
 
 export const metadata = {
   title: "UpNext",
@@ -20,6 +20,7 @@ interface LayoutProps {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const session = await getServerSession(AuthOptions);
+  // console.log(session);
   return (
     <html lang="en" suppressHydrationWarning>
       <body>

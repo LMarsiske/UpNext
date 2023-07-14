@@ -2,15 +2,16 @@ import React from "react";
 import classes from "@/styles/TabContainer.module.css";
 import type { ListWithItems } from "@/types/list";
 import WatchlistItem from "./WatchlistItem";
-import { item } from "@prisma/client";
-import { GraphSearchResult, SearchResultProps } from "@/types/search";
+import { SearchResultProps } from "@/types/search";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
 
 interface TabContainerProps {
-  index: number;
   list: ListWithItems;
 }
 
-const TabContainer = ({ index, list }: TabContainerProps) => {
+const TabContainer = ({ list }: TabContainerProps) => {
+  const setIsDrawerOpen = useDrawerStoreSelectors.use.setIsDrawerOpen();
+  console.log(list);
   return (
     <div className={classes.tabContainer}>
       <div className={classes.itemContainer}>
@@ -31,11 +32,9 @@ const TabContainer = ({ index, list }: TabContainerProps) => {
             <div className="flex flex-col items-center justify-center h-full">
               <h2 className="text-5xl mb-4">No items in this list</h2>
               <p className="text-2xl">Add some items to get started</p>
+              <button onClick={() => setIsDrawerOpen(true)}>Open Drawer</button>
             </div>
           ))}
-      </div>
-      <div className="w-1/4 h-full border border-fog dark:border-davy border-opacity-50 rounded-xl bg-fog dark:bg-davy">
-        This is the sidebar
       </div>
     </div>
   );
