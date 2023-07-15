@@ -166,3 +166,36 @@ export const GETMOVIE = gql`
     }
   }
 `;
+
+export const GETSHOW = gql`
+  query GetTV($id: String!) {
+    getTV(id: $id) {
+      id
+      url
+      title
+      type
+      language
+      genres
+      status
+      runtime
+      averageRuntime
+      premiered
+      ended
+      officialSite
+      summary
+      updated
+      cast {
+        name
+        character
+      }
+      poster
+      release_year
+    }
+  }
+`;
+
+export const GETIGDBAUTHTOKEN = gql`
+  query GetIGDBAuthToken {
+    getIGDBAuthToken
+  }
+`;

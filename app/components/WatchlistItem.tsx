@@ -6,9 +6,8 @@ import { SearchResultProps } from "@/types/search";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { useItemStoreSelectors } from "@/stores/item";
 import { useLazyQuery } from "@apollo/client";
-import { GETMOVIE } from "@/lib/queries";
-import type { Movie } from "@/types/item";
-import { item } from "@prisma/client";
+import { GETMOVIE, GETSHOW } from "@/lib/queries";
+import type { Movie, TVShow, WatchListItem } from "@/types/item";
 
 const truncate = (str: string) =>
   str.length > 250 ? `${str.substring(0, 247)}...` : str;
@@ -24,21 +23,38 @@ const WatchlistItem = ({
   genres,
   listId,
   apiId,
-}: item) => {
+}: WatchListItem) => {
   const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
   const setModalContent = useModalStoreSelectors.use.setModalContent();
   const setItem = useItemStoreSelectors.use.setItem();
   const [getMovie] = useLazyQuery(GETMOVIE);
+  const [getShow] = useLazyQuery(GETSHOW);
 
   const handleItemClick = async () => {
     try {
-      const response = await getMovie({
-        variables: {
-          id: apiId,
-        },
-      });
-      if (response.data.getMovie) {
-        setItem(response.data.getMovie as Movie);
+      let response;
+      switch (type) {
+        case "movie":
+          response = await getMovie({
+            variables: {
+              id: apiId,
+            },
+          });
+          if (response.data.getMovie) {
+            setItem(response.data.getMovie as Movie);
+          }
+          break;
+        case "tv":
+          response = await getShow({
+            variables: {
+              id: apiId,
+            },
+          });
+          console.log(response);
+          if (response.data.getTV) {
+            setItem(response.data.getTV as TVShow);
+          }
+          break;
       }
       setIsModalOpen(true);
       setModalContent("MORE_INFO");

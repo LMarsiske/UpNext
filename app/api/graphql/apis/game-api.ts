@@ -8,6 +8,7 @@ class GameAPI extends RESTDataSource {
     path: string,
     request: AugmentedRequest
   ): ValueOrPromise<void> {
+    console.log("willSendRequest: ", path);
     request.headers["Client-ID"] = process.env.IGDB_CLIENT_ID!;
     request.headers["Authorization"] = process.env.IGDB_AUTH!;
   }
@@ -25,6 +26,12 @@ class GameAPI extends RESTDataSource {
       body: `fields alpha_channel, animated, checksum, game,  game_localization, height, image_id, url, width;
             where game=${id};`,
     });
+  }
+
+  getAuthToken() {
+    return this.post(
+      `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`
+    );
   }
 }
 

@@ -42,10 +42,10 @@ const ListsPage = async () => {
         },
       });
       console.log(response);
-      if (response.data.getAllLists) {
+      if (response.data.getAllListsWithItems) {
         setUser({
           ...user,
-          lists: response.data.getAllLists,
+          lists: response.data.getAllListsWithItems,
         });
       }
     };

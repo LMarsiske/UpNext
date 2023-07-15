@@ -36,23 +36,28 @@ const ItemInfo = () => {
             })}
           </ul>
         </div>
-        <hr className="border-fog my-2" />
-        <div>
-          <h2 className="text-xl mb-2">Streaming</h2>
-          <div className="flex">
-            {item!.providers!.map((platform) => {
-              return (
-                <Image
-                  src={platform.logo}
-                  width={36}
-                  height={36}
-                  alt={`${platform.name} logo`}
-                  className="mr-2"
-                />
-              );
-            })}
-          </div>
-        </div>
+        {item?.providers && (
+          <>
+            <hr className="border-fog my-2" />
+            <div>
+              <h2 className="text-xl mb-2">Streaming</h2>
+              <div className="flex">
+                {item!.providers!.map((platform, index) => {
+                  return (
+                    <Image
+                      key={index}
+                      src={platform.logo}
+                      width={36}
+                      height={36}
+                      alt={`${platform.name} logo`}
+                      className="mr-2"
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

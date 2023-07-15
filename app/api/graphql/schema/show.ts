@@ -51,10 +51,21 @@ export const typeDef = gql`
     previousepisode: PreviousEpisode
   }
 
+  type CastMember {
+    id: Int
+    name: String
+    character: String
+  }
+
+  type Embedded {
+    cast: [CastMember]
+  }
+
   type Show {
     id: ID
     url: String
     name: String
+    title: String
     type: String
     language: String
     genres: [String]
@@ -75,6 +86,9 @@ export const typeDef = gql`
     summary: String
     updated: Int
     _links: Links
+    poster: String
+    cast: [CastMember]
+    release_year: String
   }
 
   type ShowResult {
@@ -91,6 +105,7 @@ export const typeDef = gql`
 export const resolvers = {
   Query: {
     searchTV: async (_: any, { q }: any, { dataSources }: any) => {
+      console.log("searching tv");
       let res = await dataSources.tvAPI.search(q);
       if (!res) return [];
       return res.map((show: any) => {
@@ -119,7 +134,7 @@ export const resolvers = {
       return {
         id: res.id,
         url: res.url,
-        name: res.name,
+        title: res.name,
         type: res.type,
         language: res.language,
         genres: res.genres,
@@ -140,6 +155,13 @@ export const resolvers = {
         summary: summary,
         updated: res.updated,
         _links: res._links,
+        poster: res.image?.original,
+        cast: res._embedded.cast.map((castMember: any) => ({
+          id: castMember.person.id,
+          name: castMember.person.name,
+          character: castMember.character.name,
+        })),
+        release_year: res.premiered?.split("-")[0],
       };
     },
   },

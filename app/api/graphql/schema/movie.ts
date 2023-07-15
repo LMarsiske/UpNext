@@ -49,6 +49,7 @@ export const typeDef = gql`
 export const resolvers = {
   Query: {
     searchMovies: async (_: any, { q }: any, { dataSources }: any) => {
+      console.log("searching movies");
       const res = await dataSources.movieAPI.search(q);
       if (!res) return [];
       return res.results.slice(0, 10).map((movie: any) => ({

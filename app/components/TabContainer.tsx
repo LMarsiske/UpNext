@@ -4,19 +4,22 @@ import type { ListWithItems } from "@/types/list";
 import WatchlistItem from "./WatchlistItem";
 import { SearchResultProps } from "@/types/search";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
+import { WatchListItem } from "@/types/item";
+import { item } from "@prisma/client";
 
 interface TabContainerProps {
   list: ListWithItems;
 }
 
 const TabContainer = ({ list }: TabContainerProps) => {
+  console.log(list);
   return (
     <div className={classes.tabContainer}>
       <div className={classes.itemContainer}>
         {list &&
           list.items &&
           list.items.length > 0 &&
-          list.items.map((item: SearchResultProps, index: number) => {
+          list.items.map((item: WatchListItem, index: number) => {
             return (
               <Fragment key={index}>
                 <WatchlistItem key={item.id} {...item} />

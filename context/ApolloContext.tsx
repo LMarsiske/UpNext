@@ -2,12 +2,12 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  gql,
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { getSession } from "next-auth/react";
 import { ReactNode } from "react";
+import { useUserSelectors } from "@/stores/user";
 
 interface ApolloProviderProps {
   children: ReactNode;
@@ -19,12 +19,13 @@ const httpLink = createHttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const session = await getSession();
-  console.log("APOLLOCONTEXT SESSION: ", session);
+  const igdbAuthToken = useUserSelectors.getState().igdbAuthToken;
 
   return {
     headers: {
       ...headers,
       authorization: session?.token || "",
+      igdbauthtoken: igdbAuthToken || "",
     },
   };
 });

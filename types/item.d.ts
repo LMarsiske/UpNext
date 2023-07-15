@@ -1,4 +1,5 @@
 import type { item } from "@prisma/client";
+import { SearchResultProps } from "./search";
 
 export interface TVShow extends item {
   cast: CastMember[];
@@ -37,4 +38,10 @@ export interface Provider {
   id: number;
   logo: string;
   name: string;
+}
+
+export interface WatchListItem extends item {
+  apiId: string | null;
+  addToList?: (id: string, contents: string) => void;
+  deleteFromList?: (id: string) => void;
 }

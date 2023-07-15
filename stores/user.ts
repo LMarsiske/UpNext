@@ -1,9 +1,4 @@
-import {
-  User,
-  // UserWithFlattenedItems,
-  // UserWithLists,
-  // UserWithListsWithItems,
-} from "@/types/user";
+import { User } from "@/types/user";
 import createSelectors from "@/lib/createSelectors";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
@@ -11,6 +6,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 interface UserState {
   user: User | null | undefined;
   setUser: (user: User | null | undefined) => void;
+  igdbAuthToken: string;
+  setIgdbAuthToken: (token: string) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -18,6 +15,8 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       user: null,
       setUser: (user) => set({ user }),
+      igdbAuthToken: "",
+      setIgdbAuthToken: (token) => set({ igdbAuthToken: token }),
     }),
     {
       name: "upnext-user-storage",

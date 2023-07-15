@@ -16,8 +16,9 @@ import {
   DELETEITEMFROMLIST,
   GETUSER,
   SEARCH,
+  GETIGDBAUTHTOKEN,
 } from "@/lib/queries";
-import { useUserSelectors } from "@/stores/user";
+import { useUserSelectors, useUserStore } from "@/stores/user";
 
 const HomePage = () => {
   const { data: session } = useSession();
@@ -29,14 +30,19 @@ const HomePage = () => {
     { loading: searchLoading, data: searchData, error: searchError, client },
   ] = useLazyQuery(SEARCH);
   const [getUser] = useLazyQuery(GETUSER);
+  const [getIgdbAuthToken] = useLazyQuery(GETIGDBAUTHTOKEN);
   const [addItemToList] = useMutation(ADDITEMTOLIST);
   const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
+  const [user, setUser, igdbAuthToken, setIgdbAuthToken] = useUserStore(
+    (store) => [
+      store.user,
+      store.setUser,
+      store.igdbAuthToken,
+      store.setIgdbAuthToken,
+    ]
+  );
 
   useEffect(() => {
-    console.log(searchData);
-    console.log(searchError);
     if (searchData) {
       const { searchGames, searchMovies, searchTV } = searchData;
       let results = sortBy(
@@ -59,10 +65,6 @@ const HomePage = () => {
   }, [searchData, searchError, user]);
 
   useEffect(() => {
-    console.log(client);
-  }, [client]);
-
-  useEffect(() => {
     const getUserData = async () => {
       if (!session || !session.user || !session.user.id) {
         setUser(null);
@@ -76,24 +78,37 @@ const HomePage = () => {
         parseUserData(data);
       }
     };
+
+    const getIgdbToken = async () => {
+      if (!igdbAuthToken) {
+        const res = await getIgdbAuthToken();
+        console.log(res);
+        if (res.data) {
+          let data: string = res.data.getIgdbAuthToken;
+          setIgdbAuthToken(data);
+        }
+      }
+    };
+
     getUserData();
+    getIgdbToken();
   }, [session]);
 
-  // const markSavedItems = (results: GraphSearchResult[]) => {
-  //   if (!user || !user?.allItems) return results;
+  const markSavedItems = (results: GraphSearchResult[]) => {
+    if (!user || !user?.allItems) return results;
 
-  //   return results.map((result) => {
-  //     const item = user.allItems!.find(
-  //       (item) => item.apiId === result.id?.toString()
-  //     );
-  //     return {
-  //       ...result,
-  //       inList: !!item,
-  //       listId: item?.listId,
-  //       itemId: item?.id,
-  //     };
-  //   });
-  // };
+    return results.map((result) => {
+      const item = user.allItems!.find(
+        (item) => item.apiId === result.id?.toString()
+      );
+      return {
+        ...result,
+        inList: !!item,
+        listId: item?.listId,
+        itemId: item?.id,
+      };
+    });
+  };
 
   const parseUserData = (data: User) => {
     if (!data?.lists) {
@@ -123,6 +138,7 @@ const HomePage = () => {
       const newItem = await addItemToList({
         variables: { id: listId, contents: contents },
       });
+      console.log(newItem);
       if (user) {
         setUser({
           ...user,
