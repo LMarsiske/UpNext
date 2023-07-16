@@ -134,11 +134,7 @@ SearchResultProps) => {
           <p>{summary ? truncate(summary) : "No summary available"}</p>
         </div>
         {user && (
-          <div
-            className={
-              user && user.lists.length > 1 ? "dropdown dropdown-right" : ""
-            }
-          >
+          <div className={"dropdown dropdown-right"}>
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               {inList ? (
                 <button
@@ -158,72 +154,54 @@ SearchResultProps) => {
                 </button>
               )}
             </label>
-            <ul
-              tabIndex={0}
-              className="mt-2 z-[1] p-2 shadow menu  dropdown-content bg-fog rounded-box min-w-fit"
-            >
-              {user &&
-                user.lists.map((list) => (
-                  <li key={list.id}>
-                    <button
-                      className="text-xl text-gunmetal"
-                      onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        addToList(
-                          list.id,
-                          JSON.stringify({
-                            apiId: id,
-                            type,
-                            title,
-                            poster,
-                            summary,
-                            network,
-                            platforms,
-                            genres,
-                          })
-                        );
-                      }}
-                    >
-                      {list.name}
-                    </button>
-                  </li>
-                ))}
-            </ul>
+            {user && user.lists && user.lists.length > 1 && (
+              <ul
+                tabIndex={0}
+                className="mt-2 z-[1] p-2 shadow menu  dropdown-content bg-fog rounded-box min-w-fit"
+              >
+                {user &&
+                  user.lists.map((list) => (
+                    <li key={list.id}>
+                      <button
+                        className="text-xl text-gunmetal"
+                        onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                          event.stopPropagation();
+                          event.preventDefault();
+                          addToList(
+                            list.id,
+                            JSON.stringify({
+                              apiId: id,
+                              type,
+                              title,
+                              poster,
+                              summary,
+                              network,
+                              platforms,
+                              genres,
+                            })
+                          );
+                        }}
+                      >
+                        {list.name}
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 };
-{
-  /* <div className="dropdown dropdown-end">
-  <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-    <Avatar name={user.name} icon={user.image} />
-  </label>
-  <ul
-    tabIndex={0}
-    className="mt-2 z-[1] p-2 shadow menu  dropdown-content bg-fog rounded-box w-52"
-  >
+<details className="dropdown mb-32">
+  <summary className="m-1 btn">open or close</summary>
+  <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
     <li>
-      <Link href={`/profile/${user.id}`} className="text-xl text-gunmetal">
-        <ManageAccountsIcon />
-        Profile
-      </Link>
+      <a>Item 1</a>
     </li>
     <li>
-      <Link
-        href="#"
-        className="text-xl text-gunmetal"
-        onClick={() => {
-          signOut({ callbackUrl: "/" });
-          setUser(null);
-        }}
-      >
-        <LogoutIcon />
-        Logout
-      </Link>
+      <a>Item 2</a>
     </li>
   </ul>
-</div>; */
-}
+</details>;
