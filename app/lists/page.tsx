@@ -29,13 +29,9 @@ const ListsPage = async () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [list, setList] = useState<ListWithItems | undefined>(user?.lists![0]);
 
-  if (!session || !user) {
-    router.push("/");
-    return null;
-  }
-
   useEffect(() => {
     const getAllLists = async () => {
+      if (!session || !user) return;
       const response = await getLists({
         variables: {
           id: user.id,
@@ -56,6 +52,11 @@ const ListsPage = async () => {
     setIsModalOpen(true);
     setModalContent("CREATE_LIST");
   };
+
+  if (!session || !user) {
+    router.push("/");
+    return null;
+  }
 
   return (
     <div>

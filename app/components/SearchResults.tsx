@@ -99,7 +99,7 @@ SearchResultProps) => {
             >
               {user &&
                 user.lists.map((list) => (
-                  <li>
+                  <li key={list.id}>
                     <button
                       className="text-xl text-gunmetal"
                       onClick={() => {
