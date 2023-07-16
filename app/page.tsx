@@ -92,7 +92,7 @@ const HomePage = () => {
     };
 
     getUserData();
-    getIgdbToken();
+    // getIgdbToken();
   }, [session]);
 
   const markSavedItems = (results: GraphSearchResult[]) => {
