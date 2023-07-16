@@ -23,7 +23,7 @@ export const typeDef = gql`
     createdAt: String!
     updatedAt: String!
     items: [Item]
-    sharedWith: [String]
+    sharedWith: [user]
     editors: [String]
     shareable: Boolean!
     deleteable: Boolean!
@@ -109,7 +109,9 @@ export const resolvers = {
             },
             {
               sharedWith: {
-                has: id,
+                some: {
+                  id: id,
+                },
               },
             },
             {
@@ -121,8 +123,10 @@ export const resolvers = {
         },
         include: {
           items: true,
+          sharedWith: true,
         },
       });
+      console.log(lists);
       return lists;
     },
   },
@@ -147,11 +151,14 @@ export const resolvers = {
       });
       return list;
     },
-    editList: async (_: any, { id, contents }: any, { prisma }: any) => {
+    editList: async (_: any, { listId, contents }: any, { prisma }: any) => {
+      console.log("editing list: ", listId);
+      console.log(contents);
       const newListContents = JSON.parse(contents);
+      console.log(newListContents);
       const list = await prisma.list.update({
         where: {
-          id: id,
+          id: listId,
         },
         data: {
           name: newListContents.name || undefined,
@@ -200,6 +207,16 @@ export const resolvers = {
       return item;
     },
     deleteList: async (_: any, { listId }: any, { prisma }: any) => {
+      const listRecord = await prisma.list.findUnique({
+        where: {
+          id: listId,
+        },
+      });
+      const listExists = !!listRecord;
+      const listIsDeleteable = listRecord?.deleteable;
+
+      if (!listExists || !listIsDeleteable) return null;
+
       const list = await prisma.list.delete({
         where: {
           id: listId,
@@ -208,24 +225,51 @@ export const resolvers = {
       return list;
     },
     shareList: async (_: any, { listId, uid }: any, { prisma }: any) => {
-      let userExists = !!(await prisma.user.findUnique({
+      console.log("sharing list: ", listId);
+      const userRecord = await prisma.user.findUnique({
         where: {
           id: uid,
         },
-      }));
+      });
+      const userExists = !!userRecord;
+
       const list = await prisma.list.findUnique({
         where: {
           id: listId,
         },
       });
+
+      console.log(userRecord);
+      console.log(list);
+
       if (!userExists || !list || !list.shareable) return null;
-      let sharedWith = [...list.sharedWith, uid];
+
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: uid,
+        },
+        data: {
+          listsSharedWith: {
+            connect: {
+              id: listId,
+            },
+          },
+        },
+      });
+
       const returnList = await prisma.list.update({
         where: {
           id: listId,
         },
         data: {
-          sharedWith: sharedWith,
+          sharedWith: {
+            connect: {
+              id: uid,
+            },
+          },
+        },
+        include: {
+          sharedWith: true,
         },
       });
       return returnList;
@@ -235,16 +279,24 @@ export const resolvers = {
         where: {
           id: listId,
         },
+        include: {
+          sharedWith: true,
+        },
       });
+
+      let isSharedWithUser =
+        list.sharedWith.filter((sharedUser: any) => sharedUser.id === uid)
+          .length > 0;
+
+      if (!list || !isSharedWithUser) return null;
+
       let editors = [...list.editors, uid];
-      let sharedWith = list.sharedWith.filter((user: string) => user !== uid);
       const returnList = await prisma.list.update({
         where: {
           id: listId,
         },
         data: {
           editors: editors,
-          sharedWith: sharedWith,
         },
       });
       return returnList;
@@ -254,16 +306,24 @@ export const resolvers = {
         where: {
           id: listId,
         },
+        include: {
+          sharedWith: true,
+        },
       });
+
+      let isSharedWithUser =
+        list.sharedWith.filter((sharedUser: any) => sharedUser.id === uid)
+          .length > 0;
+
+      if (!list || !isSharedWithUser) return null;
+
       let editors = list.editors.filter((user: string) => user !== uid);
-      let sharedWith = [...list.sharedWith, uid];
       const returnList = await prisma.list.update({
         where: {
           id: listId,
         },
         data: {
           editors: editors,
-          sharedWith: sharedWith,
         },
       });
       return returnList;
@@ -277,16 +337,26 @@ export const resolvers = {
         where: {
           id: listId,
         },
+        include: {
+          sharedWith: true,
+        },
       });
       let editors = list.editors.filter((user: string) => user !== uid);
-      let sharedWith = list.sharedWith.filter((user: string) => user !== uid);
+
       const returnList = await prisma.list.update({
         where: {
           id: listId,
         },
         data: {
           editors: editors,
-          sharedWith: sharedWith,
+          sharedWith: {
+            disconnect: {
+              id: uid,
+            },
+          },
+        },
+        include: {
+          sharedWith: true,
         },
       });
       return returnList;

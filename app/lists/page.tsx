@@ -102,7 +102,9 @@ const ListsPage = async () => {
         </button>
       </div>
 
-      {list && <TabContainer list={list} />}
+      {list && (
+        <TabContainer list={list} index={tabIndex} setIndex={setTabIndex} />
+      )}
       <Drawer>
         <div className="flex flex-col items-center justify-center h-full">
           <h2 className="text-5xl mb-4">No items in this list</h2>

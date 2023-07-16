@@ -49,7 +49,12 @@ export const GETUSER = gql`
         name
         createdAt
         updatedAt
-        sharedWith
+        sharedWith {
+          id
+          email
+          name
+          image
+        }
         editors
         lastEditedBy
         ownerId
@@ -70,6 +75,19 @@ export const GETUSER = gql`
           genres
         }
       }
+    }
+  }
+`;
+
+export const SEARCHUSERS = gql`
+  query SearchUsers($email: String!) {
+    findUsersByEmail(email: $email) {
+      id
+      name
+      email
+      image
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -104,7 +122,12 @@ export const GETLISTS = gql`
       id
       name
       ownerId
-      sharedWith
+      sharedWith {
+        id
+        email
+        name
+        image
+      }
       editors
       shareable
       deleteable
@@ -129,7 +152,12 @@ export const GETLISTSWITHITEMS = gql`
         platforms
         genres
       }
-      sharedWith
+      sharedWith {
+        id
+        email
+        name
+        image
+      }
       editors
       shareable
       deleteable

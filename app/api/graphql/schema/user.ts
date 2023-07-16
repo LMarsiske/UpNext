@@ -22,7 +22,7 @@ export const typeDef = gql`
     createdAt: String!
     updatedAt: String!
     items: [Item]
-    sharedWith: [String]
+    sharedWith: [user]
     editors: [String]
     lastEditedBy: String
   }
@@ -38,6 +38,7 @@ export const typeDef = gql`
   }
 
   extend type Query {
+    findUsersByEmail(email: String!): [user]
     getUser(id: String!): user
     getUserWithLists(id: String!): user
     getUserWithListsWithItems(id: String!): user
@@ -46,6 +47,22 @@ export const typeDef = gql`
 
 export const resolvers = {
   Query: {
+    findUsersByEmail: async (_: any, { email }: any, { prisma }: any) => {
+      if (!email) throw new Error("No email provided");
+
+      console.log(email);
+
+      const users = await prisma.user.findMany({
+        take: 10,
+        where: {
+          email: {
+            contains: email,
+          },
+        },
+      });
+      return users;
+    },
+
     getUser: async (_: any, { id }: any, { prisma, uid }: any) => {
       if (!id) throw new Error("No user id provided");
 
@@ -82,6 +99,11 @@ export const resolvers = {
         },
         include: {
           lists: {
+            include: {
+              items: true,
+            },
+          },
+          listsSharedWith: {
             include: {
               items: true,
             },

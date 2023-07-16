@@ -7,7 +7,10 @@ import GameAPI from "./apis/game-api";
 import schema from "./schema/schema";
 import prisma from "@/lib/prisma";
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({
+  schema: schema,
+  logger: console,
+});
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {
   context: async (req: NextRequest) => {
