@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { isEmpty } from "lodash";
 
 export const typeDef = gql`
   type CastMember {
@@ -65,6 +66,21 @@ export const resolvers = {
       const credits = await dataSources.movieAPI.getCredits(id);
       const providers = await dataSources.movieAPI.getProviders(id);
 
+      let providerList: any[] = [];
+      if (
+        providers?.results &&
+        !isEmpty(providers?.results) &&
+        providers.results.US &&
+        !isEmpty(providers?.results?.US) &&
+        providers?.results?.US?.flatrate &&
+        !isEmpty(providers?.results?.US?.flatrate)
+      ) {
+        providers.results.US.flatrate.map((provider: any) => ({
+          id: provider.provider_id,
+          logo: `https://image.tmdb.org/t/p/w500${provider.logo_path}`,
+          name: provider.provider_name,
+        }));
+      }
       if (!res) return null;
       console.log(res);
 
@@ -85,11 +101,7 @@ export const resolvers = {
         vote_average: res.vote_average,
         vote_count: res.vote_count,
         cast: credits.cast.slice(0, 8),
-        providers: providers.results.US.flatrate.map((provider: any) => ({
-          id: provider.provider_id,
-          logo: `https://image.tmdb.org/t/p/w500${provider.logo_path}`,
-          name: provider.provider_name,
-        })),
+        providers: providerList,
       };
     },
   },

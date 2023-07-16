@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect, use } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import { SearchResult } from "./components/SearchResults";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -73,6 +73,7 @@ const HomePage = () => {
 
       const uid = session.user.id;
       const res = await getUser({ variables: { id: uid } });
+      console.log(res);
       if (res.data) {
         let data: User = res.data.getUserWithListsWithItems;
         parseUserData(data);
@@ -111,6 +112,7 @@ const HomePage = () => {
   };
 
   const parseUserData = (data: User) => {
+    console.log(data);
     if (!data?.lists) {
       setUser({ ...data });
       return;
@@ -186,11 +188,6 @@ const HomePage = () => {
     } catch (e: any) {
       console.log(e.message);
     }
-    // let userData = await getUserData();
-    // if (!userData) return;
-    // parseUserData(userData);
-    // let newResults = markSavedItems(results);
-    // setResults(newResults);
   };
 
   return (

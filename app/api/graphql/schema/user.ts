@@ -101,6 +101,7 @@ export const resolvers = {
           lists: {
             include: {
               items: true,
+              sharedWith: true,
             },
           },
           listsSharedWith: {

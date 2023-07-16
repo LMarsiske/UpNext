@@ -14,6 +14,7 @@ export const typeDef = gql`
   }
 
   type Game {
+    id: Int
     age_ratings: [Int]
     aggregated_rating: Float
     aggregated_rating_count: Int
@@ -45,7 +46,7 @@ export const typeDef = gql`
     multiplayer_modes: [Int]
     name: String
     parent_game: Int
-    platforms: [Int]
+    platforms: [String]
     player_perspectives: [Int]
     ports: [Int]
     rating: Float
@@ -70,6 +71,9 @@ export const typeDef = gql`
     version_title: String
     videos: [Int]
     websites: [Int]
+    release_year: String
+    poster: String
+    title: String
   }
 
   extend type Query {
@@ -99,10 +103,23 @@ export const resolvers = {
         genres: game.genres?.map((genre: any) => genre.name),
       }));
     },
-    getGame: async (_: any, { id }: any, { dataSources, igdbToken }: any) => {
-      let game = await dataSources.gameAPI.getGame(id);
+    getGame: async (_: any, { id }: any, { dataSources }: any) => {
+      let res = await dataSources.gameAPI.getGame(id);
+      const game = res[0];
       if (!game) return null;
+      console.log(game);
+
+      let release_year = Math.min(
+        ...game.release_dates.reduce((total: any, current: any) => {
+          if (current.y) {
+            total.push(current.y);
+          }
+          return total;
+        }, [])
+      );
+
       return {
+        id: game.id,
         age_ratings: game.age_ratings,
         aggregated_rating: game.aggregated_rating,
         aggregated_rating_count: game.aggregated_rating_count,
@@ -134,7 +151,7 @@ export const resolvers = {
         multiplayer_modes: game.multiplayer_modes,
         name: game.name,
         parent_game: game.parent_game,
-        platforms: game.platforms,
+        platforms: game.platforms.map((platform: any) => platform.name),
         player_perspectives: game.player_perspectives,
         ports: game.ports,
         rating: game.rating,
@@ -148,7 +165,7 @@ export const resolvers = {
         standalone_expansions: game.standalone_expansions,
         status: game.status,
         storyline: game.storyline,
-        summary: game.summary,
+        summary: game.storyline,
         tags: game.tags,
         themes: game.themes,
         total_rating: game.total_rating,
@@ -159,6 +176,9 @@ export const resolvers = {
         version_title: game.version_title,
         videos: game.videos,
         websites: game.websites,
+        title: game.name,
+        release_year: release_year,
+        poster: game.cover?.url ? `https:${game.cover.url}` : undefined,
       };
     },
     getIGDBAuthToken: async (_: any, __: any, { dataSources }: any) => {

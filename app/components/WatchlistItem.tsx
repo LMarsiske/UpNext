@@ -6,8 +6,8 @@ import { SearchResultProps } from "@/types/search";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { useItemStoreSelectors } from "@/stores/item";
 import { useLazyQuery } from "@apollo/client";
-import { GETMOVIE, GETSHOW } from "@/lib/queries";
-import type { Movie, TVShow, WatchListItem } from "@/types/item";
+import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
+import type { Movie, TVShow, Game, WatchListItem } from "@/types/item";
 
 const truncate = (str: string) =>
   str.length > 250 ? `${str.substring(0, 247)}...` : str;
@@ -29,6 +29,7 @@ const WatchlistItem = ({
   const setItem = useItemStoreSelectors.use.setItem();
   const [getMovie] = useLazyQuery(GETMOVIE);
   const [getShow] = useLazyQuery(GETSHOW);
+  const [getGame] = useLazyQuery(GETGAME);
 
   const handleItemClick = async () => {
     try {
@@ -53,6 +54,17 @@ const WatchlistItem = ({
           console.log(response);
           if (response.data.getTV) {
             setItem(response.data.getTV as TVShow);
+          }
+          break;
+        case "game":
+          response = await getGame({
+            variables: {
+              id: apiId,
+            },
+          });
+          console.log(response);
+          if (response.data.getGame) {
+            setItem(response.data.getGame as Game);
           }
           break;
       }

@@ -22,20 +22,26 @@ const ItemInfo = () => {
         <h1 className="text-2xl mb-4">
           {item!.title} ({item!.release_year})
         </h1>
-        <p className="text-lg">{item!.summary}</p>
         <hr className="border-fog my-2" />
-        <div>
-          <h2 className="text-xl mb-2">Cast</h2>
-          <ul>
-            {item!.cast!.map((actor, index) => {
-              return (
-                <li key={index} className="text-lg">
-                  {actor.character} - {actor.name}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <p className="text-lg">{item!.summary}</p>
+
+        {item && item.cast && (
+          <>
+            <hr className="border-fog my-2" />
+            <div>
+              <h2 className="text-xl mb-2">Cast</h2>
+              <ul>
+                {item!.cast.map((actor, index) => {
+                  return (
+                    <li key={index} className="text-lg">
+                      {actor.character} - {actor.name}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </>
+        )}
         {item?.providers && (
           <>
             <hr className="border-fog my-2" />
@@ -55,6 +61,23 @@ const ItemInfo = () => {
                   );
                 })}
               </div>
+            </div>
+          </>
+        )}
+        {item?.platforms && (
+          <>
+            <hr className="border-fog my-2" />
+            <div>
+              <h2 className="text-xl mb-2">Platforms</h2>
+              <ul>
+                {item!.platforms!.map((platform, index) => {
+                  return (
+                    <li key={index} className="mr-2 text-lg">
+                      {platform}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </>
         )}

@@ -19,27 +19,30 @@ const AuthHeader = ({ user }: { user: User }) => {
         </label>
         <ul
           tabIndex={0}
-          className="mt-2 z-[1] p-2 shadow menu  dropdown-content bg-fog rounded-box w-52"
+          className="mt-2 z-[1] p-2 shadow menu  dropdown-content bg-fog dark:bg-davy rounded-box w-60"
         >
+          <li aria-disabled>
+            <p className="text-xl text-gunmetal dark:text-snow">{user.email}</p>
+          </li>
           <li>
             <Link
               href={`/profile/${user.id}`}
-              className="text-xl text-gunmetal"
+              className="text-xl text-gunmetal dark:text-snow"
             >
-              <ManageAccountsIcon />
+              <ManageAccountsIcon className="text-gunmetal dark:text-snow" />
               Profile
             </Link>
           </li>
           <li>
             <Link
               href="#"
-              className="text-xl text-gunmetal"
+              className="text-xl text-gunmetal dark:text-snow"
               onClick={() => {
                 signOut({ callbackUrl: "/" });
                 setUser(null);
               }}
             >
-              <LogoutIcon />
+              <LogoutIcon className="text-gunmetal dark:text-snow" />
               Logout
             </Link>
           </li>

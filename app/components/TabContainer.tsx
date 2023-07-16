@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { debounce, set } from "lodash";
 import classes from "@/styles/TabContainer.module.css";
 import type { ListWithItems } from "@/types/list";
@@ -407,12 +407,7 @@ const TabContainer = ({ list, index, setIndex }: TabContainerProps) => {
           list.items &&
           list.items.length > 0 &&
           list.items.map((item: WatchListItem, index: number) => {
-            return (
-              <Fragment key={index}>
-                <WatchlistItem key={item.id} {...item} />
-                <WatchlistItem key={`${item.id}-123`} {...item} />
-              </Fragment>
-            );
+            return <WatchlistItem key={item.id} {...item} />;
           })}
         {!list ||
           !list.items ||

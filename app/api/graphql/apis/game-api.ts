@@ -28,6 +28,20 @@ class GameAPI extends RESTDataSource {
     });
   }
 
+  async getGame(id: number) {
+    return this.post(`games`, {
+      body: `fields *, cover.*, platforms.*, genres.*, release_dates.*;
+            where id=${id};`,
+    });
+  }
+
+  async getPlatformLogo(id: number) {
+    return this.post(`platform_logos`, {
+      body: `fields alpha_channel, animated, checksum, height, image_id, url, width;
+            where image_id=${id};`,
+    });
+  }
+
   getAuthToken() {
     return this.post(
       `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENT_ID}&client_secret=${process.env.TWITCH_SECRET}&grant_type=client_credentials`

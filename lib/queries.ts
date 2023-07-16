@@ -222,6 +222,19 @@ export const GETSHOW = gql`
   }
 `;
 
+export const GETGAME = gql`
+  query GetGame($id: String!) {
+    getGame(id: $id) {
+      id
+      title
+      summary
+      platforms
+      release_year
+      poster
+    }
+  }
+`;
+
 export const GETIGDBAUTHTOKEN = gql`
   query GetIGDBAuthToken {
     getIGDBAuthToken
