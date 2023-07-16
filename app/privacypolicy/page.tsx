@@ -1,4 +1,4 @@
-const PrivacyPolicyPage = () => {
+const PrivacyPolicyPage = () => (
   <div>
     <strong>Privacy Policy</strong>{" "}
     <p>
@@ -154,7 +154,7 @@ const PrivacyPolicyPage = () => {
         App Privacy Policy Generator
       </a>
     </p>
-  </div>;
-};
+  </div>
+);
 
 export default PrivacyPolicyPage;

@@ -195,10 +195,10 @@ const HomePage = () => {
       <h1 className="text-4xl">Search TV Shows</h1>
       <div className="flex">
         <input
-          className="text-xl"
           type="text"
           value={input}
           onChange={handleChange}
+          className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow"
         />
       </div>
       <div className="w-8/12">
