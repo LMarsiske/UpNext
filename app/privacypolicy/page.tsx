@@ -108,7 +108,7 @@ const PrivacyPolicyPage = () => {
         I do not knowingly collect personally identifiable information from
         children. I encourage all children to never submit any personally
         identifiable information through the Application and/or Services. I
-        encourage parents and legal guardians to monitor their children's
+        encourage parents and legal guardians to monitor their children&#39;s
         Internet usage and to help enforce this Policy by instructing their
         children never to provide personally identifiable information through
         the Application and/or Services without their permission. If you have
