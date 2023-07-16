@@ -27,9 +27,9 @@ const ItemInfo = () => {
         <div>
           <h2 className="text-xl mb-2">Cast</h2>
           <ul>
-            {item!.cast!.map((actor) => {
+            {item!.cast!.map((actor, index) => {
               return (
-                <li className="text-lg">
+                <li key={index} className="text-lg">
                   {actor.character} - {actor.name}
                 </li>
               );
