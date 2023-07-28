@@ -6,7 +6,7 @@ const NonAuthHeader: React.FC = () => {
   const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
   const setModalContent = useModalStoreSelectors.use.setModalContent();
   return (
-    <div className="flex items-center space-x-4 text-2xl">
+    <div className="hidden items-center space-x-4 text-2xl ">
       <Link href="/">Discover</Link>
       <button
         onClick={() => {

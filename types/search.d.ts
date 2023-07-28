@@ -1,4 +1,5 @@
 export interface GraphSearchResult {
+  index: number;
   id: number;
   type: string;
   title: string;

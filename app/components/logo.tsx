@@ -11,9 +11,11 @@ const Logo = () => {
   return (
     <Link href="/">
       <Image
+        height={48}
         priority={true}
         src={theme === "dark" ? LogoLight : LogoDark}
-        alt="Logo"
+        alt="UpNext Logo"
+        className="h-8 w-fit"
       />
     </Link>
   );

@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { ListWithItems } from "@/types/list";
-import Tab from "../components/Tab";
-import TabsContainer from "../components/TabsContainer";
-import TabContainer from "../components/TabContainer";
-import Drawer from "../components/Drawer";
+import Tab from "../components/tab";
+import TabsContainer from "../components/tabs-container";
+import TabContainer from "../components/tab-container";
+import Drawer from "../components/right-drawer";
 import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -21,7 +21,7 @@ const ListsPage = async () => {
   const setUser = useUserSelectors.use.setUser();
   const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
   const setModalContent = useModalStoreSelectors.use.setModalContent();
-  const setIsDrawerOpen = useDrawerStoreSelectors.use.setIsDrawerOpen();
+  const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const { data: session } = useSession();
   const router = useRouter();
   const [getLists] = useLazyQuery(GETLISTSWITHITEMS);
@@ -83,7 +83,7 @@ const ListsPage = async () => {
                             setTabIndex(index);
                             setList(user?.lists![index]);
                           }
-                          setIsDrawerOpen(true);
+                          openDrawer("RIGHT", "");
                         }}
                         className="flex items-center justify-center"
                       >
@@ -106,12 +106,6 @@ const ListsPage = async () => {
       {list && (
         <TabContainer list={list} index={tabIndex} setIndex={setTabIndex} />
       )}
-      <Drawer>
-        <div className="flex flex-col items-center justify-center h-full">
-          <h2 className="text-5xl mb-4">No items in this list</h2>
-          <p className="text-2xl">Add some items to get started</p>
-        </div>
-      </Drawer>
     </div>
   );
 };

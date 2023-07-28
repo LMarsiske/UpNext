@@ -2,10 +2,10 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { debounce } from "lodash";
-import { SearchResult } from "./components/SearchResults";
+import { SearchResult } from "./components/search-results";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import "@/styles/globals.css";
-import SearchResultSkeletons from "./components/SearchResultSkeletons";
+import SearchResultSkeletons from "./components/search-result-skeletons";
 
 import { flatten, sortBy } from "lodash";
 import { useSession } from "next-auth/react";
@@ -18,7 +18,8 @@ import {
   SEARCH,
   GETIGDBAUTHTOKEN,
 } from "@/lib/queries";
-import { useUserSelectors, useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
+import { useModalStoreSelectors } from "@/stores/modal";
 
 const HomePage = () => {
   const { data: session } = useSession();
@@ -41,6 +42,7 @@ const HomePage = () => {
       store.setIgdbAuthToken,
     ]
   );
+  const isBackdropOpen = useModalStoreSelectors.use.isBackdropOpen();
 
   useEffect(() => {
     if (searchData) {
@@ -73,26 +75,14 @@ const HomePage = () => {
 
       const uid = session.user.id;
       const res = await getUser({ variables: { id: uid } });
-      console.log(res);
+
       if (res.data) {
         let data: User = res.data.getUserWithListsWithItems;
         parseUserData(data);
       }
     };
 
-    const getIgdbToken = async () => {
-      if (!igdbAuthToken) {
-        const res = await getIgdbAuthToken();
-        console.log(res);
-        if (res.data) {
-          let data: string = res.data.getIgdbAuthToken;
-          setIgdbAuthToken(data);
-        }
-      }
-    };
-
     getUserData();
-    // getIgdbToken();
   }, [session]);
 
   const markSavedItems = (results: GraphSearchResult[]) => {
@@ -191,17 +181,21 @@ const HomePage = () => {
   };
 
   return (
-    <main className="flex flex-col items-center mt-8">
-      <h1 className="text-4xl">Search TV Shows</h1>
+    <main
+      className={`flex flex-col items-center ${
+        isBackdropOpen ? "overflow-hidden" : ""
+      }`}
+    >
+      <h1 className="text-3xl">Search TV Shows</h1>
       <div className="flex">
         <input
           type="text"
           value={input}
           onChange={handleChange}
-          className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow"
+          className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
         />
       </div>
-      <div className="w-8/12">
+      <div>
         {searchLoading ? (
           <SearchResultSkeletons />
         ) : (
@@ -211,6 +205,7 @@ const HomePage = () => {
               addToList={addItem}
               deleteFromList={removeItem}
               {...result}
+              index={index}
             />
           ))
         )}

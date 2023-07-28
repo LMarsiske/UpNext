@@ -12,9 +12,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useModalStore } from "@/stores/modal";
 
-import CreateListForm from "./CreateListForm";
-import AuthForm from "./AuthForm";
-import ItemInfo from "./ItemInfo";
+import CreateListForm from "./create-list-form";
+import AuthForm from "./auth-form";
+import ItemInfo from "./item-info";
 import { useItemStoreSelectors } from "@/stores/item";
 
 const Modal = () => {
@@ -29,8 +29,7 @@ const Modal = () => {
   return (
     <Root open={isModalOpen} onOpenChange={setIsModalOpen}>
       <Portal>
-        <Overlay className="bg-gray-800 bg-opacity-80 data-[state=open]:animate-overlayShow fixed inset-0" />
-        <Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-fit max-w-[900px] min-w[250px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-fog dark:bg-davy p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh]  max-w-[900px] min-w[250px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-fog dark:bg-davy focus:outline-none">
           <Title className="text-mauve12 m-0 text-2xl font-medium">
             {modalContent === "CREATE_LIST" && "Create a new list"}
             {modalContent === "AUTH" && "Sign in or create an account"}

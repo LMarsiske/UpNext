@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import Image from "next/image";
 import placeholder from "../../assets/images/placeholder.png";
-import { TypeTag } from "./TypeTag";
+
 import { SearchResultProps } from "@/types/search";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { useItemStoreSelectors } from "@/stores/item";
@@ -89,7 +89,6 @@ const WatchlistItem = ({
           height={200}
           className="rounded-l-xl"
         />
-        <TypeTag type={type} />
         <div className="flex flex-col ml-4 h-full justify-between prose dark:prose-invert">
           <h2 className="text-2xl">{title}</h2>
           <p>{summary ? truncate(summary) : "No summary available"}</p>

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { debounce, set } from "lodash";
 import classes from "@/styles/TabContainer.module.css";
 import type { ListWithItems } from "@/types/list";
-import WatchlistItem from "./WatchlistItem";
+import WatchlistItem from "./watchlist-item";
 import { useUserSelectors } from "@/stores/user";
 import { WatchListItem } from "@/types/item";
 import { SEARCHUSERS } from "@/lib/queries";

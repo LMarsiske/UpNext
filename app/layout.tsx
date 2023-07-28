@@ -7,6 +7,9 @@ import Modal from "./components/Modal/modal";
 import Container from "./components/container";
 import Providers from "./providers";
 import "../styles/globals.css";
+import BackDrop from "./components/backdrop";
+import BottomDrawer from "./components/bottom-drawer";
+import RightDrawer from "./components/right-drawer";
 
 export const metadata = {
   title: "UpNext",
@@ -27,6 +30,9 @@ export default async function RootLayout({ children }: LayoutProps) {
           <Header />
           <Container>{children}</Container>
           <Modal />
+          <BackDrop />
+          <BottomDrawer />
+          <RightDrawer />
         </Providers>
       </body>
     </html>
