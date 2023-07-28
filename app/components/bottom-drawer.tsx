@@ -1,30 +1,16 @@
 "use client";
 import React, { useEffect } from "react";
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
-import { useModalStoreSelectors } from "@/stores/modal";
-
-const variants: Variants = {
-  closed: {
-    y: "100%",
-    transition: {
-      type: "spring",
-      duration: 0.2,
-    },
-  },
-  open: {
-    y: 0,
-    transition: {
-      type: "spring",
-      duration: 0.4,
-    },
-  },
-};
+import styles from "@/styles/neon.module.css";
+import CloseIcon from "@mui/icons-material/Close";
+import BottomDrawerAuthForm from "./drawer/auth-form";
+import BottomDrawerItemInfo from "./drawer/item-info";
 
 const BottomDrawer = () => {
   const isDrawerOpen = useDrawerStoreSelectors.use.isBottomDrawerOpen();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
-  const setIsBackdropOpen = useModalStoreSelectors.use.setIsBackdropOpen();
+  const drawerContent = useDrawerStoreSelectors.use.bottomDrawerContent();
 
   useEffect(() => {
     console.log(isDrawerOpen);
@@ -42,19 +28,24 @@ const BottomDrawer = () => {
             y: "100%",
           }}
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-          className="fixed bg-indigo-600 text-white shadow-lg left-0 right-0 bottom-0 w-full h-[50%] p-5 z-[51]"
+          className="flex flex-col items-end fixed left-0 right-0 bottom-0 w-full h-fit max-h-[66%] z-[51]"
         >
           <button
             onClick={() => {
               console.log("closing");
               closeDrawer("BOTTOM");
-              setIsBackdropOpen(false);
             }}
-            className="bg-white text-black h-8 w-8 block mb-2 rounded-full"
+            className="bg-snow dark:bg-davy h-8 w-8 mb-2 mr-4 rounded-full flex justify-center items-center"
           >
-            &times;
+            <CloseIcon className="text-gunmetal dark:text-snow" />
           </button>
-          Bottom Drawer!
+          <div
+            className={`w-full h-full rounded-t-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow p-4 ${styles.neon}`}
+          >
+            {drawerContent === "AUTH" && <BottomDrawerAuthForm />}
+
+            {drawerContent === "MORE_INFO" && <BottomDrawerItemInfo />}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

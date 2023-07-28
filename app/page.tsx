@@ -19,7 +19,6 @@ import {
   GETIGDBAUTHTOKEN,
 } from "@/lib/queries";
 import { useUserStore } from "@/stores/user";
-import { useModalStoreSelectors } from "@/stores/modal";
 
 const HomePage = () => {
   const { data: session } = useSession();
@@ -28,7 +27,7 @@ const HomePage = () => {
 
   const [
     search,
-    { loading: searchLoading, data: searchData, error: searchError, client },
+    { loading: searchLoading, data: searchData, error: searchError },
   ] = useLazyQuery(SEARCH);
   const [getUser] = useLazyQuery(GETUSER);
   const [getIgdbAuthToken] = useLazyQuery(GETIGDBAUTHTOKEN);
@@ -42,7 +41,6 @@ const HomePage = () => {
       store.setIgdbAuthToken,
     ]
   );
-  const isBackdropOpen = useModalStoreSelectors.use.isBackdropOpen();
 
   useEffect(() => {
     if (searchData) {
@@ -181,36 +179,34 @@ const HomePage = () => {
   };
 
   return (
-    <main
-      className={`flex flex-col items-center ${
-        isBackdropOpen ? "overflow-hidden" : ""
-      }`}
-    >
-      <h1 className="text-3xl">Search TV Shows</h1>
-      <div className="flex">
-        <input
-          type="text"
-          value={input}
-          onChange={handleChange}
-          className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
-        />
-      </div>
-      <div>
-        {searchLoading ? (
-          <SearchResultSkeletons />
-        ) : (
-          results.map((result, index) => (
-            <SearchResult
-              key={result.id || index}
-              addToList={addItem}
-              deleteFromList={removeItem}
-              {...result}
-              index={index}
-            />
-          ))
-        )}
-      </div>
-    </main>
+    <>
+      <main className={`flex flex-col items-center`}>
+        <h1 className="text-3xl">Search TV Shows</h1>
+        <div className="flex">
+          <input
+            type="text"
+            value={input}
+            onChange={handleChange}
+            className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
+          />
+        </div>
+        <div>
+          {searchLoading ? (
+            <SearchResultSkeletons />
+          ) : (
+            results.map((result, index) => (
+              <SearchResult
+                key={result.id || index}
+                addToList={addItem}
+                deleteFromList={removeItem}
+                {...result}
+                index={index}
+              />
+            ))
+          )}
+        </div>
+      </main>
+    </>
   );
 };
 export default HomePage;

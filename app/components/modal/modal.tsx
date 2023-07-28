@@ -3,7 +3,6 @@ import React from "react";
 import {
   Root,
   Portal,
-  Overlay,
   Content,
   Title,
   Description,
@@ -15,17 +14,11 @@ import { useModalStore } from "@/stores/modal";
 import CreateListForm from "./create-list-form";
 import AuthForm from "./auth-form";
 import ItemInfo from "./item-info";
-import { useItemStoreSelectors } from "@/stores/item";
 
 const Modal = () => {
-  const { isModalOpen, setIsModalOpen, modalContent, setModalContent } =
+  const { isModalOpen, modalContent, setIsModalOpen, closeModal } =
     useModalStore();
-  const setItem = useItemStoreSelectors.use.setItem();
 
-  const handleOpenChange = (open: boolean) => {
-    setIsModalOpen(open);
-    setItem(null);
-  };
   return (
     <Root open={isModalOpen} onOpenChange={setIsModalOpen}>
       <Portal>
@@ -46,8 +39,7 @@ const Modal = () => {
               className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
               aria-label="Close"
               onClick={() => {
-                setIsModalOpen(false);
-                setModalContent("");
+                closeModal();
               }}
             >
               <CloseIcon />

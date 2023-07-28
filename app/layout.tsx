@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { getServerSession } from "next-auth";
 import { AuthOptions } from "./api/auth/[...nextauth]/route";
 const Header = dynamic(() => import("./components/header"));
-import Modal from "./components/Modal/modal";
+import Modal from "./components/modal/modal";
 import Container from "./components/container";
 import Providers from "./providers";
 import "../styles/globals.css";

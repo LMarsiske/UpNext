@@ -2,8 +2,10 @@
 import React, { useEffect } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
-import { useModalStoreSelectors } from "@/stores/modal";
 import styles from "@/styles/neon.module.css";
+import CloseIcon from "@mui/icons-material/Close";
+import DrawerAuthMenu from "./drawer/auth-menu";
+import DrawerNonAuthMenu from "./drawer/non-auth-menu";
 
 const variants: Variants = {
   closed: {
@@ -25,7 +27,7 @@ const variants: Variants = {
 const RightDrawer = () => {
   const isDrawerOpen = useDrawerStoreSelectors.use.isRightDrawerOpen();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
-  const setIsBackdropOpen = useModalStoreSelectors.use.setIsBackdropOpen();
+  const drawerContent = useDrawerStoreSelectors.use.rightDrawerContent();
 
   useEffect(() => {
     console.log(isDrawerOpen);
@@ -43,19 +45,22 @@ const RightDrawer = () => {
             x: "100%",
           }}
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-          className={`fixed bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 h-screen p-5 z-[51] ${styles.neon}`}
+          className={`fixed flex flex-col align-bottom rounded-l-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 h-screen px-4 py-2 z-[51] ${styles.neon}`}
         >
           <button
             onClick={() => {
               console.log("closing");
               closeDrawer("RIGHT");
-              setIsBackdropOpen(false);
             }}
-            className="bg-white text-black h-8 w-8 block mb-2 rounded-full"
+            className="text-right"
           >
-            &times;
+            <CloseIcon
+              fontSize="large"
+              className="text-gunmetal dark:text-snow"
+            />
           </button>
-          Right Drawer!
+          {drawerContent === "AUTH_MENU" && <DrawerAuthMenu />}
+          {drawerContent === "NON_AUTH_MENU" && <DrawerNonAuthMenu />}
         </motion.div>
       )}
     </AnimatePresence>

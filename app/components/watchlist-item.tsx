@@ -24,8 +24,7 @@ const WatchlistItem = ({
   listId,
   apiId,
 }: WatchListItem) => {
-  const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
-  const setModalContent = useModalStoreSelectors.use.setModalContent();
+  const openModal = useModalStoreSelectors.use.openModal();
   const setItem = useItemStoreSelectors.use.setItem();
   const [getMovie] = useLazyQuery(GETMOVIE);
   const [getShow] = useLazyQuery(GETSHOW);
@@ -68,8 +67,7 @@ const WatchlistItem = ({
           }
           break;
       }
-      setIsModalOpen(true);
-      setModalContent("MORE_INFO");
+      openModal("MORE_INFO");
     } catch (error: any) {
       console.log(error.message);
     }

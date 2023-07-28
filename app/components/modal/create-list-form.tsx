@@ -9,8 +9,7 @@ import type { User } from "@/types/user";
 const CreateListForm = () => {
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
-  const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
-  const setModalContent = useModalStoreSelectors.use.setModalContent();
+  const closeModal = useModalStoreSelectors.use.closeModal();
   const [listName, setListName] = useState("");
   const [createList] = useMutation(CREATELIST);
 
@@ -37,8 +36,7 @@ const CreateListForm = () => {
         } as User;
         setUser(updatedUser);
       }
-      setIsModalOpen(false);
-      setModalContent("");
+      closeModal();
     } catch (error: any) {
       console.log(error.message);
     }

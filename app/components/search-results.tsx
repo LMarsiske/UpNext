@@ -13,6 +13,7 @@ import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import { SearchResultProps } from "@/types/search";
 import type { Movie, TVShow, Game } from "@/types/item";
 import { useUserSelectors } from "@/stores/user";
+import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import Shave from "./shave";
 import ImageWithFallback from "./image-with-fallback";
 import styles from "@/styles/neon.module.css";
@@ -38,17 +39,14 @@ export const SearchResult = ({
 }: // removeItem,
 SearchResultProps) => {
   const user = useUserSelectors.use.user();
-  const { setIsModalOpen, setModalContent, setIsBackdropOpen } =
-    useModalStore.getState();
+  const { openModal } = useModalStore.getState();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
-  const setItem = useItemStoreSelectors.use.setItem();
+  const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
+  const { isMobile } = useMediaQueries();
 
   const [getMovie] = useLazyQuery(GETMOVIE);
   const [getShow] = useLazyQuery(GETSHOW);
   const [getGame] = useLazyQuery(GETGAME);
-
-  const boxRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const handleAddRemove = (
     event: MouseEvent<HTMLButtonElement>,
@@ -74,59 +72,22 @@ SearchResultProps) => {
         );
         return;
       }
-      setIsBackdropOpen(true);
     } else if (action === "remove") {
       deleteFromList(itemId!);
     }
   };
 
   const handleItemClick = async () => {
-    try {
-      let response;
-      switch (type) {
-        case "movie":
-          response = await getMovie({
-            variables: {
-              id: id,
-            },
-          });
-          if (response.data.getMovie) {
-            setItem(response.data.getMovie as Movie);
-          }
-          break;
-        case "tv":
-          response = await getShow({
-            variables: {
-              id: id,
-            },
-          });
-          console.log(response);
-          if (response.data.getTV) {
-            setItem(response.data.getTV as TVShow);
-          }
-          break;
-        case "game":
-          response = await getGame({
-            variables: {
-              id: id,
-            },
-          });
-          console.log(response);
-          if (response.data.getGame) {
-            setItem(response.data.getGame as Game);
-          }
-          break;
-      }
-      setIsBackdropOpen(true);
-      openDrawer("BOTTOM", "");
-    } catch (error: any) {
-      console.log(error.message);
+    setItemForFetch(id, type);
+    if (isMobile) {
+      openDrawer("BOTTOM", "MORE_INFO");
+    } else {
+      openModal("MORE_INFO");
     }
   };
 
   return (
     <div
-      ref={boxRef}
       className="flex w-full my-2 rounded-xl bg-fog dark:bg-davy z-20"
       onClick={handleItemClick}
     >

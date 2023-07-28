@@ -43,6 +43,9 @@ module.exports = {
         overlayShow: "overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
         contentShow: "overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
+      dropShadow: {
+        neon: "0 0 8px 3px rgba(12, 238, 234, 0.3)",
+      },
     },
   },
   plugins: [

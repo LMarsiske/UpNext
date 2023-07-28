@@ -1,15 +1,17 @@
 import Link from "next/link";
 import React from "react";
-import Avatar from "./avatar";
+import Avatar from "../avatar";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
 import { useUserSelectors } from "@/stores/user";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const AuthHeader = ({ user }: { user: User }) => {
   const setUser = useUserSelectors.use.setUser();
+  const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   return (
     <>
       <div className="hidden items-center space-x-4 text-2xl">
@@ -53,7 +55,11 @@ const AuthHeader = ({ user }: { user: User }) => {
           </ul>
         </div>
       </div>
-      <button>
+      <button
+        onClick={() => {
+          openDrawer("RIGHT", "AUTH_MENU");
+        }}
+      >
         <MenuIcon fontSize="large" className="text-gunmetal dark:text-snow" />
       </button>
     </>
