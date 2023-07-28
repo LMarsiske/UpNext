@@ -5,8 +5,10 @@ import { useUserSelectors } from "@/stores/user";
 import { useLazyQuery } from "@apollo/client";
 import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import type { Movie, TVShow, Game } from "@/types/item";
+import styles from "@/styles/drawer.module.css";
 
 const BottomDrawerItemInfo = () => {
+  const boxRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [loading, setLoading] = useState(false);
   const [inList, setInList] = useState(false);
@@ -73,15 +75,15 @@ const BottomDrawerItemInfo = () => {
     fetchItem();
   }, []);
   return (
-    <div>
+    <>
       {loading && <div>Loading...</div>}
       {item && (
-        <div className="flex flex-col overflow-y-scroll">
+        <div ref={boxRef} className="flex flex-col max-h-full">
           <h1 ref={titleRef} className="text-2xl font-bold">
             {item!.title} ({item!.release_year})
           </h1>
           <hr className="border-gunmetal dark:border-snow my-2" />
-          <div className={`flex flex-col mb-2`}>
+          <div className={`flex flex-col mb-2 overflow-scroll max-h-[350px]`}>
             <div>
               <img
                 src={item!.poster!}
@@ -161,7 +163,7 @@ const BottomDrawerItemInfo = () => {
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

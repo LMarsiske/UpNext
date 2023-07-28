@@ -28,7 +28,7 @@ const BottomDrawer = () => {
             y: "100%",
           }}
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-          className="flex flex-col items-end fixed left-0 right-0 bottom-0 w-full h-fit max-h-[66%] z-[51]"
+          className="flex flex-col items-end fixed left-0 right-0 bottom-0 w-full h-fit max-h-[66vh] z-[51]"
         >
           <button
             onClick={() => {
