@@ -25,14 +25,33 @@ const ProfilePage = () => {
   }
   return (
     <>
+      <h1 className="text-2xl font-bold mb-2">Profile Info</h1>
       <div className="w-full rounded-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow flex flex-col items-center mb-8">
-        <h1>{user.name}</h1>
-        <h2>{user.email}</h2>
-        <h2>
-          Created account:{" "}
-          {new Date(parseInt(user.createdAt)).toLocaleDateString()}
-        </h2>
+        <div className="overflow-x-auto">
+          <table className="table text-xl">
+            <tbody>
+              {/* row 1 */}
+              <tr className="border-0">
+                <td className="font-semibold">Name</td>
+                <td>{user.name}</td>
+              </tr>
+              {/* row 2 */}
+              <tr className="border-0">
+                <td className="font-semibold">Email</td>
+                <td>{user.email}</td>
+              </tr>
+              {/* row 3 */}
+              <tr className="border-0">
+                <td className="font-semibold">Acount Created</td>
+                <td>
+                  {new Date(parseInt(user.createdAt)).toLocaleDateString()}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+      <h1 className="text-2xl font-bold mb-2">Theme</h1>
       <div className="w-full rounded-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow flex flex-col items-center">
         <ThemeChanger />
       </div>

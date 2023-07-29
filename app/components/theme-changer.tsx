@@ -17,43 +17,35 @@ const ThemeChanger = () => {
   const currentTheme = theme === "system" ? systemTheme : theme;
 
   return (
-    <div className="flex flex-col items-center">
-      <input
-        type="radio"
-        name="theme"
-        id="light"
-        value="light"
-        checked={currentTheme === "light"}
-        onChange={() => setTheme("light")}
-        className="radio"
-      />
-      <label htmlFor="light" className="cursor-pointer">
-        <LightModeIcon /> Light Mode
-      </label>
-      <input
-        type="radio"
-        name="theme"
-        id="system"
-        value="system"
-        checked={currentTheme === "system"}
-        onChange={() => setTheme("system")}
-        className="radio"
-      />
-      <label htmlFor="system" className="cursor-pointer">
-        <SettingsSystemDaydreamIcon /> System
-      </label>
-      <input
-        type="radio"
-        name="theme"
-        id="dark"
-        value="dark"
-        checked={currentTheme === "dark"}
-        onChange={() => setTheme("dark")}
-        className="radio"
-      />
-      <label htmlFor="dark" className="cursor-pointer">
-        <DarkModeIcon /> Dark Mode
-      </label>
+    <div className="flex flex-col items-start">
+      <div className="form-control flex flex-row my-4">
+        <input
+          type="radio"
+          name="theme"
+          id="light"
+          value="light"
+          checked={currentTheme === "light"}
+          onChange={() => setTheme("light")}
+          className="radio mr-4 dark:border-snow"
+        />
+        <label htmlFor="light" className="cursor-pointer">
+          <LightModeIcon /> Light Mode
+        </label>
+      </div>
+      <div className="form-control flex flex-row my-4">
+        <input
+          type="radio"
+          name="theme"
+          id="dark"
+          value="dark"
+          checked={currentTheme === "dark"}
+          onChange={() => setTheme("dark")}
+          className="radio mr-4 dark:border-snow"
+        />
+        <label htmlFor="dark" className="cursor-pointer">
+          <DarkModeIcon /> Dark Mode
+        </label>
+      </div>
     </div>
     // <>
     //   <div className="form-control">

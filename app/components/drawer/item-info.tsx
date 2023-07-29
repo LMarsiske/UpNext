@@ -1,10 +1,18 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, MouseEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useItemStore } from "@/stores/item";
 import { useUserSelectors } from "@/stores/user";
-import { useLazyQuery } from "@apollo/client";
-import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
+import { useToastStoreSelectors } from "@/stores/toast";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import {
+  GETMOVIE,
+  GETSHOW,
+  GETGAME,
+  ADDITEMTOLIST,
+  DELETEITEMFROMLIST,
+} from "@/lib/queries";
 import type { Movie, TVShow, Game } from "@/types/item";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
@@ -18,14 +26,21 @@ const BottomDrawerItemInfo = () => {
   const [getMovie] = useLazyQuery(GETMOVIE);
   const [getShow] = useLazyQuery(GETSHOW);
   const [getGame] = useLazyQuery(GETGAME);
-  const { id, type, item, setItem } = useItemStore((state) => ({
-    id: state.itemId,
-    type: state.itemType,
-    item: state.item,
-    setItem: state.setItem,
-  }));
+  const [addItemToList] = useMutation(ADDITEMTOLIST);
+  const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
+  const { id, type, item, setItem, stringifiedItem } = useItemStore(
+    (state) => ({
+      id: state.itemId,
+      type: state.itemType,
+      item: state.item,
+      setItem: state.setItem,
+      stringifiedItem: state.stringifiedItem,
+    })
+  );
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
+  const openToast = useToastStoreSelectors.use.openToast();
+  const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
 
   useEffect(() => {
     console.log(showLists);
@@ -70,7 +85,12 @@ const BottomDrawerItemInfo = () => {
             }
             break;
         }
-        if (user?.allItems?.filter((item) => item.id === id).length === 1) {
+        console.log(id, type);
+        console.log(user);
+        if (
+          user?.allItems?.filter((i) => i.apiId === id && i.type === type)
+            .length === 1
+        ) {
           setInList(true);
         }
         setLoading(false);
@@ -82,6 +102,53 @@ const BottomDrawerItemInfo = () => {
 
     fetchItem();
   }, []);
+
+  const addItem = async () => {
+    try {
+      if (!stringifiedItem) return;
+
+      const newItem = await addItemToList({
+        variables: { id: selectedList, contents: stringifiedItem },
+      });
+      console.log(newItem);
+      if (user) {
+        setUser({
+          ...user,
+          allItems: [...user.allItems!, newItem.data.addItemToList],
+        });
+      }
+      let addedItem = newItem.data.addItemToList;
+      if (!addedItem) {
+        openToast("Something went wrong", "error");
+
+        return;
+      }
+      closeDrawer("BOTTOM");
+    } catch (e: any) {
+      console.log(e.message);
+    }
+  };
+
+  const removeItem = async () => {
+    try {
+      let itemId = user?.allItems?.find(
+        (i) => i.apiId === id && i.type === type
+      )?.id;
+      if (!itemId) return;
+      await removeItemFromList({ variables: { id: itemId } });
+      if (user) {
+        setUser({
+          ...user,
+          allItems: user.allItems!.filter((item) => item.id !== itemId),
+        });
+      }
+
+      closeDrawer("BOTTOM");
+    } catch (e: any) {
+      console.log(e.message);
+    }
+  };
+
   return (
     <>
       {loading && <div>Loading...</div>}
@@ -97,6 +164,7 @@ const BottomDrawerItemInfo = () => {
                 className="flex flex-col min-h-[300px] items-start"
               >
                 <button
+                  className="mb-2"
                   onClick={() => {
                     setSelectedList("");
                     setShowLists(false);
@@ -131,9 +199,16 @@ const BottomDrawerItemInfo = () => {
                   </ul>
                 )}
                 <button
-                  className={`bg-hollywood-cerise
-                   text-gunmetal  disabled:bg-fog disabled:text-davy dark:disabled:bg-davy dark:disabled:text-snow rounded-xl px-4 py-2 w-full text-2xl flex justify-center items-center transition-colors duration-350 ease-in-out`}
+                  className="bg-hollywood-cerise  text-snow rounded-xl px-4 py-2 w-full text-2xl disabled:bg-fog disabled:text-davy disabled:bg-opacity-50 disabled:cursor-not-allowed transition-colors duration-350 ease-in-out"
                   disabled={!selectedList}
+                  onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                    if (!selectedList) return;
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (!inList) addItem();
+                    else removeItem();
+                  }}
                 >
                   {inList ? "Remove from list" : "Add to list"}
                 </button>
@@ -239,7 +314,10 @@ const BottomDrawerItemInfo = () => {
                     className={`bg-${
                       inList ? "sky-blue" : "hollywood-cerise"
                     } text-gunmetal rounded-xl px-4 py-2 w-full text-2xl flex justify-center items-center`}
-                    onClick={() => setShowLists(true)}
+                    onClick={() => {
+                      if (!inList) setShowLists(true);
+                      else removeItem();
+                    }}
                   >
                     {inList ? "Remove from list" : "Add to list"}
                   </button>

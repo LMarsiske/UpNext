@@ -41,6 +41,7 @@ SearchResultProps) => {
   const { openModal } = useModalStore.getState();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
+  const setStringifiedItem = useItemStoreSelectors.use.setStringifiedItem();
   const { isMobile } = useMediaQueries();
 
   const handleAddRemove = (
@@ -74,6 +75,19 @@ SearchResultProps) => {
 
   const handleItemClick = async () => {
     setItemForFetch(id, type);
+    setStringifiedItem(
+      JSON.stringify({
+        apiId: id,
+        type,
+        title,
+        poster,
+        summary,
+        network,
+        platforms,
+        genres,
+      })
+    );
+
     if (isMobile) {
       openDrawer("BOTTOM", "MORE_INFO");
     } else {

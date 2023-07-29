@@ -44,9 +44,10 @@ const BottomDrawerCreateListForm = () => {
 
   return (
     <div>
+      <h1 className="text-2xl font-bold mb-2">Create a new list</h1>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         <input
-          className="border border-gunmetal dark:border-snow rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
+          className="bg-fog dark:bg-davy rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
           type="text"
           placeholder="List name"
           onChange={handleChange}
