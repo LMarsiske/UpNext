@@ -175,15 +175,19 @@ const BottomDrawerItemInfo = () => {
                         Cast
                       </h2>
                       <hr className="border-gunmetal dark:border-snow mt-1 mb-2" />
-                      <ul>
-                        {item!.cast.map((actor, index) => {
-                          return (
-                            <li key={index}>
-                              {actor.character} - {actor.name}
-                            </li>
-                          );
-                        })}
-                      </ul>
+                      {item!.cast.length > 0 ? (
+                        <ul>
+                          {item!.cast.map((actor, index) => {
+                            return (
+                              <li key={index}>
+                                {actor.character} - {actor.name}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <p>No cast found</p>
+                      )}
                     </div>
                   )}
                   {item?.providers && (
@@ -193,18 +197,22 @@ const BottomDrawerItemInfo = () => {
                       </h2>
                       <hr className="border-gunmetal dark:border-snow mt-1 mb-2" />
                       <div className="flex">
-                        {item!.providers!.map((platform, index) => {
-                          return (
-                            <img
-                              key={index}
-                              src={platform.logo}
-                              width={36}
-                              height={36}
-                              alt={`${platform.name} logo`}
-                              className="mr-2"
-                            />
-                          );
-                        })}
+                        {item.providers.length > 0 ? (
+                          item!.providers!.map((platform, index) => {
+                            return (
+                              <img
+                                key={index}
+                                src={platform.logo}
+                                width={36}
+                                height={36}
+                                alt={`${platform.name} logo`}
+                                className="mr-2"
+                              />
+                            );
+                          })
+                        ) : (
+                          <p>Not available on any streaming services</p>
+                        )}
                       </div>
                     </div>
                   )}

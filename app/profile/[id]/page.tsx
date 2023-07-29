@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useUserSelectors } from "@/stores/user";
 import { useRouter } from "next/navigation";
-import ThemeChanger from "@/app/components/ThemeChanger";
+import ThemeChanger from "@/app/components/theme-changer";
 
 const ProfilePage = () => {
   const user = useUserSelectors.use.user();

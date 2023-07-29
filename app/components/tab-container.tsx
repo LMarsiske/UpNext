@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { debounce, set } from "lodash";
-import classes from "@/styles/TabContainer.module.css";
+import classes from "@/styles/tab-container.module.css";
 import type { ListWithItems } from "@/types/list";
 import WatchlistItem from "./watchlist-item";
 import { useUserSelectors } from "@/stores/user";

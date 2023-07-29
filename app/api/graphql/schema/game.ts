@@ -90,7 +90,6 @@ export const resolvers = {
       { q }: any,
       { dataSources, igdbToken }: any
     ) => {
-      console.log("Searching games");
       let games = await dataSources.gameAPI.search(q);
       if (!games) return [];
       return games.map((game: any) => ({
@@ -182,7 +181,6 @@ export const resolvers = {
       };
     },
     getIGDBAuthToken: async (_: any, __: any, { dataSources }: any) => {
-      console.log("getting auth token");
       const res = await dataSources.gameAPI.getAuthToken();
       return res.access_token;
     },
