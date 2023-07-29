@@ -52,7 +52,7 @@ const CreateListForm = () => {
           onChange={handleChange}
         />
         <button
-          className="bg-electric-violet  text-snow  rounded-xl px-4 py-2 w-full text-2xl disabled:bg-fog disabled:text-davy disabled:bg-opacity-50 disabled:cursor-not-allowed transition-colors duration-350 ease-in-out"
+          className="bg-electric-violet  text-snow  rounded-xl px-4 py-2 w-full text-2xl disabled:bg-fog disabled:text-davy dark:disabled:bg-davy dark:disabled:text-snow disabled:cursor-not-allowed transition-colors duration-350 ease-in-out"
           type="submit"
           disabled={!listName}
         >

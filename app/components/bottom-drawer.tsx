@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
+import { useItemStoreSelectors } from "@/stores/item";
 import styles from "@/styles/neon.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import BottomDrawerAuthForm from "./drawer/auth-form";
@@ -11,6 +12,8 @@ const BottomDrawer = () => {
   const isDrawerOpen = useDrawerStoreSelectors.use.isBottomDrawerOpen();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const drawerContent = useDrawerStoreSelectors.use.bottomDrawerContent();
+  const setItem = useItemStoreSelectors.use.setItem();
+  const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
 
   useEffect(() => {
     console.log(isDrawerOpen);
@@ -34,6 +37,8 @@ const BottomDrawer = () => {
             onClick={() => {
               console.log("closing");
               closeDrawer("BOTTOM");
+              setItem(null);
+              setItemForFetch("", "");
             }}
             className="bg-snow dark:bg-davy h-8 w-8 mb-2 mr-4 rounded-full flex justify-center items-center"
           >

@@ -66,6 +66,8 @@ export const resolvers = {
       const credits = await dataSources.movieAPI.getCredits(id);
       const providers = await dataSources.movieAPI.getProviders(id);
 
+      console.log(providers);
+
       let providerList: any[] = [];
       if (
         providers?.results &&
