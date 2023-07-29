@@ -50,7 +50,7 @@ export const resolvers = {
     findUsersByEmail: async (_: any, { email }: any, { prisma }: any) => {
       if (!email) throw new Error("No email provided");
 
-      console.log(email);
+      console.log("FINDING USERS: ", email);
 
       const users = await prisma.user.findMany({
         take: 10,

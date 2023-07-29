@@ -276,7 +276,7 @@ const TabContainer = ({ list, index, setIndex }: TabContainerProps) => {
   return (
     <div className={classes.tabContainer}>
       <div className={classes.itemContainer}>
-        <div className="flex">
+        {/* <div className="flex">
           <div className="flex flex-col mx-4">
             <input
               className="border border-gunmetal dark:border-snow rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
@@ -402,7 +402,7 @@ const TabContainer = ({ list, index, setIndex }: TabContainerProps) => {
               </button>
             </div>
           )}
-        </div>
+        </div> */}
         {list &&
           list.items &&
           list.items.length > 0 &&
@@ -413,8 +413,12 @@ const TabContainer = ({ list, index, setIndex }: TabContainerProps) => {
           !list.items ||
           (list.items.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full">
-              <h2 className="text-5xl mb-4">No items in this list</h2>
-              <p className="text-2xl">Add some items to get started</p>
+              <h2 className="text-4xl mb-4 text-center">
+                No items in this list
+              </h2>
+              <p className="text-2xl text-center">
+                Add some items to get started
+              </p>
             </div>
           ))}
       </div>

@@ -10,6 +10,7 @@ import "../styles/globals.css";
 import BackDrop from "./components/backdrop";
 import BottomDrawer from "./components/bottom-drawer";
 import RightDrawer from "./components/right-drawer";
+import Toast from "./components/toast";
 
 export const metadata = {
   title: "UpNext",
@@ -25,7 +26,7 @@ export default async function RootLayout({ children }: LayoutProps) {
   const session = await getServerSession(AuthOptions);
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="h-fit">
         <Providers session={session}>
           <Header />
           <Container>{children}</Container>
@@ -33,6 +34,7 @@ export default async function RootLayout({ children }: LayoutProps) {
           <BackDrop />
           <BottomDrawer />
           <RightDrawer />
+          <Toast />
         </Providers>
       </body>
     </html>

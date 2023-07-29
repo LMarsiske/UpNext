@@ -8,6 +8,8 @@ interface UserState {
   setUser: (user: User | null | undefined) => void;
   igdbAuthToken: string;
   setIgdbAuthToken: (token: string) => void;
+  currentListIndex: number | null;
+  setCurrentListIndex: (index: number | null) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -17,6 +19,8 @@ export const useUserStore = create<UserState>()(
       setUser: (user) => set({ user }),
       igdbAuthToken: "",
       setIgdbAuthToken: (token) => set({ igdbAuthToken: token }),
+      currentListIndex: 1,
+      setCurrentListIndex: (index) => set({ currentListIndex: index }),
     }),
     {
       name: "upnext-user-storage",

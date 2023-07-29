@@ -1,16 +1,17 @@
+import { MouseEvent } from "react";
 import "@/styles/globals.css";
-import Image from "next/image";
+import ImageWithFallback from "./image-with-fallback";
+import Shave from "./shave";
 import placeholder from "../../assets/images/placeholder.png";
-
-import { SearchResultProps } from "@/types/search";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useUserSelectors } from "@/stores/user";
 import { useModalStoreSelectors } from "@/stores/modal";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useItemStoreSelectors } from "@/stores/item";
-import { useLazyQuery } from "@apollo/client";
-import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
-import type { Movie, TVShow, Game, WatchListItem } from "@/types/item";
-
-const truncate = (str: string) =>
-  str.length > 250 ? `${str.substring(0, 247)}...` : str;
+import { useMutation } from "@apollo/client";
+import { DELETEITEMFROMLIST } from "@/lib/queries";
+import type { WatchListItem } from "@/types/item";
+import useMediaQueries from "@/lib/hooks/useMediaQueries";
 
 const WatchlistItem = ({
   id,
@@ -18,78 +19,83 @@ const WatchlistItem = ({
   title,
   poster,
   summary,
-  network,
-  platforms,
-  genres,
-  listId,
   apiId,
 }: WatchListItem) => {
+  const { isMobile } = useMediaQueries();
+  const user = useUserSelectors.use.user();
+  const setUser = useUserSelectors.use.setUser();
   const openModal = useModalStoreSelectors.use.openModal();
-  const setItem = useItemStoreSelectors.use.setItem();
-  const [getMovie] = useLazyQuery(GETMOVIE);
-  const [getShow] = useLazyQuery(GETSHOW);
-  const [getGame] = useLazyQuery(GETGAME);
+  const openDrawer = useDrawerStoreSelectors.use.openDrawer();
+  const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
+  const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
 
   const handleItemClick = async () => {
-    try {
-      let response;
-      switch (type) {
-        case "movie":
-          response = await getMovie({
-            variables: {
-              id: apiId,
-            },
-          });
-          if (response.data.getMovie) {
-            setItem(response.data.getMovie as Movie);
-          }
-          break;
-        case "tv":
-          response = await getShow({
-            variables: {
-              id: apiId,
-            },
-          });
-          console.log(response);
-          if (response.data.getTV) {
-            setItem(response.data.getTV as TVShow);
-          }
-          break;
-        case "game":
-          response = await getGame({
-            variables: {
-              id: apiId,
-            },
-          });
-          console.log(response);
-          if (response.data.getGame) {
-            setItem(response.data.getGame as Game);
-          }
-          break;
-      }
+    setItemForFetch(apiId, type);
+    if (isMobile) {
+      openDrawer("BOTTOM", "MORE_INFO");
+    } else {
       openModal("MORE_INFO");
-    } catch (error: any) {
-      console.log(error.message);
+    }
+  };
+
+  const removeItem = async () => {
+    try {
+      console.log(id);
+      await removeItemFromList({ variables: { id: id } });
+      if (user) {
+        setUser({
+          ...user,
+          allItems: user.allItems!.filter((item) => item.id !== id),
+        });
+      }
+    } catch (e: any) {
+      console.log(e.message);
     }
   };
 
   return (
-    <div className="relative" onClick={handleItemClick}>
-      <div className="flex w-[calc(100%-.25rem)] mb-2 rounded-xl border-2 border-orange-600 z-20">
-        <Image
+    <div
+      className="flex w-full my-2 rounded-xl bg-fog dark:bg-davy z-20"
+      onClick={handleItemClick}
+    >
+      <div className="shrink-0 rounded-l-xl w-[67px]">
+        <ImageWithFallback
           src={poster || placeholder}
+          fallback={placeholder}
           alt={
             poster
-              ? `A poster for the TV show ${title}`
-              : "A placeholder poster for a TV show"
+              ? `A poster for the ${type} ${title}`
+              : "A placeholder poster for a search result"
           }
-          width={142}
-          height={200}
-          className="rounded-l-xl"
+          fallbackAlt="A placeholder poster for a search result"
+          classNames="rounded-l-xl w-auto h-full"
+          width={101}
+          height={150}
         />
-        <div className="flex flex-col ml-4 h-full justify-between prose dark:prose-invert">
-          <h2 className="text-2xl">{title}</h2>
-          <p>{summary ? truncate(summary) : "No summary available"}</p>
+      </div>
+      <div className="flex flex-col p-2 w-full h-full justify-between">
+        <Shave maxHeight={30} element="h2" classNames="text-xl font-bold mb-2">
+          {title}
+        </Shave>
+        <div className="flex w-full h-full">
+          <Shave maxHeight={48} element="p" classNames="leading-tight grow">
+            {summary || "No summary available"}
+          </Shave>
+          {user && (
+            <div className={"dropdown dropdown-end"}>
+              <label tabIndex={0}>
+                <button
+                  onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    removeItem();
+                  }}
+                >
+                  <BookmarkIcon className="text-hollywood-cerise" />
+                </button>
+              </label>
+            </div>
+          )}
         </div>
       </div>
     </div>

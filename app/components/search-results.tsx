@@ -11,7 +11,6 @@ import { useItemStoreSelectors } from "@/stores/item";
 import { useLazyQuery } from "@apollo/client";
 import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import { SearchResultProps } from "@/types/search";
-import type { Movie, TVShow, Game } from "@/types/item";
 import { useUserSelectors } from "@/stores/user";
 import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import Shave from "./shave";
@@ -43,10 +42,6 @@ SearchResultProps) => {
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
   const { isMobile } = useMediaQueries();
-
-  const [getMovie] = useLazyQuery(GETMOVIE);
-  const [getShow] = useLazyQuery(GETSHOW);
-  const [getGame] = useLazyQuery(GETGAME);
 
   const handleAddRemove = (
     event: MouseEvent<HTMLButtonElement>,
@@ -138,7 +133,7 @@ SearchResultProps) => {
               {user && user.lists && user.lists.length > 1 && (
                 <ul
                   tabIndex={0}
-                  className={`mt-2 z-[51] p-2 shadow menu  dropdown-content bg-fog rounded-box min-w-fit ${styles.neon}`}
+                  className={`mt-2 z-[51] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
                 >
                   {user &&
                     user.lists.map((list) => (

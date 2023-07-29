@@ -7,6 +7,8 @@ import styles from "@/styles/neon.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import BottomDrawerAuthForm from "./drawer/auth-form";
 import BottomDrawerItemInfo from "./drawer/item-info";
+import BottomDrawerListOptions from "./drawer/bottom-list-options";
+import BottomDrawerCreateListForm from "./drawer/create-list-form";
 
 const BottomDrawer = () => {
   const isDrawerOpen = useDrawerStoreSelectors.use.isBottomDrawerOpen();
@@ -45,11 +47,15 @@ const BottomDrawer = () => {
             <CloseIcon className="text-gunmetal dark:text-snow" />
           </button>
           <div
-            className={`w-full h-full rounded-t-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow p-4 ${styles.neon}`}
+            className={`w-full h-full rounded-t-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow p-4 shadow-neon`}
           >
             {drawerContent === "AUTH" && <BottomDrawerAuthForm />}
 
             {drawerContent === "MORE_INFO" && <BottomDrawerItemInfo />}
+
+            {drawerContent === "LIST_OPTIONS" && <BottomDrawerListOptions />}
+
+            {drawerContent === "CREATE_LIST" && <BottomDrawerCreateListForm />}
           </div>
         </motion.div>
       )}

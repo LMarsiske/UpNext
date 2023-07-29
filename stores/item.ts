@@ -3,11 +3,11 @@ import createSelectors from "@/lib/createSelectors";
 import { Movie, TVShow, Game } from "@/types/item";
 
 interface ItemState {
-  itemId: string | number;
+  itemId: string | number | null;
   itemType: string;
   item: TVShow | Movie | Game | null;
   setItem: (item: TVShow | Movie | Game | null) => void;
-  setItemForFetch: (itemId: string | number, itemType: string) => void;
+  setItemForFetch: (itemId: string | number | null, itemType: string) => void;
 }
 
 export const useItemStore = create<ItemState>((set) => ({

@@ -1,0 +1,3 @@
+.selectItem {
+  min-width: calc(var(--radix-select-width) - 1rem);
+}

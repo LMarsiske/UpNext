@@ -33,7 +33,7 @@ const BottomDrawerAuthForm = () => {
           return (
             <button
               key={provider.id}
-              className={`bg-fog rounded-xl px-4 py-2  mb-8 w-full text-2xl flex justify-center items-center ${
+              className={`text-gunmetal bg-fog rounded-xl px-4 py-2  mb-8 w-full text-2xl flex justify-center items-center ${
                 index !== Object.keys(providers).length - 1 && "mb-4"
               }`}
               type="submit"

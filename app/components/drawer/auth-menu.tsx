@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Avatar from "../avatar";
 import Shave from "../shave";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
 import { useUserSelectors } from "@/stores/user";
+import { useDrawerStoreSelectors } from "@/stores/drawer";
 import SearchIcon from "@mui/icons-material/Search";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const DrawerAuthMenu = () => {
+  const router = useRouter();
+  const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const setUser = useUserSelectors.use.setUser();
   const { data: session, status } = useSession();
   const user = session?.user as User;
@@ -28,32 +32,47 @@ const DrawerAuthMenu = () => {
         </Shave>
       </div>
       <hr className="border-gunmetal dark:border-snow mt-2 mb-6" />
-      <Link href="/" className="text-xl text-gunmetal dark:text-snow mb-6">
+      <button
+        onClick={() => {
+          router.push("/");
+          closeDrawer("RIGHT");
+        }}
+        className="text-xl text-left text-gunmetal dark:text-snow mb-6"
+      >
         <SearchIcon className="text-gunmetal dark:text-snow mr-2" />
         Discover
-      </Link>
-      <Link href="/lists" className="text-xl text-gunmetal dark:text-snow mb-6">
+      </button>
+      <button
+        onClick={() => {
+          router.push("/lists");
+          closeDrawer("RIGHT");
+        }}
+        className="text-xl text-left text-gunmetal dark:text-snow mb-6"
+      >
         <BookmarksIcon className="text-gunmetal dark:text-snow mr-2" />
         Lists
-      </Link>
-      <Link
-        href={`/profile/${user.id}`}
-        className="text-xl text-gunmetal dark:text-snow mb-6"
+      </button>
+      <button
+        onClick={() => {
+          router.push(`/profile/${user.id}`);
+          closeDrawer("RIGHT");
+        }}
+        className="text-xl text-left text-gunmetal dark:text-snow mb-6"
       >
         <ManageAccountsIcon className="text-gunmetal dark:text-snow mr-2" />
         Profile
-      </Link>
-      <Link
-        href="#"
-        className="text-xl text-gunmetal dark:text-snow"
+      </button>
+      <button
         onClick={() => {
           signOut({ callbackUrl: "/" });
           setUser(null);
+          closeDrawer("RIGHT");
         }}
+        className="text-xl text-left text-gunmetal dark:text-snow"
       >
         <LogoutIcon className="text-gunmetal dark:text-snow mr-2" />
         Logout
-      </Link>
+      </button>
     </div>
   );
 };
