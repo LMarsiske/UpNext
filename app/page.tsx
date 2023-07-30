@@ -181,7 +181,7 @@ const HomePage = () => {
   return (
     <>
       <main className={`flex flex-col items-center`}>
-        <h1 className="text-3xl md:mb-2">What's on next?</h1>
+        <h1 className="text-3xl md:mb-2">What&apos;s on next?</h1>
         <div className="flex">
           <input
             type="text"
