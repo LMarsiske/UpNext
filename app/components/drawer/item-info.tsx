@@ -16,6 +16,7 @@ import {
 } from "@/lib/queries";
 import type { Movie, TVShow, Game } from "@/types/item";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import BottomDrawerItemInfoSkeleton from "./item-info-skeleton";
 
 const BottomDrawerItemInfo = () => {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -153,7 +154,7 @@ const BottomDrawerItemInfo = () => {
 
   return (
     <>
-      {loading && <div>Loading...</div>}
+      {loading && <BottomDrawerItemInfoSkeleton />}
       {item && (
         <>
           <AnimatePresence>
@@ -232,7 +233,7 @@ const BottomDrawerItemInfo = () => {
                 </h1>
                 <hr className="border-gunmetal dark:border-snow my-2" />
                 <div
-                  className={`flex flex-col mb-2 overflow-scroll max-h-[320px]`}
+                  className={`flex flex-col mb-2 overflow-scroll max-h-[20rem]`}
                 >
                   <div className="mb-2">
                     <img

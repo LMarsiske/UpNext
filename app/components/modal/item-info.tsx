@@ -16,6 +16,7 @@ import {
 } from "@/lib/queries";
 import type { Movie, TVShow, Game } from "@/types/item";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ModalItemInfoSkeleton from "./item-info-skeleton";
 
 const ItemInfo = () => {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -153,7 +154,7 @@ const ItemInfo = () => {
   return (
     <>
       <hr className="border-gunmetal dark:border-snow mb-4" />
-      {loading && <div>Loading...</div>}
+      {loading && <ModalItemInfoSkeleton />}
       {item && (
         <>
           <AnimatePresence>
@@ -228,7 +229,7 @@ const ItemInfo = () => {
                 className="flex flex-col lg:text-lg"
               >
                 <div
-                  className={`flex flex-col mb-2 overflow-scroll max-h-[600px]`}
+                  className={`flex flex-col mb-2 overflow-auto max-h-[600px] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2`}
                 >
                   <div className="mb-2">
                     <img

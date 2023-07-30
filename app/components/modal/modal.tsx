@@ -16,13 +16,20 @@ import { useItemStoreSelectors } from "@/stores/item";
 import CreateListForm from "./create-list-form";
 import AuthForm from "./auth-form";
 import ItemInfo from "./item-info";
+import TitleSkeleton from "./title-skeleton";
 
 const Modal = () => {
-  const { isModalOpen, modalContent, closeModal, setIsModalOpen } =
-    useModalStore();
+  const {
+    isModalOpen,
+    modalContent,
+    closeModal,
+    setIsModalOpen,
+    setModalContent,
+  } = useModalStore();
   const openBackdrop = useBackdropStoreSelectors.use.openBackdrop();
   const closeBackdrop = useBackdropStoreSelectors.use.closeBackdrop();
   const item = useItemStoreSelectors.use.item();
+  const setItem = useItemStoreSelectors.use.setItem();
 
   return (
     <Root
@@ -32,6 +39,8 @@ const Modal = () => {
           openBackdrop();
         } else {
           closeBackdrop();
+          setModalContent("");
+          setItem(null);
         }
         setIsModalOpen(open);
       }}
@@ -39,13 +48,33 @@ const Modal = () => {
       <Portal>
         <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] max-w-[50rem] md:w-4/5 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
           <div className="flex justify-between items-start">
-            <Title className="text-2xl lg:text-3xl font-bold">
-              {modalContent === "CREATE_LIST" && "Create a new list"}
-              {modalContent === "AUTH" && "Sign in or create an account"}
-              {modalContent === "MORE_INFO" &&
-                item?.title &&
-                `${item?.title} (${item?.release_year || "Unknown"})`}
-            </Title>
+            {modalContent === "CREATE_LIST" && (
+              <Title asChild>
+                <h2 className="text-2xl lg:text-3xl font-bold">
+                  Create a new list
+                </h2>
+              </Title>
+            )}
+            {modalContent === "AUTH" && (
+              <Title asChild>
+                <h2 className="text-2xl lg:text-3xl font-bold">
+                  Sign in or create an account
+                </h2>
+              </Title>
+            )}
+            {modalContent === "MORE_INFO" && item?.title && (
+              <Title asChild>
+                <h2 className="text-2xl lg:text-3xl font-bold">
+                  {item?.title} ({item?.release_year || "Unknown"})
+                </h2>
+              </Title>
+            )}
+            {modalContent === "MORE_INFO" && !item?.title && (
+              <Title asChild>
+                <TitleSkeleton />
+              </Title>
+            )}
+
             <Close asChild>
               <button
                 className=""
