@@ -46,25 +46,25 @@ const Modal = () => {
       }}
     >
       <Portal>
-        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85dvh] max-w-[50rem] md:w-4/5 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
+        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85dvh] max-w-[50rem] w-[calc(100dvw-2rem)] md:w-4/5 p-2 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
           <div className="flex justify-between items-start">
             {modalContent === "CREATE_LIST" && (
               <Title asChild>
-                <h2 className="text-2xl lg:text-3xl font-bold">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
                   Create a new list
                 </h2>
               </Title>
             )}
             {modalContent === "AUTH" && (
               <Title asChild>
-                <h2 className="text-2xl lg:text-3xl font-bold">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
                   Sign in or create an account
                 </h2>
               </Title>
             )}
             {modalContent === "MORE_INFO" && item?.title && (
               <Title asChild>
-                <h2 className="text-2xl lg:text-3xl font-bold">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
                   {item?.title} ({item?.release_year || "Unknown"})
                 </h2>
               </Title>

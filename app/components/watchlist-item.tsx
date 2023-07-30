@@ -39,11 +39,12 @@ const WatchlistItem = ({
 
   const handleItemClick = async () => {
     setItemForFetch(apiId, type);
-    if (isMobile) {
-      openDrawer("BOTTOM", "MORE_INFO");
-    } else {
-      openModal("MORE_INFO");
-    }
+    // if (isMobile) {
+    //   openDrawer("BOTTOM", "MORE_INFO");
+    // } else {
+    //   openModal("MORE_INFO");
+    // }
+    openModal("MORE_INFO");
   };
 
   const removeItem = async () => {

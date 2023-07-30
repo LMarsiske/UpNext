@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
+import { useModalStoreSelectors } from "@/stores/modal";
 import { useRouter } from "next/navigation";
 import SearchIcon from "@mui/icons-material/Search";
 import LoginIcon from "@mui/icons-material/Login";
@@ -8,6 +9,7 @@ const DrawerNonAuthMenu = () => {
   const router = useRouter();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
+  const openModal = useModalStoreSelectors.use.openModal();
   return (
     <div className="flex flex-col w-full h-full mt-4">
       <button
@@ -24,7 +26,8 @@ const DrawerNonAuthMenu = () => {
       <button
         onClick={() => {
           closeDrawer("RIGHT", false);
-          openDrawer("BOTTOM", "AUTH", false);
+          // openDrawer("BOTTOM", "AUTH", false);
+          openModal("AUTH");
         }}
         className="text-xl text-left text-gunmetal dark:text-snow"
       >

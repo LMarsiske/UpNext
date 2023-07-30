@@ -216,7 +216,7 @@ const ItemInfo = () => {
                 className="flex flex-col lg:text-lg"
               >
                 <div
-                  className={`flex flex-col mb-2 overflow-auto max-h-[600px] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2`}
+                  className={`flex flex-col mb-2 overflow-auto max-h-[50dvh] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2`}
                 >
                   <div className="mb-2">
                     <img
