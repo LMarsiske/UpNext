@@ -6,10 +6,8 @@ import type { ListWithItems } from "@/types/list";
 import Tab from "../components/tab";
 import TabsContainer from "../components/tabs-container";
 import TabContainer from "../components/tab-container";
-import Drawer from "../components/right-drawer";
 import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
-import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useModalStoreSelectors } from "@/stores/modal";
@@ -22,10 +20,7 @@ import { Select, SelectItem } from "@/app/components/select";
 import Shave from "../components/shave";
 
 const ListsPage = async () => {
-  // const user = useUserSelectors.use.user();
-  // const setUser = useUserSelectors.use.setUser();
   const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
-  const currentListIndex = useUserSelectors.use.currentListIndex();
   const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
   const openModal = useModalStoreSelectors.use.openModal();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
@@ -45,7 +40,6 @@ const ListsPage = async () => {
           id: user.id,
         },
       });
-      console.log(response);
       if (response.data.getAllListsWithItems) {
         setUser({
           ...user,
@@ -58,7 +52,6 @@ const ListsPage = async () => {
 
   useEffect(() => {
     if (!user) return;
-    console.log(user.lists![tabIndex]);
     setList(user.lists![tabIndex]);
   }, [user]);
 
@@ -99,7 +92,6 @@ const ListsPage = async () => {
             </Select>
             <button
               onClick={() => {
-                console.log("opening");
                 setCurrentListIndex(tabIndex);
                 openDrawer("BOTTOM", "LIST_OPTIONS");
               }}

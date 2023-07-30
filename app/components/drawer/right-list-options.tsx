@@ -20,10 +20,7 @@ import { SEARCHUSERS } from "@/lib/queries";
 import { ListWithItems } from "@/types/list";
 import { User } from "@/types/user";
 
-import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -68,11 +65,6 @@ const RightDrawerListOptions = () => {
   const setToastType = useToastStoreSelectors.use.setType();
 
   useEffect(() => {
-    console.log(searchRef.current?.getBoundingClientRect());
-    console.log(searchRef.current?.getBoundingClientRect()?.y);
-  }, [searchRef.current]);
-
-  useEffect(() => {
     const fetchList = async () => {
       setLoading(true);
       try {
@@ -111,7 +103,6 @@ const RightDrawerListOptions = () => {
   }, [searchUsersData]);
 
   const search = async () => {
-    console.log("searching");
     if (!email) return;
     console.log(email);
     setEmail("");
@@ -121,10 +112,7 @@ const RightDrawerListOptions = () => {
       },
     });
 
-    console.log(res);
-
     if (!res.data.findUsersByEmail || res.data.findUsersByEmail.length === 0) {
-      console.log("setting toast");
       setToastMessage("No users found with that email");
       setToastType("error");
       setTimeout(() => {
@@ -204,7 +192,6 @@ const RightDrawerListOptions = () => {
         uid: id,
       },
     });
-    console.log(response);
 
     if (!response.data.removeUserFromList) return;
 
@@ -303,7 +290,6 @@ const RightDrawerListOptions = () => {
         uid: user!.id,
       },
     });
-    console.log(response);
 
     if (!response.data.removeUserFromList) return;
 
@@ -328,7 +314,6 @@ const RightDrawerListOptions = () => {
           id: list.id,
         },
       });
-      console.log(response);
       if (!response.data.deleteList) return;
 
       if (user) {
@@ -445,11 +430,9 @@ const RightDrawerListOptions = () => {
                   name: newName,
                 }),
               };
-              console.log(variables);
               const response = await editList({
                 variables: variables,
               });
-              console.log(response);
               if (!response.data.editList) return;
 
               setNewName(response.data.editList.name);

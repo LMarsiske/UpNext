@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import SettingsSystemDaydreamIcon from "@mui/icons-material/SettingsSystemDaydream";
-import styles from "@/styles/radio.module.css";
 
 const ThemeChanger = () => {
   const { systemTheme, theme, setTheme } = useTheme();

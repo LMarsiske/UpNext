@@ -8,7 +8,6 @@ class GameAPI extends RESTDataSource {
     path: string,
     request: AugmentedRequest
   ): ValueOrPromise<void> {
-    console.log("willSendRequest: ", path);
     request.headers["Client-ID"] = process.env.IGDB_CLIENT_ID!;
     request.headers["Authorization"] = process.env.IGDB_AUTH!;
   }

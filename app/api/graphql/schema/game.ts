@@ -106,8 +106,6 @@ export const resolvers = {
       let res = await dataSources.gameAPI.getGame(id);
       const game = res[0];
       if (!game) return null;
-      console.log(game);
-
       let release_year = Math.min(
         ...game.release_dates.reduce((total: any, current: any) => {
           if (current.y) {

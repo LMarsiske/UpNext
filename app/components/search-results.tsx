@@ -9,18 +9,11 @@ import { useModalStore } from "@/stores/modal";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useItemStoreSelectors } from "@/stores/item";
 import { useBackdropStoreSelectors } from "@/stores/backdrop";
-import { useLazyQuery } from "@apollo/client";
-import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import { SearchResultProps } from "@/types/search";
-// import { useUserSelectors } from "@/stores/user";
 import { useUserStore } from "@/stores/user";
 import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import Shave from "./shave";
 import ImageWithFallback from "./image-with-fallback";
-import styles from "@/styles/neon.module.css";
-
-const truncate = (str: string) =>
-  str.length > 250 ? `${str.substring(0, 247)}...` : str;
 
 export const SearchResult = ({
   index,
@@ -37,9 +30,7 @@ export const SearchResult = ({
   itemId,
   addToList,
   deleteFromList,
-}: // removeItem,
-SearchResultProps) => {
-  // const user = useUserSelectors.use.user();
+}: SearchResultProps) => {
   const [user] = useUserStore((store) => [store.user]);
   const { openModal } = useModalStore.getState();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();

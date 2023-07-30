@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useItemStoreSelectors } from "@/stores/item";
-import styles from "@/styles/neon.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import BottomDrawerAuthForm from "./drawer/auth-form";
 import BottomDrawerItemInfo from "./drawer/item-info";
@@ -16,10 +15,6 @@ const BottomDrawer = () => {
   const drawerContent = useDrawerStoreSelectors.use.bottomDrawerContent();
   const setItem = useItemStoreSelectors.use.setItem();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
-
-  useEffect(() => {
-    console.log(isDrawerOpen);
-  }, [isDrawerOpen]);
 
   return (
     <AnimatePresence>
@@ -37,7 +32,6 @@ const BottomDrawer = () => {
         >
           <button
             onClick={() => {
-              console.log("closing");
               closeDrawer("BOTTOM");
               setItem(null);
               setItemForFetch("", "");

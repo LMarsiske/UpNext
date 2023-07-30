@@ -105,7 +105,6 @@ export const typeDef = gql`
 export const resolvers = {
   Query: {
     searchTV: async (_: any, { q }: any, { dataSources }: any) => {
-      console.log("searching tv");
       let res = await dataSources.tvAPI.search(q);
       if (!res) return [];
       return res.map((show: any) => {
@@ -126,7 +125,6 @@ export const resolvers = {
     getTV: async (_: any, { id }: any, { dataSources }: any) => {
       let res = await dataSources.tvAPI.getShow(id);
       if (!res) return null;
-      console.log(res);
       let summary = res.summary;
       if (summary) {
         summary = stripHtml(summary).result;

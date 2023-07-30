@@ -83,24 +83,7 @@ const HomePage = () => {
     getUserData();
   }, [session]);
 
-  const markSavedItems = (results: GraphSearchResult[]) => {
-    if (!user || !user?.allItems) return results;
-
-    return results.map((result) => {
-      const item = user.allItems!.find(
-        (item) => item.apiId === result.id?.toString()
-      );
-      return {
-        ...result,
-        inList: !!item,
-        listId: item?.listId,
-        itemId: item?.id,
-      };
-    });
-  };
-
   const parseUserData = (data: User) => {
-    console.log(data);
     if (!data?.lists) {
       setUser({ ...data });
       return;
@@ -128,7 +111,6 @@ const HomePage = () => {
       const newItem = await addItemToList({
         variables: { id: listId, contents: contents },
       });
-      console.log(newItem);
       if (user) {
         setUser({
           ...user,

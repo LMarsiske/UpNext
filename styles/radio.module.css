@@ -1,3 +1,0 @@
-.radio {
-  @apply border, border-fog checked:bg-blue-500  checked:border-blue-500 checked:shadow-[0 0 0 4px #dddbe4 inset,0 0 0 4px #dddbe4 inset] dark:checked:shadow-[0 0 0 4px #4d4f53 inset,0 0 0 4px #4d4f53 inset];
-}

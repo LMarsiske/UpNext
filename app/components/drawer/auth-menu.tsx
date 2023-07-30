@@ -5,7 +5,6 @@ import Avatar from "../avatar";
 import Shave from "../shave";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
-// import { useUserSelectors } from "@/stores/user";
 import { useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,7 +15,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 const DrawerAuthMenu = () => {
   const router = useRouter();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
-  // const setUser = useUserSelectors.use.setUser();
   const [setUser] = useUserStore((store) => [store.setUser]);
   const { data: session, status } = useSession();
   const user = session?.user as User;

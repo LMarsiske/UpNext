@@ -34,7 +34,6 @@ const WatchlistItem = ({
   const [maxHeight, setMaxHeight] = useState(0);
 
   useEffect(() => {
-    console.log(isMobile);
     setMaxHeight(isMobile ? 48 : 96);
   }, [isMobile]);
 
@@ -49,7 +48,6 @@ const WatchlistItem = ({
 
   const removeItem = async () => {
     try {
-      console.log(id);
       await removeItemFromList({ variables: { id: id } });
       if (user) {
         setUser({

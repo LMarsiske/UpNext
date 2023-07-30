@@ -39,15 +39,9 @@ const BottomDrawerItemInfo = () => {
       stringifiedItem: state.stringifiedItem,
     })
   );
-  // const user = useUserSelectors.use.user();
-  // const setUser = useUserSelectors.use.setUser();
   const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const openToast = useToastStoreSelectors.use.openToast();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
-
-  useEffect(() => {
-    console.log(showLists);
-  }, [showLists]);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -88,8 +82,6 @@ const BottomDrawerItemInfo = () => {
             }
             break;
         }
-        console.log(id, type);
-        console.log(user);
         if (
           user?.allItems?.filter((i) => i.apiId === id && i.type === type)
             .length === 1
@@ -97,7 +89,6 @@ const BottomDrawerItemInfo = () => {
           setInList(true);
         }
         setLoading(false);
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -113,7 +104,6 @@ const BottomDrawerItemInfo = () => {
       const newItem = await addItemToList({
         variables: { id: selectedList, contents: stringifiedItem },
       });
-      console.log(newItem);
       if (user) {
         setUser({
           ...user,

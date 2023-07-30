@@ -126,7 +126,6 @@ export const resolvers = {
           sharedWith: true,
         },
       });
-      console.log(lists);
       return lists;
     },
   },
@@ -152,10 +151,7 @@ export const resolvers = {
       return list;
     },
     editList: async (_: any, { listId, contents }: any, { prisma }: any) => {
-      console.log("editing list: ", listId);
-      console.log(contents);
       const newListContents = JSON.parse(contents);
-      console.log(newListContents);
       const list = await prisma.list.update({
         where: {
           id: listId,
@@ -225,7 +221,6 @@ export const resolvers = {
       return list;
     },
     shareList: async (_: any, { listId, uid }: any, { prisma }: any) => {
-      console.log("sharing list: ", listId);
       const userRecord = await prisma.user.findUnique({
         where: {
           id: uid,
@@ -238,9 +233,6 @@ export const resolvers = {
           id: listId,
         },
       });
-
-      console.log(userRecord);
-      console.log(list);
 
       if (!userExists || !list || !list.shareable) return null;
 

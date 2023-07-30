@@ -1,5 +1,4 @@
 import React from "react";
-import classes from "@/styles/tab-container.module.css";
 import type { ListWithItems } from "@/types/list";
 import WatchlistItem from "./watchlist-item";
 import { WatchListItem } from "@/types/item";
@@ -10,7 +9,7 @@ interface TabContainerProps {
   setIndex: (idx: number) => void;
 }
 
-const TabContainer = ({ list, index, setIndex }: TabContainerProps) => {
+const TabContainer = ({ list }: TabContainerProps) => {
   return (
     <div className="overflow-auto md:ml-4 md:w-3/4 h-[calc(100%-4rem)] md:h-full lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2">
       {list &&

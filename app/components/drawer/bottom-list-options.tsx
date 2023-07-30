@@ -20,10 +20,7 @@ import { SEARCHUSERS } from "@/lib/queries";
 import { ListWithItems } from "@/types/list";
 import { User } from "@/types/user";
 
-import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -51,10 +48,6 @@ const BottomDrawerListOptions = () => {
   const [removeUserFromList] = useMutation(REMOVEUSERFROMLIST);
   const [leaveList] = useMutation(LEAVELIST);
 
-  // const user = useUserSelectors.use.user();
-  // const setUser = useUserSelectors.use.setUser();
-  // const currentListIndex = useUserSelectors.use.currentListIndex();
-  // const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
   const [user, setUser, currentListIndex, setCurrentListIndex] = useUserStore(
     (store) => [
       store.user,
@@ -66,11 +59,6 @@ const BottomDrawerListOptions = () => {
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const setToastMessage = useToastStoreSelectors.use.setMessage();
   const setToastType = useToastStoreSelectors.use.setType();
-
-  useEffect(() => {
-    console.log(searchRef.current?.getBoundingClientRect());
-    console.log(searchRef.current?.getBoundingClientRect()?.y);
-  }, [searchRef.current]);
 
   useEffect(() => {
     const fetchList = async () => {
@@ -111,9 +99,7 @@ const BottomDrawerListOptions = () => {
   }, [searchUsersData]);
 
   const search = async () => {
-    console.log("searching");
     if (!email) return;
-    console.log(email);
     setEmail("");
     const res = await searchUsers({
       variables: {
@@ -121,10 +107,7 @@ const BottomDrawerListOptions = () => {
       },
     });
 
-    console.log(res);
-
     if (!res.data.findUsersByEmail || res.data.findUsersByEmail.length === 0) {
-      console.log("setting toast");
       setToastMessage("No users found with that email");
       setToastType("error");
       setTimeout(() => {
@@ -204,7 +187,6 @@ const BottomDrawerListOptions = () => {
         uid: id,
       },
     });
-    console.log(response);
 
     if (!response.data.removeUserFromList) return;
 
@@ -303,7 +285,6 @@ const BottomDrawerListOptions = () => {
         uid: user!.id,
       },
     });
-    console.log(response);
 
     if (!response.data.removeUserFromList) return;
 
@@ -328,7 +309,6 @@ const BottomDrawerListOptions = () => {
           id: list.id,
         },
       });
-      console.log(response);
       if (!response.data.deleteList) return;
 
       if (user) {
@@ -367,20 +347,6 @@ const BottomDrawerListOptions = () => {
         </div>
         {list && user && list.shareable && list.ownerId === user.id && (
           <div className="flex flex-col mt-4">
-            {/* <input
-              className="border border-gunmetal dark:border-snow rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
-              type="text"
-              placeholder="List name"
-              value={email}
-              onChange={({
-                target: { value },
-              }: React.ChangeEvent<HTMLInputElement>) => {
-                setEmail(value);
-                if (value) {
-                  search(value);
-                }
-              }}
-            /> */}
             <div className="form-control w-full">
               <div className="w-full flex items-stretch mb-4">
                 <input
@@ -407,25 +373,6 @@ const BottomDrawerListOptions = () => {
                 </button>
               </div>
             </div>
-            {/* {searchUsersData && searchUsersData.findUsersByEmail && (
-              <ul
-                className={`z-[60] absolute bg-fog w-[calc(100vw-2rem)] top-[0px] left-0 rounded-xl shadow-neon overflow-scroll max-h-[300px]}]`}
-              >
-                {searchUsersData.findUsersByEmail.map((searchUser: User) => {
-                  return (
-                    <li
-                      key={searchUser.id}
-                      className="text-gunmetal dark:text-snow text-lg"
-                    >
-                      <SendIcon className="mr-1 text-gunmetal dark:text-snow" />
-                      <button onClick={() => share(searchUser)}>
-                        {searchUser.email}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )} */}
 
             {sharedUsers && sharedUsers.length > 0 && (
               <table className="table">
@@ -484,11 +431,9 @@ const BottomDrawerListOptions = () => {
                     name: newName,
                   }),
                 };
-                console.log(variables);
                 const response = await editList({
                   variables: variables,
                 });
-                console.log(response);
                 if (!response.data.editList) return;
 
                 setNewName(response.data.editList.name);

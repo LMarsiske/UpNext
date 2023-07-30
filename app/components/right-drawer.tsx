@@ -2,38 +2,15 @@
 import React, { useEffect } from "react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
-import styles from "@/styles/neon.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import DrawerAuthMenu from "./drawer/auth-menu";
 import DrawerNonAuthMenu from "./drawer/non-auth-menu";
 import RightDrawerListOptions from "./drawer/right-list-options";
 
-const variants: Variants = {
-  closed: {
-    y: "100%",
-    transition: {
-      type: "spring",
-      duration: 0.2,
-    },
-  },
-  open: {
-    y: 0,
-    transition: {
-      type: "spring",
-      duration: 0.4,
-    },
-  },
-};
-
 const RightDrawer = () => {
   const isDrawerOpen = useDrawerStoreSelectors.use.isRightDrawerOpen();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const drawerContent = useDrawerStoreSelectors.use.rightDrawerContent();
-
-  useEffect(() => {
-    console.log(isDrawerOpen);
-    console.log(drawerContent);
-  }, [isDrawerOpen, drawerContent]);
 
   return (
     <AnimatePresence>
@@ -55,7 +32,6 @@ const RightDrawer = () => {
             </h1>
             <button
               onClick={() => {
-                console.log("closing");
                 closeDrawer("RIGHT");
               }}
               className="text-right"

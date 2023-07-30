@@ -8,15 +8,12 @@ import ThemeChanger from "@/app/components/theme-changer";
 
 const ProfilePage = () => {
   const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
 
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (!session || !user) return;
-
-    console.log(user);
   }, [user]);
 
   if (!session || !user) {

@@ -1,7 +1,6 @@
 "use client";
 
 import Logo from "../logo";
-import { useTheme } from "next-themes";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -10,9 +9,7 @@ import NonAuthHeader from "./non-auth-header";
 import type { User } from "@/types/user";
 
 const Header: React.FC = () => {
-  const { data: session, status } = useSession();
-
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

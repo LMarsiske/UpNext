@@ -14,7 +14,6 @@ const BackDrop = () => {
         isOpen ? "" : "hidden"
       }`}
       onClick={(event: MouseEvent<HTMLDivElement>) => {
-        console.log("overlay clicked");
         event.preventDefault();
         event.stopPropagation();
         closeDrawers();

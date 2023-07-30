@@ -1,7 +1,6 @@
 "use client";
 import { useToastStoreSelectors } from "@/stores/toast";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 
 const Toast = () => {
   const toastMessage = useToastStoreSelectors.use.message();

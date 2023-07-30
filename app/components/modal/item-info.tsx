@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useRef, MouseEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useItemStore } from "@/stores/item";
-// import { useUserSelectors } from "@/stores/user";
 import { useUserStore } from "@/stores/user";
 import { useToastStoreSelectors } from "@/stores/toast";
 import { useModalStoreSelectors } from "@/stores/modal";
@@ -38,15 +37,9 @@ const ItemInfo = () => {
       stringifiedItem: state.stringifiedItem,
     })
   );
-  // const user = useUserSelectors.use.user();
-  // const setUser = useUserSelectors.use.setUser();
   const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const openToast = useToastStoreSelectors.use.openToast();
   const closeModal = useModalStoreSelectors.use.closeModal();
-
-  useEffect(() => {
-    console.log(item);
-  }, [item]);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -70,7 +63,6 @@ const ItemInfo = () => {
                 id: id,
               },
             });
-            console.log(response);
             if (response.data.getTV) {
               setItem(response.data.getTV as TVShow);
             }
@@ -81,14 +73,11 @@ const ItemInfo = () => {
                 id: id,
               },
             });
-            console.log(response);
             if (response.data.getGame) {
               setItem(response.data.getGame as Game);
             }
             break;
         }
-        console.log(id, type);
-        console.log(user);
         if (
           user?.allItems?.filter((i) => i.apiId === id && i.type === type)
             .length === 1
@@ -96,7 +85,6 @@ const ItemInfo = () => {
           setInList(true);
         }
         setLoading(false);
-        console.log(response);
       } catch (error) {
         console.log(error);
       }
@@ -112,7 +100,6 @@ const ItemInfo = () => {
       const newItem = await addItemToList({
         variables: { id: selectedList, contents: stringifiedItem },
       });
-      console.log(newItem);
       if (user) {
         setUser({
           ...user,

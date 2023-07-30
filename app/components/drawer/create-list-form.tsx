@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATELIST } from "@/lib/mutations";
-// import { useUserSelectors } from "@/stores/user";
 import { useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { ListWithItems } from "@/types/list";
 import type { User } from "@/types/user";
 
 const BottomDrawerCreateListForm = () => {
-  // const user = useUserSelectors.use.user();
-  // const setUser = useUserSelectors.use.setUser();
   const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const [listName, setListName] = useState("");

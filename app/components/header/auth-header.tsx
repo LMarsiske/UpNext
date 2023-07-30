@@ -3,7 +3,6 @@ import React from "react";
 import Avatar from "../avatar";
 import { User } from "@/types/user";
 import { signOut } from "next-auth/react";
-// import { useUserSelectors } from "@/stores/user";
 import { useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -11,7 +10,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const AuthHeader = ({ user }: { user: User }) => {
-  // const setUser = useUserSelectors.use.setUser();
   const [setUser] = useUserStore((store) => [store.setUser]);
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   return (
