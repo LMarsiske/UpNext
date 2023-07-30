@@ -225,7 +225,7 @@ const ItemInfo = () => {
                 exit={{ x: "-500%" }}
                 transition={{ type: "spring", bounce: 0, duration: 0.4 }}
                 ref={boxRef}
-                className="flex flex-col"
+                className="flex flex-col lg:text-lg"
               >
                 <div
                   className={`flex flex-col mb-2 overflow-scroll max-h-[600px]`}
@@ -239,12 +239,12 @@ const ItemInfo = () => {
                       className="w-[120px] h-[172px] float-left mr-4"
                     />
 
-                    <p>{item!.summary}</p>
+                    <p>{item!.summary || "No summary available"}</p>
                   </div>
 
                   {item && item.cast && (
                     <div className="mb-2">
-                      <h2 className="text-gunmetal dark:text-snow font-bold">
+                      <h2 className="text-gunmetal dark:text-snow font-bold lg:text-xl">
                         Cast
                       </h2>
                       <hr className="border-gunmetal dark:border-snow mt-1 mb-2" />
@@ -265,7 +265,7 @@ const ItemInfo = () => {
                   )}
                   {item?.providers && (
                     <div className="mb-2">
-                      <h2 className="text-gunmetal dark:text-snow font-bold">
+                      <h2 className="text-gunmetal dark:text-snow font-bold lg:text-xl">
                         Streaming
                       </h2>
                       <hr className="border-gunmetal dark:border-snow mt-1 mb-2" />
@@ -293,7 +293,9 @@ const ItemInfo = () => {
                     <>
                       <hr className="border-fog my-2" />
                       <div>
-                        <h2 className="mb-2">Platforms</h2>
+                        <h2 className="text-gunmetal dark:text-snow font-bold lg:text-xl">
+                          Platforms
+                        </h2>
                         <ul>
                           {item!.platforms!.map((platform, index) => {
                             return (

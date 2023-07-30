@@ -37,9 +37,9 @@ const Modal = () => {
       }}
     >
       <Portal>
-        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] md:w-4/5 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
+        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] max-w-[50rem] md:w-4/5 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
           <div className="flex justify-between items-start">
-            <Title className="text-2xl font-bold">
+            <Title className="text-2xl lg:text-3xl font-bold">
               {modalContent === "CREATE_LIST" && "Create a new list"}
               {modalContent === "AUTH" && "Sign in or create an account"}
               {modalContent === "MORE_INFO" &&
