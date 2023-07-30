@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { debounce } from "lodash";
 import { AnimatePresence, motion } from "framer-motion";
-import { useUserSelectors } from "@/stores/user";
+// import { useUserSelectors } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useToastStoreSelectors } from "@/stores/toast";
 import { useMutation, useLazyQuery } from "@apollo/client";
@@ -50,10 +51,18 @@ const RightDrawerListOptions = () => {
   const [removeUserFromList] = useMutation(REMOVEUSERFROMLIST);
   const [leaveList] = useMutation(LEAVELIST);
 
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
-  const currentListIndex = useUserSelectors.use.currentListIndex();
-  const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
+  // const user = useUserSelectors.use.user();
+  // const setUser = useUserSelectors.use.setUser();
+  // const currentListIndex = useUserSelectors.use.currentListIndex();
+  // const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
+  const [user, setUser, currentListIndex, setCurrentListIndex] = useUserStore(
+    (store) => [
+      store.user,
+      store.setUser,
+      store.currentListIndex,
+      store.setCurrentListIndex,
+    ]
+  );
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const setToastMessage = useToastStoreSelectors.use.setMessage();
   const setToastType = useToastStoreSelectors.use.setType();

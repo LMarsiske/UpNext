@@ -1,11 +1,12 @@
 .itemContainer {
-  width: 100%;
+  width: calc(100% - 0.5rem);
   height: 100%;
   overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
-.itemContainer::-webkit-scrollbar {
-  width: 0.5rem;
+/* .itemContainer::-webkit-scrollbar {
+  width: 0.25rem;
 }
 
 .itemContainer::-webkit-scrollbar-track {
@@ -15,4 +16,4 @@
 .itemContainer::-webkit-scrollbar-thumb {
   background: theme("colors.fog");
   border-radius: 0.25rem;
-}
+} */

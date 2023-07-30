@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useRef, MouseEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useItemStore } from "@/stores/item";
-import { useUserSelectors } from "@/stores/user";
+// import { useUserSelectors } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { useToastStoreSelectors } from "@/stores/toast";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useLazyQuery, useMutation } from "@apollo/client";
@@ -37,8 +38,9 @@ const BottomDrawerItemInfo = () => {
       stringifiedItem: state.stringifiedItem,
     })
   );
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
+  // const user = useUserSelectors.use.user();
+  // const setUser = useUserSelectors.use.setUser();
+  const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const openToast = useToastStoreSelectors.use.openToast();
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
 

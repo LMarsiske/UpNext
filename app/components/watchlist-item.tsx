@@ -35,7 +35,7 @@ const WatchlistItem = ({
 
   useEffect(() => {
     console.log(isMobile);
-    setMaxHeight(isMobile ? 48 : 80);
+    setMaxHeight(isMobile ? 48 : 96);
   }, [isMobile]);
 
   const handleItemClick = async () => {

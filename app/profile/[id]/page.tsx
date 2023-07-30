@@ -24,7 +24,7 @@ const ProfilePage = () => {
     return null;
   }
   return (
-    <>
+    <div className="max-w-[600px] mx-auto">
       <h1 className="text-2xl font-bold mb-2">Profile Info</h1>
       <div className="w-full rounded-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow flex flex-col items-center mb-8">
         <div className="overflow-x-auto">
@@ -55,7 +55,7 @@ const ProfilePage = () => {
       <div className="w-full rounded-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow flex flex-col items-center">
         <ThemeChanger />
       </div>
-    </>
+    </div>
   );
 };
 

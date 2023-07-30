@@ -26,7 +26,7 @@ const Shave = ({
   let Element = element as keyof JSX.IntrinsicElements;
 
   return (
-    <Element ref={shaveRef} className={classNames}>
+    <Element ref={shaveRef!} className={classNames}>
       {children}
     </Element>
   );

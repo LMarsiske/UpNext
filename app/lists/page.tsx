@@ -13,7 +13,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useModalStoreSelectors } from "@/stores/modal";
-import { useUserSelectors } from "@/stores/user";
+import { useUserSelectors, useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useLazyQuery } from "@apollo/client";
 import { GETLISTSWITHITEMS } from "@/lib/queries";
@@ -22,8 +22,9 @@ import { Select, SelectItem } from "@/app/components/select";
 import Shave from "../components/shave";
 
 const ListsPage = async () => {
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
+  // const user = useUserSelectors.use.user();
+  // const setUser = useUserSelectors.use.setUser();
+  const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const currentListIndex = useUserSelectors.use.currentListIndex();
   const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
   const openModal = useModalStoreSelectors.use.openModal();
@@ -71,7 +72,7 @@ const ListsPage = async () => {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-6rem)] md:h-[calc(100vh-6rem)] md:flex md:items-stretch">
+    <div className="relative w-full h-[calc(100vh-4.25rem)] md:h-[calc(100vh-6.25rem)] lg:h-[calc(100vh-7.25rem)] md:flex md:items-stretch overflow-hidden">
       {isMobile ? (
         <>
           <div className="h-12 w-full flex items-center justify-between mb-4">
@@ -109,7 +110,7 @@ const ListsPage = async () => {
               />
             </button>
           </div>
-          <button className="absolute rounded-full bg-electric-violet bottom-0 right-4 p-2 z-[49]">
+          <button className="absolute rounded-full bg-electric-violet bottom-6 right-4 p-2 z-[49]">
             <AddIcon
               fontSize="large"
               className="text-snow"
@@ -120,7 +121,7 @@ const ListsPage = async () => {
           </button>
         </>
       ) : (
-        <div className="flex flex-col min-w-[200px] max-w-[400px] w-1/4 ">
+        <div className="flex flex-col min-w-[200px] max-w-[400px] w-1/4">
           <div className="w-full flex items-center justify-between mb-4">
             <h1 className="text-2xl font-bold">Lists</h1>
             <button onClick={openCreateModal}>

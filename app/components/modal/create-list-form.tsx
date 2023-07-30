@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATELIST } from "@/lib/mutations";
-import { useUserSelectors } from "@/stores/user";
+// import { useUserSelectors } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { ListWithItems } from "@/types/list";
 import type { User } from "@/types/user";
 
 const CreateListForm = () => {
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
+  // const user = useUserSelectors.use.user();
+  // const setUser = useUserSelectors.use.setUser();
+  const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const closeModal = useModalStoreSelectors.use.closeModal();
   const [listName, setListName] = useState("");
   const [createList] = useMutation(CREATELIST);

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATELIST } from "@/lib/mutations";
-import { useUserSelectors } from "@/stores/user";
+// import { useUserSelectors } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { ListWithItems } from "@/types/list";
 import type { User } from "@/types/user";
 
 const BottomDrawerCreateListForm = () => {
-  const user = useUserSelectors.use.user();
-  const setUser = useUserSelectors.use.setUser();
+  // const user = useUserSelectors.use.user();
+  // const setUser = useUserSelectors.use.setUser();
+  const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
   const closeDrawer = useDrawerStoreSelectors.use.closeDrawer();
   const [listName, setListName] = useState("");
   const [createList] = useMutation(CREATELIST);
@@ -47,7 +49,7 @@ const BottomDrawerCreateListForm = () => {
       <h1 className="text-2xl font-bold mb-2">Create a new list</h1>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         <input
-          className="bg-fog dark:bg-davy rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
+          className="text-gunmetal bg-fog border border-davy dark:border-none rounded-xl px-4 py-2 mt-4 mb-4 w-full text-lg"
           type="text"
           placeholder="List name"
           onChange={handleChange}

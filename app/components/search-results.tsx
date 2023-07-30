@@ -12,7 +12,8 @@ import { useBackdropStoreSelectors } from "@/stores/backdrop";
 import { useLazyQuery } from "@apollo/client";
 import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import { SearchResultProps } from "@/types/search";
-import { useUserSelectors } from "@/stores/user";
+// import { useUserSelectors } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import Shave from "./shave";
 import ImageWithFallback from "./image-with-fallback";
@@ -38,7 +39,8 @@ export const SearchResult = ({
   deleteFromList,
 }: // removeItem,
 SearchResultProps) => {
-  const user = useUserSelectors.use.user();
+  // const user = useUserSelectors.use.user();
+  const [user] = useUserStore((store) => [store.user]);
   const { openModal } = useModalStore.getState();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
@@ -106,7 +108,7 @@ SearchResultProps) => {
 
   return (
     <div
-      className="flex w-full items-stretch my-2 md:my-4 rounded-xl bg-fog dark:bg-davy z-20"
+      className="flex w-full max-w-col items-stretch my-2 md:my-4 rounded-xl bg-fog dark:bg-davy z-20"
       onClick={handleItemClick}
     >
       <div className="shrink-0 rounded-l-xl w-[67px] md:w-[101px]">
