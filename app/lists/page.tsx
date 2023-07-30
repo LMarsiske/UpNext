@@ -65,7 +65,7 @@ const ListsPage = async () => {
   }
 
   return (
-    <div className="relative w-full h-[calc(100vh-4.25rem)] md:h-[calc(100vh-6.25rem)] lg:h-[calc(100vh-7.25rem)] md:flex md:items-stretch overflow-hidden">
+    <div className="relative w-full h-[calc(100dvh-4.25rem)] md:h-[calc(100dvh-6.25rem)] lg:h-[calc(100dvh-7.25rem)] md:flex md:items-stretch overflow-hidden">
       {isMobile ? (
         <>
           <div className="h-12 w-full flex items-center justify-between mb-4">
