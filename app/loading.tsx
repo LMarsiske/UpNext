@@ -50,7 +50,7 @@ const Loading = () => {
         animate="animate"
       >
         <motion.div
-          className="flex justify-between items-center w-2/3 h-8"
+          className="flex justify-between items-center w-2/3 max-w-[400px] h-8"
           variants={ContainerVariants}
           initial="initial"
           animate="animate"

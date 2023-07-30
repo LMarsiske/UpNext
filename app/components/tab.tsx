@@ -5,14 +5,23 @@ interface TabProps {
   handleClick: () => void;
   active: boolean;
   isFirstTab: boolean;
+  isLastTab: boolean;
 }
 
-const Tab = ({ children, handleClick, active, isFirstTab }: TabProps) => {
+const Tab = ({
+  children,
+  handleClick,
+  active,
+  isFirstTab,
+  isLastTab,
+}: TabProps) => {
   return (
     <div
-      className={`flex items-center px-4 pb-2 text-gunmetal dark:text-snow  text-2xl border-b-2 border-transparent hover:border-fog hover: border-opacity-50 ${
-        active && "border-gunmetal dark:border-snow border-opacity-100"
-      }`}
+      className={`flex justify-between items-center px-2 py-2  ${
+        active ? "bg-sky-blue text-gunmetal" : ""
+      } ${isFirstTab && "rounded-t-xl"} ${
+        isLastTab && "rounded-b-xl"
+      } font-semibold text-xl`}
       onClick={handleClick}
     >
       {children}

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useModalStoreSelectors } from "@/stores/modal";
 import { useUserSelectors } from "@/stores/user";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
@@ -18,14 +19,14 @@ import { useLazyQuery } from "@apollo/client";
 import { GETLISTSWITHITEMS } from "@/lib/queries";
 import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import { Select, SelectItem } from "@/app/components/select";
+import Shave from "../components/shave";
 
 const ListsPage = async () => {
   const user = useUserSelectors.use.user();
   const setUser = useUserSelectors.use.setUser();
   const currentListIndex = useUserSelectors.use.currentListIndex();
   const setCurrentListIndex = useUserSelectors.use.setCurrentListIndex();
-  const setIsModalOpen = useModalStoreSelectors.use.setIsModalOpen();
-  const setModalContent = useModalStoreSelectors.use.setModalContent();
+  const openModal = useModalStoreSelectors.use.openModal();
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const { data: session } = useSession();
   const router = useRouter();
@@ -54,9 +55,14 @@ const ListsPage = async () => {
     getAllLists();
   }, []);
 
+  useEffect(() => {
+    if (!user) return;
+    console.log(user.lists![tabIndex]);
+    setList(user.lists![tabIndex]);
+  }, [user]);
+
   const openCreateModal = () => {
-    setIsModalOpen(true);
-    setModalContent("CREATE_LIST");
+    openModal("CREATE_LIST");
   };
 
   if (!session || !user) {
@@ -65,10 +71,10 @@ const ListsPage = async () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative min-h-[calc(100vh-6rem)] md:h-[calc(100vh-6rem)] md:flex md:items-stretch">
       {isMobile ? (
         <>
-          <div className="w-full flex items-center justify-between">
+          <div className="h-12 w-full flex items-center justify-between mb-4">
             <Select
               value={tabIndex}
               onValueChange={(value) => {
@@ -79,7 +85,12 @@ const ListsPage = async () => {
               {user?.lists &&
                 user.lists.map((list: ListWithItems, index: number) => {
                   return (
-                    <SelectItem key={list.id} value={index}>
+                    <SelectItem
+                      key={list.id}
+                      value={index}
+                      isFirstItem={index === 0}
+                      isLastItem={index === user?.lists.length - 1}
+                    >
                       {list.name}
                     </SelectItem>
                   );
@@ -109,45 +120,9 @@ const ListsPage = async () => {
           </button>
         </>
       ) : (
-        <>
-          <div className="flex items-center border-b border-fog border-opacity-50">
-            <div className="flex-1 ">
-              <TabsContainer>
-                {user?.lists &&
-                  user.lists.map((list: ListWithItems, index: number) => {
-                    return (
-                      <Tab
-                        key={list.id}
-                        handleClick={() => {
-                          setTabIndex(index);
-                          setList(user?.lists![index]);
-                        }}
-                        active={index === tabIndex}
-                        isFirstTab={index === 0}
-                      >
-                        <>
-                          {list.name}
-                          <button
-                            onClick={() => {
-                              if (tabIndex !== index) {
-                                setTabIndex(index);
-                                setList(user?.lists![index]);
-                              }
-                              openDrawer("RIGHT", "");
-                            }}
-                            className="flex items-center justify-center"
-                          >
-                            <SettingsIcon
-                              fontSize="small"
-                              className="text-davy dark:text-fog ml-1"
-                            />
-                          </button>
-                        </>
-                      </Tab>
-                    );
-                  })}
-              </TabsContainer>
-            </div>
+        <div className="flex flex-col min-w-[200px] max-w-[400px] w-1/4 ">
+          <div className="w-full flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">Lists</h1>
             <button onClick={openCreateModal}>
               <AddIcon
                 fontSize="large"
@@ -155,9 +130,45 @@ const ListsPage = async () => {
               />
             </button>
           </div>
-        </>
+          <TabsContainer>
+            {user?.lists &&
+              user.lists.map((list: ListWithItems, index: number) => {
+                return (
+                  <Tab
+                    key={list.id}
+                    handleClick={() => {
+                      setTabIndex(index);
+                      setList(user?.lists![index]);
+                    }}
+                    active={index === tabIndex}
+                    isFirstTab={index === 0}
+                    isLastTab={index === user.lists!.length - 1}
+                  >
+                    <Shave maxHeight={28} element="h2">
+                      {list.name}
+                    </Shave>
+                    <button
+                      onClick={() => {
+                        if (tabIndex !== index) {
+                          setTabIndex(index);
+                          setList(user?.lists![index]);
+                        }
+                        setCurrentListIndex(index);
+                        openDrawer("RIGHT", "LIST_OPTIONS");
+                      }}
+                      className="flex items-center justify-center"
+                    >
+                      <MoreVertIcon
+                        fontSize="small"
+                        className="text-davy dark:text-fog ml-1"
+                      />
+                    </button>
+                  </Tab>
+                );
+              })}
+          </TabsContainer>
+        </div>
       )}
-
       {list && (
         <TabContainer list={list} index={tabIndex} setIndex={setTabIndex} />
       )}

@@ -181,7 +181,7 @@ const HomePage = () => {
   return (
     <>
       <main className={`flex flex-col items-center`}>
-        <h1 className="text-3xl">Search TV Shows</h1>
+        <h1 className="text-3xl md:mb-2">What's on next?</h1>
         <div className="flex">
           <input
             type="text"
@@ -190,7 +190,7 @@ const HomePage = () => {
             className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
           />
         </div>
-        <div>
+        <div className="md:w-4/5">
           {searchLoading ? (
             <SearchResultSkeletons />
           ) : (

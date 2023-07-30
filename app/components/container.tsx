@@ -5,7 +5,7 @@ interface ContainerProps {
 }
 
 const Container = ({ children }: ContainerProps) => {
-  return <div className="w-full px-4 py-4 ">{children}</div>;
+  return <div className="w-full px-4 md:px-6 py-4 ">{children}</div>;
 };
 
 export default Container;

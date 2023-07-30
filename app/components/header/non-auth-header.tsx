@@ -9,7 +9,7 @@ const NonAuthHeader: React.FC = () => {
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   return (
     <>
-      <div className="hidden items-center space-x-4 text-2xl ">
+      <div className="hidden md:flex items-center space-x-4 text-3xl">
         <Link href="/">Discover</Link>
         <button
           onClick={() => {
@@ -23,6 +23,7 @@ const NonAuthHeader: React.FC = () => {
         onClick={() => {
           openDrawer("RIGHT", "NON_AUTH_MENU");
         }}
+        className="md:hidden"
       >
         <MenuIcon fontSize="large" className="text-gunmetal dark:text-snow" />
       </button>

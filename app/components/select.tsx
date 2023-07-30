@@ -5,7 +5,6 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CheckIcon from "@mui/icons-material/Check";
-import styles from "@/styles/neon.module.css";
 import { useBackdropStoreSelectors } from "@/stores/backdrop";
 
 const Select = React.forwardRef(({ children, ...props }, forwardedRef) => {
@@ -37,7 +36,7 @@ const Select = React.forwardRef(({ children, ...props }, forwardedRef) => {
       <SelectPrimitive.Portal>
         <SelectPrimitive.Content
           position="popper"
-          className="w-select max-h-select-height  bg-fog dark:bg-davy text-gunmetal dark:text-snow flex justify-between items-center text-lg rounded-xl mt-1 z-[51] shadow-neon"
+          className="w-select max-h-select-height bg-fog dark:bg-davy text-gunmetal dark:text-snow flex justify-between items-center text-lg rounded-xl mt-1 z-[51] shadow-neon"
         >
           <SelectPrimitive.ScrollUpButton>
             <KeyboardArrowUpIcon />
@@ -54,11 +53,14 @@ const Select = React.forwardRef(({ children, ...props }, forwardedRef) => {
 Select.displayName = "Select";
 
 const SelectItem = React.forwardRef(({ children, ...props }, forwardedRef) => {
+  const { isFirstItem, isLastItem, ...itemProps } = props;
   return (
     <SelectPrimitive.Item
-      {...props}
+      {...itemProps}
       ref={forwardedRef}
-      className={`flex justify-between items-center w-select-item p-2 my-1 data-[highlighted]:bg-davy data-[highlighted]:text-snow dark:data-[highlighted]:bg-fog dark:data-[highlighted]:text-gunmetal z-[51]`}
+      className={`flex justify-between items-center w-select-item p-2 my-1 data-[highlighted]:bg-davy data-[highlighted]:text-snow dark:data-[highlighted]:bg-fog dark:data-[highlighted]:text-gunmetal z-[51] ${
+        isLastItem && "rounded-b-xl mb-0"
+      } ${isFirstItem && "rounded-t-xl mt-0"}`}
     >
       <SelectPrimitive.ItemText className="cursor-pointer">
         {children}

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { MouseEvent } from "react";
 import "@/styles/globals.css";
 import ImageWithFallback from "./image-with-fallback";
@@ -20,6 +21,7 @@ const WatchlistItem = ({
   poster,
   summary,
   apiId,
+  listId,
 }: WatchListItem) => {
   const { isMobile } = useMediaQueries();
   const user = useUserSelectors.use.user();
@@ -28,6 +30,13 @@ const WatchlistItem = ({
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
   const [removeItemFromList] = useMutation(DELETEITEMFROMLIST);
+
+  const [maxHeight, setMaxHeight] = useState(0);
+
+  useEffect(() => {
+    console.log(isMobile);
+    setMaxHeight(isMobile ? 48 : 80);
+  }, [isMobile]);
 
   const handleItemClick = async () => {
     setItemForFetch(apiId, type);
@@ -46,6 +55,15 @@ const WatchlistItem = ({
         setUser({
           ...user,
           allItems: user.allItems!.filter((item) => item.id !== id),
+          lists: user.lists!.map((list) => {
+            if (list.id === listId) {
+              return {
+                ...list,
+                items: list.items!.filter((item) => item.id !== id),
+              };
+            }
+            return list;
+          }),
         });
       }
     } catch (e: any) {
@@ -55,10 +73,10 @@ const WatchlistItem = ({
 
   return (
     <div
-      className="flex w-full my-2 rounded-xl bg-fog dark:bg-davy z-20"
+      className="flex w-full items-stretch mb-2 md:mb-4 rounded-xl bg-fog dark:bg-davy z-20"
       onClick={handleItemClick}
     >
-      <div className="shrink-0 rounded-l-xl w-[67px]">
+      <div className="shrink-0 rounded-l-xl w-[67px] md:w-[101px]">
         <ImageWithFallback
           src={poster || placeholder}
           fallback={placeholder}
@@ -73,16 +91,26 @@ const WatchlistItem = ({
           height={150}
         />
       </div>
-      <div className="flex flex-col p-2 w-full h-full justify-between">
-        <Shave maxHeight={30} element="h2" classNames="text-xl font-bold mb-2">
-          {title}
-        </Shave>
-        <div className="flex w-full h-full">
-          <Shave maxHeight={48} element="p" classNames="leading-tight grow">
+      <div className="flex p-4 w-full">
+        <div className="flex flex-col align-top grow">
+          <Shave
+            maxHeight={30}
+            element="h2"
+            classNames="text-xl font-bold mb-2"
+          >
+            {title}
+          </Shave>
+          <Shave
+            maxHeight={maxHeight}
+            element="p"
+            classNames="leading-tight grow"
+          >
             {summary || "No summary available"}
           </Shave>
+        </div>
+        <div className="flex items-end ml-2 md:ml-4">
           {user && (
-            <div className={"dropdown dropdown-end"}>
+            <div className={"dropdown dropdown-end "}>
               <label tabIndex={0}>
                 <button
                   onClick={(event: MouseEvent<HTMLButtonElement>) => {

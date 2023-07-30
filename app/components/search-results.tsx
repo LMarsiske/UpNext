@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, MouseEvent } from "react";
+import React, { useState, MouseEvent, useEffect } from "react";
 import "@/styles/globals.css";
 import placeholder from "../../assets/images/placeholder.png";
 
@@ -8,6 +8,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useModalStore } from "@/stores/modal";
 import { useDrawerStoreSelectors } from "@/stores/drawer";
 import { useItemStoreSelectors } from "@/stores/item";
+import { useBackdropStoreSelectors } from "@/stores/backdrop";
 import { useLazyQuery } from "@apollo/client";
 import { GETMOVIE, GETSHOW, GETGAME } from "@/lib/queries";
 import { SearchResultProps } from "@/types/search";
@@ -42,7 +43,14 @@ SearchResultProps) => {
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
   const setStringifiedItem = useItemStoreSelectors.use.setStringifiedItem();
+  const openBackdrop = useBackdropStoreSelectors.use.openBackdrop();
   const { isMobile } = useMediaQueries();
+
+  const [maxHeight, setMaxHeight] = useState(0);
+
+  useEffect(() => {
+    setMaxHeight(isMobile ? 48 : 96);
+  }, [isMobile]);
 
   const handleAddRemove = (
     event: MouseEvent<HTMLButtonElement>,
@@ -68,6 +76,7 @@ SearchResultProps) => {
         );
         return;
       }
+      openBackdrop();
     } else if (action === "remove") {
       deleteFromList(itemId!);
     }
@@ -97,10 +106,10 @@ SearchResultProps) => {
 
   return (
     <div
-      className="flex w-full my-2 rounded-xl bg-fog dark:bg-davy z-20"
+      className="flex w-full items-stretch my-2 md:my-4 rounded-xl bg-fog dark:bg-davy z-20"
       onClick={handleItemClick}
     >
-      <div className="shrink-0 rounded-l-xl w-[67px]">
+      <div className="shrink-0 rounded-l-xl w-[67px] md:w-[101px]">
         <ImageWithFallback
           src={poster || placeholder}
           fallback={placeholder}
@@ -115,14 +124,25 @@ SearchResultProps) => {
           height={150}
         />
       </div>
-      <div className="flex flex-col p-2 w-full h-full justify-between">
-        <Shave maxHeight={30} element="h2" classNames="text-xl font-bold mb-2">
-          {title}
-        </Shave>
-        <div className="flex w-full h-full">
-          <Shave maxHeight={48} element="p" classNames="leading-tight grow">
-            {summary ? truncate(summary) : "No summary available"}
+      <div className="flex p-2 md:p-4 w-full">
+        <div className="flex flex-col align-top grow">
+          <Shave
+            maxHeight={30}
+            element="h2"
+            classNames="text-xl font-bold mb-2"
+          >
+            {title}
           </Shave>
+
+          <Shave
+            maxHeight={maxHeight}
+            element="p"
+            classNames="leading-tight grow"
+          >
+            {summary || "No summary available"}
+          </Shave>
+        </div>
+        <div className="flex items-end ml-2 md:ml-4">
           {user && (
             <div className={"dropdown dropdown-end"}>
               <label tabIndex={0}>

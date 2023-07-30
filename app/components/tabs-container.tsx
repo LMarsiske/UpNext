@@ -5,7 +5,11 @@ interface TabsContainerProps {
 }
 
 const TabsContainer = ({ children }: TabsContainerProps) => {
-  return <div className="flex cursor-pointer">{children}</div>;
+  return (
+    <div className="flex flex-col rounded-xl bg-fog dark:bg-davy cursor-pointer">
+      {children}
+    </div>
+  );
 };
 
 export default TabsContainer;

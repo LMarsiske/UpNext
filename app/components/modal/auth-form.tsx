@@ -35,14 +35,14 @@ const AuthForm = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center mt-4">
+    <div className="flex flex-col items-center mt-10">
       {providers &&
         Object.values(providers).map((provider, index) => {
           return (
             <button
               key={provider.id}
-              className={`bg-snow text-gunmetal  rounded-xl px-4 py-2 w-full text-2xl flex justify-center items-center ${
-                index !== Object.keys(providers).length - 1 && "mb-4"
+              className={`bg-snow text-gunmetal rounded-xl px-4 py-2 w-full max-w-[400px] text-2xl flex justify-center items-center ${
+                index !== Object.keys(providers).length - 1 && "mb-8"
               }`}
               type="submit"
               onClick={() => signIn(provider.id)}

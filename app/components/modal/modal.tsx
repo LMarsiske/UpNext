@@ -10,23 +10,57 @@ import {
 } from "@radix-ui/react-dialog";
 import CloseIcon from "@mui/icons-material/Close";
 import { useModalStore } from "@/stores/modal";
+import { useBackdropStoreSelectors } from "@/stores/backdrop";
+import { useItemStoreSelectors } from "@/stores/item";
 
 import CreateListForm from "./create-list-form";
 import AuthForm from "./auth-form";
 import ItemInfo from "./item-info";
 
 const Modal = () => {
-  const { isModalOpen, modalContent, setIsModalOpen, closeModal } =
+  const { isModalOpen, modalContent, closeModal, setIsModalOpen } =
     useModalStore();
+  const openBackdrop = useBackdropStoreSelectors.use.openBackdrop();
+  const closeBackdrop = useBackdropStoreSelectors.use.closeBackdrop();
+  const item = useItemStoreSelectors.use.item();
 
   return (
-    <Root open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <Root
+      open={isModalOpen}
+      onOpenChange={(open) => {
+        if (open) {
+          openBackdrop();
+        } else {
+          closeBackdrop();
+        }
+        setIsModalOpen(open);
+      }}
+    >
       <Portal>
-        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh]  max-w-[900px] min-w[250px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-fog dark:bg-davy focus:outline-none">
-          <Title className="text-mauve12 m-0 text-2xl font-medium">
-            {modalContent === "CREATE_LIST" && "Create a new list"}
-            {modalContent === "AUTH" && "Sign in or create an account"}
-          </Title>
+        <Content className="z-[51] data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] md:w-4/5 md:p-6 translate-x-[-50%] translate-y-[-50%] rounded-xl bg-fog dark:bg-davy focus:outline-none shadow-neon">
+          <div className="flex justify-between items-start">
+            <Title className="text-2xl font-bold">
+              {modalContent === "CREATE_LIST" && "Create a new list"}
+              {modalContent === "AUTH" && "Sign in or create an account"}
+              {modalContent === "MORE_INFO" &&
+                item?.title &&
+                `${item?.title} (${item?.release_year || "Unknown"})`}
+            </Title>
+            <Close asChild>
+              <button
+                className=""
+                aria-label="Close"
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                <CloseIcon
+                  fontSize="large"
+                  className="text-gunmetal dark:text-snow"
+                />
+              </button>
+            </Close>
+          </div>
           <Description className="text-mauve11 mt-[10px] mb-2 text-lg leading-normal">
             {modalContent === "CREATE_LIST" &&
               "Enter the name of your new list below."}
@@ -34,17 +68,6 @@ const Modal = () => {
           {modalContent === "CREATE_LIST" && <CreateListForm />}
           {modalContent === "AUTH" && <AuthForm />}
           {modalContent === "MORE_INFO" && <ItemInfo />}
-          <Close asChild>
-            <button
-              className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-              aria-label="Close"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              <CloseIcon />
-            </button>
-          </Close>
         </Content>
       </Portal>
     </Root>

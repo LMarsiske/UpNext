@@ -15,7 +15,7 @@ const Logo = () => {
         priority={true}
         src={theme === "dark" ? LogoLight : LogoDark}
         alt="UpNext Logo"
-        className="h-8 w-fit"
+        className="h-8 md:h-19 w-fit"
       />
     </Link>
   );

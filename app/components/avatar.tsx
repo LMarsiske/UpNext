@@ -14,7 +14,7 @@ const Avatar = ({ name, icon }: { name?: string; icon?: string }) => {
     return initials;
   };
   return (
-    <div className="relative inline-flex items-center justify-center w-6 h-6 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 shrink-0">
+    <div className="relative inline-flex items-center justify-center w-6 h-6 md:w-8 md:h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 shrink-0">
       {icon && (
         <Image src={icon} alt={name || "User avatar"} width={32} height={32} />
       )}

@@ -6,6 +6,7 @@ import styles from "@/styles/neon.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import DrawerAuthMenu from "./drawer/auth-menu";
 import DrawerNonAuthMenu from "./drawer/non-auth-menu";
+import RightDrawerListOptions from "./drawer/right-list-options";
 
 const variants: Variants = {
   closed: {
@@ -31,7 +32,8 @@ const RightDrawer = () => {
 
   useEffect(() => {
     console.log(isDrawerOpen);
-  }, [isDrawerOpen]);
+    console.log(drawerContent);
+  }, [isDrawerOpen, drawerContent]);
 
   return (
     <AnimatePresence>
@@ -45,22 +47,28 @@ const RightDrawer = () => {
             x: "100%",
           }}
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-          className={`fixed flex flex-col align-bottom rounded-l-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 h-screen px-4 py-2 z-[51] shadow-neon`}
+          className={`fixed flex flex-col align-bottom rounded-l-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 md:w-[45%] max-w-[450px] h-screen px-4 py-2 z-[51] shadow-neon`}
         >
-          <button
-            onClick={() => {
-              console.log("closing");
-              closeDrawer("RIGHT");
-            }}
-            className="text-right"
-          >
-            <CloseIcon
-              fontSize="large"
-              className="text-gunmetal dark:text-snow"
-            />
-          </button>
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold">
+              {drawerContent === "LIST_OPTIONS" && "List Options"}
+            </h1>
+            <button
+              onClick={() => {
+                console.log("closing");
+                closeDrawer("RIGHT");
+              }}
+              className="text-right"
+            >
+              <CloseIcon
+                fontSize="large"
+                className="text-gunmetal dark:text-snow"
+              />
+            </button>
+          </div>
           {drawerContent === "AUTH_MENU" && <DrawerAuthMenu />}
           {drawerContent === "NON_AUTH_MENU" && <DrawerNonAuthMenu />}
+          {drawerContent === "LIST_OPTIONS" && <RightDrawerListOptions />}
         </motion.div>
       )}
     </AnimatePresence>

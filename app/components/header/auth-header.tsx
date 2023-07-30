@@ -14,11 +14,14 @@ const AuthHeader = ({ user }: { user: User }) => {
   const openDrawer = useDrawerStoreSelectors.use.openDrawer();
   return (
     <>
-      <div className="hidden items-center space-x-4 text-2xl">
+      <div className="hidden md:flex items-center space-x-4 text-3xl">
         <Link href="/">Discover</Link>
         <Link href="/lists">Lists</Link>
         <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+          <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle avatar bg-transparent hover:bg-transparent focus:bg-transparent shadow-none hover:shadow-none focus:shadow-none"
+          >
             <Avatar name={user.name} icon={user.image} />
           </label>
           <ul
@@ -59,6 +62,7 @@ const AuthHeader = ({ user }: { user: User }) => {
         onClick={() => {
           openDrawer("RIGHT", "AUTH_MENU");
         }}
+        className="md:hidden"
       >
         <MenuIcon fontSize="large" className="text-gunmetal dark:text-snow" />
       </button>

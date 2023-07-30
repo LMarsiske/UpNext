@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   }, []);
 
   return (
-    <header className="h-12 w-full px-4 py-4 flex justify-between items-center">
+    <header className="h-12 md:h-16 w-full px-6 py-2 flex justify-between items-center">
       <Logo />
       {session ? <AuthHeader user={session.user as User} /> : <NonAuthHeader />}
     </header>
