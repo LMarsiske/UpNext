@@ -25,8 +25,8 @@ interface LayoutProps {
 export default async function RootLayout({ children }: LayoutProps) {
   const session = await getServerSession(AuthOptions);
   return (
-    <html lang="en" suppressHydrationWarning className="h-screen">
-      <body className="h-screen overflow-hidden">
+    <html lang="en" suppressHydrationWarning className="h-[100dvh]">
+      <body className="h-[100dvh] overflow-hidden">
         <Providers session={session}>
           <Header />
           <Container>{children}</Container>

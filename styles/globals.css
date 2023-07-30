@@ -6,7 +6,7 @@
 @layer base {
   body {
     @apply bg-snow text-gunmetal dark:bg-gunmetal dark:text-snow;
-    @apply min-h-screen;
+    @apply min-h-[100dvh];
   }
 
   ::selection {

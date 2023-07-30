@@ -24,7 +24,7 @@ const RightDrawer = () => {
             x: "100%",
           }}
           transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-          className={`fixed flex flex-col align-bottom rounded-l-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 md:w-[45%] max-w-[450px] h-screen px-4 py-2 z-[51] shadow-neon`}
+          className={`fixed flex flex-col align-bottom rounded-l-xl bg-snow dark:bg-davy text-gunmetal dark:text-snow  top-0 right-0 w-2/4 md:w-[45%] max-w-[450px] h-[100dvh] px-4 py-2 z-[51] shadow-neon`}
         >
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">
