@@ -6,14 +6,16 @@ import LogoLight from "@/assets/images/Logo_Light.svg";
 import { useTheme } from "next-themes";
 
 const Logo = () => {
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
+
+  const colorTheme = theme === "system" ? systemTheme : theme;
 
   return (
     <Link href="/">
       <Image
         height={48}
         priority={true}
-        src={theme === "dark" ? LogoLight : LogoDark}
+        src={colorTheme === "dark" ? LogoLight : LogoDark}
         alt="UpNext Logo"
         className="h-8 md:h-19 w-fit"
       />
