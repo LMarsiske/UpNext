@@ -10,12 +10,14 @@ interface TabContainerProps {
 }
 
 const TabContainer = ({ list }: TabContainerProps) => {
+  console.log("LIST: ", list);
   return (
     <div className="overflow-auto md:ml-4 md:w-3/4 h-[calc(100%-4rem)] md:h-full lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2">
       {list &&
         list.items &&
         list.items.length > 0 &&
         list.items.map((item: WatchListItem, index: number) => {
+          console.log(item);
           return <WatchlistItem key={`${item.id}-${index}`} {...item} />;
         })}
       {!list ||

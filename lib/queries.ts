@@ -151,6 +151,7 @@ export const GETLISTSWITHITEMS = gql`
         network
         platforms
         genres
+        listId
       }
       sharedWith {
         id

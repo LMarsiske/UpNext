@@ -51,19 +51,34 @@ const WatchlistItem = ({
     try {
       await removeItemFromList({ variables: { id: id } });
       if (user) {
-        setUser({
-          ...user,
-          allItems: user.allItems!.filter((item) => item.id !== id),
-          lists: user.lists!.map((list) => {
-            if (list.id === listId) {
-              return {
-                ...list,
-                items: list.items!.filter((item) => item.id !== id),
-              };
-            }
-            return list;
-          }),
+        console.log(listId);
+        let userCopy = { ...user };
+        userCopy.allItems = userCopy.allItems!.filter((item) => item.id !== id);
+        userCopy.lists = userCopy.lists!.map((list) => {
+          if (list.id === listId) {
+            return {
+              ...list,
+              items: list.items!.filter((item) => item.id !== id),
+            };
+          }
+          return list;
         });
+        console.log(userCopy);
+        setUser(userCopy);
+
+        // setUser({
+        //   ...user,
+        //   allItems: user.allItems!.filter((item) => item.id !== id),
+        //   lists: user.lists!.map((list) => {
+        //     if (list.id === listId) {
+        //       return {
+        //         ...list,
+        //         items: list.items!.filter((item) => item.id !== id),
+        //       };
+        //     }
+        //     return list;
+        //   }),
+        // });
       }
     } catch (e: any) {
       console.log(e.message);

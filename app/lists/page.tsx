@@ -51,6 +51,7 @@ const ListsPage = async () => {
   }, []);
 
   useEffect(() => {
+    console.log("user changed: ", user);
     if (!user) return;
     setList(user.lists![tabIndex]);
   }, [user]);
