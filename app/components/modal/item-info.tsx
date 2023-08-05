@@ -16,6 +16,8 @@ import {
 import type { Movie, TVShow, Game } from "@/types/item";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ModalItemInfoSkeleton from "./item-info-skeleton";
+import ImageWithFallback from "../image-with-fallback";
+import placeholder from "@/assets/images/placeholder.png";
 
 const ItemInfo = () => {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -219,12 +221,18 @@ const ItemInfo = () => {
                   className={`flex flex-col mb-2 overflow-auto max-h-[50dvh] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2`}
                 >
                   <div className="mb-2">
-                    <img
-                      src={item!.poster!}
-                      alt={item!.title!}
-                      height={172}
-                      width={120}
-                      className="w-[120px] h-[172px] float-left mr-4"
+                    <ImageWithFallback
+                      src={item?.poster || placeholder}
+                      fallback={placeholder}
+                      alt={
+                        item?.poster
+                          ? `A poster for the ${item?.type} ${item?.type}`
+                          : "A placeholder poster for a search result"
+                      }
+                      fallbackAlt="A placeholder poster for a search result"
+                      classNames="w-[120px] h-[172px] float-left mr-4"
+                      width={101}
+                      height={150}
                     />
 
                     <p>{item!.summary || "No summary available"}</p>

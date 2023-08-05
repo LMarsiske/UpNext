@@ -2,7 +2,7 @@
 import React, { useState, MouseEvent, useEffect } from "react";
 import "@/styles/globals.css";
 import placeholder from "../../assets/images/placeholder.png";
-
+import { debounce } from "lodash";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useModalStore } from "@/stores/modal";
@@ -37,6 +37,7 @@ export const SearchResult = ({
   const setItemForFetch = useItemStoreSelectors.use.setItemForFetch();
   const setStringifiedItem = useItemStoreSelectors.use.setStringifiedItem();
   const openBackdrop = useBackdropStoreSelectors.use.openBackdrop();
+  const closeBackdrop = useBackdropStoreSelectors.use.closeBackdrop();
   const { isMobile } = useMediaQueries();
 
   const [maxHeight, setMaxHeight] = useState(0);
@@ -157,7 +158,7 @@ export const SearchResult = ({
                   </button>
                 )}
               </label>
-              {user && user.lists && user.lists.length > 1 && (
+              {user?.lists?.length > 1 && (
                 <ul
                   tabIndex={0}
                   className={`mt-2 z-[51] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
@@ -183,6 +184,10 @@ export const SearchResult = ({
                                 genres,
                               })
                             );
+                            if (document.activeElement instanceof HTMLElement) {
+                              document.activeElement?.blur();
+                              closeBackdrop();
+                            }
                           }}
                         >
                           {list.name}
