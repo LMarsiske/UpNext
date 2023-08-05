@@ -31,6 +31,7 @@ const ListsPage = async () => {
 
   const [tabIndex, setTabIndex] = useState(0);
   const [list, setList] = useState<ListWithItems | undefined>(user?.lists![0]);
+  const [skip, setSkip] = useState(false);
 
   useEffect(() => {
     const getAllLists = async () => {
@@ -45,6 +46,7 @@ const ListsPage = async () => {
           ...user,
           lists: response.data.getAllListsWithItems,
         });
+        setSkip(true);
       }
     };
     getAllLists();
@@ -53,6 +55,10 @@ const ListsPage = async () => {
   useEffect(() => {
     console.log("user changed: ", user);
     if (!user) return;
+    if (skip) {
+      setSkip(false);
+      return;
+    }
     setList(user.lists![tabIndex]);
   }, [user]);
 
