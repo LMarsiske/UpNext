@@ -138,65 +138,73 @@ export const SearchResult = ({
         </div>
         <div className="flex items-end ml-2 md:ml-4">
           {user && (
-            <div className={"dropdown dropdown-end"}>
-              <label tabIndex={0}>
-                {inList ? (
-                  <button
-                    onClick={(event: MouseEvent<HTMLButtonElement>) =>
-                      handleAddRemove(event, "remove")
-                    }
+            <>
+              <div className={"dropdown dropdown-end"}>
+                <label tabIndex={0}>
+                  {inList ? (
+                    <button
+                      onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                        if (document.activeElement instanceof HTMLElement) {
+                          document.activeElement?.blur();
+                          closeBackdrop();
+                        }
+                        handleAddRemove(event, "remove");
+                      }}
+                    >
+                      <BookmarkIcon className="text-hollywood-cerise" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                        handleAddRemove(event, "add");
+                      }}
+                    >
+                      <BookmarkBorderIcon className=" text-floro-cyan z-30" />
+                    </button>
+                  )}
+                </label>
+                {user?.lists?.length > 1 && (
+                  <ul
+                    tabIndex={0}
+                    className={`mt-2 z-[51] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
                   >
-                    <BookmarkIcon className="text-hollywood-cerise" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                      handleAddRemove(event, "add");
-                    }}
-                  >
-                    <BookmarkBorderIcon className=" text-floro-cyan z-30" />
-                  </button>
+                    {user &&
+                      user.lists.map((list) => (
+                        <li key={list.id}>
+                          <button
+                            className="text-xl text-gunmetal"
+                            onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                              event.stopPropagation();
+                              event.preventDefault();
+                              addToList(
+                                list.id,
+                                JSON.stringify({
+                                  apiId: id,
+                                  type,
+                                  title,
+                                  poster,
+                                  summary,
+                                  network,
+                                  platforms,
+                                  genres,
+                                })
+                              );
+                              if (
+                                document.activeElement instanceof HTMLElement
+                              ) {
+                                document.activeElement?.blur();
+                                closeBackdrop();
+                              }
+                            }}
+                          >
+                            {list.name}
+                          </button>
+                        </li>
+                      ))}
+                  </ul>
                 )}
-              </label>
-              {user?.lists?.length > 1 && (
-                <ul
-                  tabIndex={0}
-                  className={`mt-2 z-[51] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
-                >
-                  {user &&
-                    user.lists.map((list) => (
-                      <li key={list.id}>
-                        <button
-                          className="text-xl text-gunmetal"
-                          onClick={(event: MouseEvent<HTMLButtonElement>) => {
-                            event.stopPropagation();
-                            event.preventDefault();
-                            addToList(
-                              list.id,
-                              JSON.stringify({
-                                apiId: id,
-                                type,
-                                title,
-                                poster,
-                                summary,
-                                network,
-                                platforms,
-                                genres,
-                              })
-                            );
-                            if (document.activeElement instanceof HTMLElement) {
-                              document.activeElement?.blur();
-                              closeBackdrop();
-                            }
-                          }}
-                        >
-                          {list.name}
-                        </button>
-                      </li>
-                    ))}
-                </ul>
-              )}
-            </div>
+              </div>
+            </>
           )}
         </div>
       </div>
