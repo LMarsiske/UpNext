@@ -17,11 +17,11 @@ const Tab = ({
 }: TabProps) => {
   return (
     <div
-      className={`flex justify-between items-center px-2 py-2  ${
-        active ? "bg-sky-blue text-gunmetal" : ""
-      } ${isFirstTab && "rounded-t-xl"} ${
-        isLastTab && "rounded-b-xl"
-      } font-semibold text-xl`}
+      className={`flex justify-between items-center px-2 py-2${
+        active ? " bg-sky-blue text-gunmetal" : ""
+      }${isFirstTab ? " rounded-t-xl" : ""} ${
+        isLastTab ? "rounded-b-xl " : ""
+      }font-semibold text-xl`}
       onClick={handleClick}
     >
       {children}

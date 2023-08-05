@@ -18,6 +18,7 @@ import { GETLISTSWITHITEMS } from "@/lib/queries";
 import useMediaQueries from "@/lib/hooks/useMediaQueries";
 import { Select, SelectItem } from "@/app/components/select";
 import Shave from "../components/shave";
+import { isEqual } from "lodash";
 
 const ListsPage = async () => {
   const [user, setUser] = useUserStore((store) => [store.user, store.setUser]);
@@ -30,7 +31,7 @@ const ListsPage = async () => {
   const { isMobile } = useMediaQueries();
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [list, setList] = useState<ListWithItems | undefined>(user?.lists![0]);
+  const [list, setList] = useState<ListWithItems | undefined | null>(null);
   const [skip, setSkip] = useState(false);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ const ListsPage = async () => {
           lists: response.data.getAllListsWithItems,
         });
         setSkip(true);
+        setList(response.data.getAllListsWithItems[0]);
       }
     };
     getAllLists();
@@ -59,7 +61,9 @@ const ListsPage = async () => {
       setSkip(false);
       return;
     }
-    setList(user.lists![tabIndex]);
+    if (!isEqual(list, user.lists![tabIndex])) {
+      setList(user.lists![tabIndex]);
+    }
   }, [user]);
 
   const openCreateModal = () => {
@@ -144,9 +148,9 @@ const ListsPage = async () => {
                     isFirstTab={index === 0}
                     isLastTab={index === user.lists!.length - 1}
                   >
-                    <Shave maxHeight={28} element="h2">
+                    <h2 className="w-[calc(100%-2rem)] whitespace-nowrap overflow-x-hidden text-ellipsis">
                       {list.name}
-                    </Shave>
+                    </h2>
                     <button
                       onClick={() => {
                         if (tabIndex !== index) {
