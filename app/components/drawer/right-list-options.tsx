@@ -375,26 +375,28 @@ const RightDrawerListOptions = () => {
             {sharedUsers && sharedUsers.length > 0 && (
               <table className="table">
                 {/* head */}
-                <thead>
+                <thead className="w-full">
                   <tr className="text-gunmetal dark:text-snow text-lg">
                     <th></th>
                     <th>Email</th>
                     <th className="px-0">Can Edit</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="w-full">
                   {sharedUsers.map((user) => {
                     return (
                       <tr
                         key={user.id}
                         className="text-gunmetal dark:text-snow"
                       >
-                        <td className="px-2">
+                        <td className="px-1 md:px-2">
                           <button onClick={() => removeUser(user.id)}>
                             <CloseIcon className="text-red-500" />
                           </button>
                         </td>
-                        <td>{user.email}</td>
+                        <td className="px-2 md:px-4 md:text-base">
+                          {user.email}
+                        </td>
                         <td className="flex justify-center px-0">
                           <input
                             type="checkbox"

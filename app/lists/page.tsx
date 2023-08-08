@@ -104,7 +104,7 @@ const ListsPage = async () => {
             <button
               onClick={() => {
                 setCurrentListIndex(tabIndex);
-                openDrawer("BOTTOM", "LIST_OPTIONS");
+                openDrawer("RIGHT", "LIST_OPTIONS");
               }}
             >
               <MoreHorizIcon
