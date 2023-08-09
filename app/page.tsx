@@ -173,7 +173,7 @@ const HomePage = () => {
             className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
           />
         </div>
-        <div className="overflow-auto w-full md:w-4/5 lg:w-full lg:max-w-col 2col:max-w-col2 2col:flex 2col:justify-between 2col:flex-wrap 3col:w-col3 3col:max-w-col3 h-[calc(100vh-8.75rem)] md:h-[calc(100vh-11.25rem)] lg:h-[calc(100dvh-12.25rem)] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy lg:pr-2">
+        <div className="overflow-auto w-full md:w-4/5 lg:w-full lg:max-w-col 2col:max-w-col2 2col:flex 2col:justify-between 2col:flex-wrap 3col:w-col3 3col:max-w-col3 h-[calc(100vh-8.75rem)] md:h-[calc(100vh-11.25rem)] lg:h-[calc(100dvh-12.25rem)] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy pt-2 lg:pr-2">
           {searchLoading ? (
             <SearchResultSkeletons />
           ) : (
