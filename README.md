@@ -1,5 +1,5 @@
 <picture>
-	<source media="(prefers-color-scheme: dark)" srcset="./assets/images/Logo_Light.svg" width="250">
+	<source media="(prefers-color-scheme: dark)" srcset="./assets/images/Logo_Light_No_BG.svg" width="250">
 	<img alt="The logo for UpNext" src="./assets/images/Logo_Dark.svg" width="250">
 </picture>
 
@@ -24,3 +24,22 @@ You can try it out for yourself here: https://tv-watch-list.vercel.app/
 - [TailwindCSS](https://tailwindcss.com/) <picture><img alt="Logo for Apollo" src="./assets/images/tailwind-icon.png" width="20"></picture>
 - [DaisyUI](https://daisyui.com/) <picture><img alt="Logo for Apollo" src="./assets/images/daisy-icon.png" width="20"></picture>
 - [RadixUI](https://www.radix-ui.com/) <picture><img alt="Logo for Apollo" src="./assets/images/radix-icon.png" width="20"></picture>
+
+### Getting Started
+
+You will need to configure `env.development.local` and `env.production.local` files using the [example](./.env.example).
+
+> **_NOTE:_** keep the POSTGRES_PRISMA_URL set to "postgresql://test:test@localhost:5432/test?schema=public" for your development env, as that will be the url of the docker container created with the included `docker-compose.yml`
+
+1. Install depencencies
+   > `npm install`
+2. Start the required Docker containers for postgres and pgadmin
+   > `npm run docker-up` to start the docker containers for the postgres database and pgadmin
+3. Start the application
+   > `npm run dev`
+
+or
+
+> `npm run build` followed by `npm run start` to start the application using the production environment
+
+You should now be able to access the application locally at http://localhost:3000
