@@ -169,7 +169,7 @@ const ItemInfo = () => {
                   Which list would you like to add this to?
                 </h1>
                 {user && user.lists && user.lists.length > 1 && (
-                  <ul className="w-full max-h-[500px] overflow-scroll mb-4">
+                  <ul className="w-full max-h-[500px] overflow-y-auto mb-4">
                     {user &&
                       user.lists.map((list) => (
                         <li
