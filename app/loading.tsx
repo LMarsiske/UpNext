@@ -69,19 +69,16 @@ const Loading = () => {
             color="electric-indigo"
             variants={DotVariants}
             transition={DotTransition}
-            // className="bg-electric-indigo"
           />
           <LoadingDot
             color="sky-blue"
             variants={DotVariants}
             transition={DotTransition}
-            // className="bg-sky-blue"
           />
           <LoadingDot
             color="floro-cyan"
             variants={DotVariants}
             transition={DotTransition}
-            // className="bg-floro-cyan"
           />
         </motion.div>
       </motion.div>

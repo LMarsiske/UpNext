@@ -19,11 +19,33 @@ import {
   GETIGDBAUTHTOKEN,
 } from "@/lib/queries";
 import { useUserStore } from "@/stores/user";
+import { AnimatePresence, motion, Variants } from "framer-motion";
+import ScrollContainer from "./components/scroll-container";
+
+const inputVariants = {
+  up: {
+    y: 0,
+    transition: {
+      delay: 0.15,
+      duration: 0.35,
+      ease: "easeInOut",
+    },
+  },
+  down: {
+    y: "25dvh",
+    transition: {
+      delay: 0.15,
+      duration: 0.35,
+      ease: "easeInOut",
+    },
+  },
+};
 
 const HomePage = () => {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
   const [results, setResults] = useState<GraphSearchResult[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [
     search,
@@ -43,7 +65,7 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    if (searchData) {
+    if (searchData && input) {
       const { searchGames, searchMovies, searchTV } = searchData;
       let results = sortBy(
         flatten([...searchGames, ...searchMovies, ...searchTV]),
@@ -83,6 +105,12 @@ const HomePage = () => {
     getUserData();
   }, [session]);
 
+  useEffect(() => {
+    console.log(results);
+    console.log(results.length > 0);
+    console.log(searchLoading);
+  }, [results, searchLoading]);
+
   const parseUserData = (data: User) => {
     if (!data?.lists) {
       setUser({ ...data });
@@ -104,6 +132,11 @@ const HomePage = () => {
   }: React.ChangeEvent<HTMLInputElement>) => {
     setInput(value);
     if (value) query(value);
+
+    if (!value) {
+      query.cancel();
+      setResults([]);
+    }
   };
 
   const addItem = async (listId: string, contents: string) => {
@@ -162,32 +195,82 @@ const HomePage = () => {
 
   return (
     <>
-      <main className={`flex flex-col items-center`}>
-        <div className="flex flex-col items-center">
-          <h1 className="text-3xl md:mb-2">What&apos;s on next?</h1>
+      <main className="flex flex-col items-center justify-between h-[calc(100dvh-4rem)] md:h-[calc(100dvh-6rem)] lg:h-[calc(100dvh-6rem)]">
+        <AnimatePresence initial={false}>
+          <motion.div
+            variants={inputVariants}
+            initial="down"
+            animate={searchLoading || results.length > 0 ? "up" : "down"}
+            className="w-full flex flex-col items-center justify-center grow-1"
+            key="search-input"
+          >
+            <h1 className="text-4xl mb-2">What&apos;s on next?</h1>
 
-          <input
-            type="text"
-            value={input}
-            onChange={handleChange}
-            className="input input-bordered text-xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9"
-          />
-        </div>
-        <div className="overflow-auto w-full md:w-4/5 lg:w-full lg:max-w-col 2col:max-w-col2 2col:flex 2col:justify-between 2col:flex-wrap 3col:w-col3 3col:max-w-col3 h-[calc(100vh-8.75rem)] md:h-[calc(100vh-11.25rem)] lg:h-[calc(100dvh-12.25rem)] lg:scrollbar-thin lg:scrollbar-thumb-rounded-xl lg:scrollbar-track-transparent lg:scrollbar-thumb-fog dark:lg:scrollbar-thumb-davy pt-2 lg:pr-2">
-          {searchLoading ? (
-            <SearchResultSkeletons />
-          ) : (
-            results.map((result, index) => (
-              <SearchResult
-                key={result.id || index}
-                addToList={addItem}
-                deleteFromList={removeItem}
-                {...result}
-                index={index}
-              />
-            ))
+            <input
+              type="text"
+              value={input}
+              onChange={handleChange}
+              className="input input-bordered text-xl md:text-2xl lg:text-3xl bg-fog dark:bg-davy text-gunmetal dark:text-snow dark:border-none h-9 md:h-10 lg:h-12 w-full md:w-4/5 lg:w-full lg:max-w-col mb-2"
+              placeholder="Search for a movie, TV show, or video game"
+            />
+          </motion.div>
+
+          {searchLoading && input && (
+            <motion.div
+              key="search-skeleton"
+              initial={{
+                y: 0,
+                opacity: 0,
+              }}
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.35,
+                delay: 0.2,
+              }}
+              exit={{
+                y: 0,
+                opacity: 0,
+              }}
+              className="w-full"
+            >
+              <SearchResultSkeletons />
+            </motion.div>
           )}
-        </div>
+          {!searchLoading && input && results.length > 0 && (
+            <motion.div
+              key="search-results"
+              initial={{
+                y: 0,
+                opacity: 0,
+                height: 0,
+              }}
+              animate={{
+                y: 0,
+                opacity: 1,
+                height: "auto",
+              }}
+              transition={{
+                staggerChildren: 0.3,
+                delay: 0.2,
+              }}
+            >
+              <ScrollContainer>
+                {results.map((result, index) => (
+                  <SearchResult
+                    key={result.id || index}
+                    addToList={addItem}
+                    deleteFromList={removeItem}
+                    {...result}
+                    index={index}
+                  />
+                ))}
+              </ScrollContainer>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </>
   );

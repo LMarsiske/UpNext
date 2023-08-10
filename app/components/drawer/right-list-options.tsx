@@ -383,7 +383,7 @@ const RightDrawerListOptions = () => {
                   </tr>
                 </thead>
                 <tbody className="w-full">
-                  {sharedUsers.map((user) => {
+                  {/* {sharedUsers.map((user) => {
                     return (
                       <tr
                         key={user.id}
@@ -413,7 +413,54 @@ const RightDrawerListOptions = () => {
                         </td>
                       </tr>
                     );
-                  })}
+                  })} */}
+                  <tr key={user.id} className="text-gunmetal dark:text-snow">
+                    <td className="px-1 md:px-2">
+                      <button onClick={() => removeUser(user.id)}>
+                        <CloseIcon className="text-red-500" />
+                      </button>
+                    </td>
+                    <td className="px-2 md:px-4 md:text-base">Mom</td>
+                    <td className="flex justify-center px-0">
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-primary"
+                        checked={true}
+                      />
+                    </td>
+                  </tr>
+                  <tr key={user.id} className="text-gunmetal dark:text-snow">
+                    <td className="px-1 md:px-2">
+                      <button onClick={() => removeUser(user.id)}>
+                        <CloseIcon className="text-red-500" />
+                      </button>
+                    </td>
+                    <td className="px-2 md:px-4 md:text-base">Dad</td>
+                    <td className="flex justify-center px-0">
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-primary"
+                        checked={true}
+                      />
+                    </td>
+                  </tr>
+                  <tr key={user.id} className="text-gunmetal dark:text-snow">
+                    <td className="px-1 md:px-2">
+                      <button onClick={() => removeUser(user.id)}>
+                        <CloseIcon className="text-red-500" />
+                      </button>
+                    </td>
+                    <td className="px-2 md:px-4 md:text-base">
+                      Little Brother
+                    </td>
+                    <td className="flex justify-center px-0">
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-primary"
+                        checked={false}
+                      />
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             )}

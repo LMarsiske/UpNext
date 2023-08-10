@@ -101,7 +101,9 @@ export const SearchResult = ({
 
   return (
     <div
-      className="flex w-full max-w-col items-stretch my-2 md:my-4 rounded-xl bg-fog dark:bg-davy z-20"
+      className={`flex w-full max-w-col items-stretch${
+        index !== 0 ? " mt-2 md:mt-4" : ""
+      } rounded-xl bg-fog dark:bg-davy z-20`}
       onClick={handleItemClick}
     >
       <div className="shrink-0 rounded-l-xl w-[67px] md:w-[101px]">
