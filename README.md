@@ -32,14 +32,25 @@ You will need to configure `env.development.local` and `env.production.local` fi
 > **_NOTE:_** keep the POSTGRES_PRISMA_URL set to "postgresql://test:test@localhost:5432/test?schema=public" for your development env, as that will be the url of the docker container created with the included `docker-compose.yml`
 
 1. Install depencencies
-   > `npm install`
+```bash
+npm run install
+```
 2. Start the required Docker containers for postgres and pgadmin
-   > `npm run docker-up` to start the docker containers for the postgres database and pgadmin
-3. Start the application
-   > `npm run dev`
-
+```bash
+npm run docker-up
+```
+5. Start the application
+```bash
+npm run dev
+```
 or
-
-> `npm run build` followed by `npm run start` to start the application using the production environment
+```bash
+npm run build
+```
+followed by 
+```bash
+npm run start
+```
+to start the application using the production environment
 
 You should now be able to access the application locally at http://localhost:3000
