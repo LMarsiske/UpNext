@@ -125,6 +125,11 @@ export const resolvers = {
           items: true,
           sharedWith: true,
         },
+        orderBy: [
+          {
+            createdAt: "asc",
+          },
+        ],
       });
       return lists;
     },

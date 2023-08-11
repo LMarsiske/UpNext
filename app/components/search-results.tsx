@@ -169,7 +169,7 @@ export const SearchResult = ({
                 {user?.lists?.length > 1 && (
                   <ul
                     tabIndex={0}
-                    className={`mt-2 z-[51] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
+                    className={`mt-2 z-[101] p-2 menu dropdown-content bg-fog rounded-box min-w-fit shadow-neon`}
                   >
                     {user &&
                       user.lists.map((list) => (
